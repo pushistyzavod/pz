@@ -1,0 +1,60 @@
+ErrorDocument 403 /404.html
+ErrorDocument 404 /404.html
+
+DirectoryIndex page40738358.html
+
+RewriteEngine On
+
+RewriteCond %{HTTP:X-Forwarded-Proto} =http
+RewriteRule ^(.*)$ https://pushistyzavod\.ru/$1 [R=301,L]
+
+RewriteCond %{HTTP:X-Forwarded-Proto} =https
+RewriteCond %{HTTP_HOST} ^www\.pushistyzavod.ru [NC]
+RewriteRule ^(.*)$ https://pushistyzavod\.ru/$1 [R=301,L]
+
+RewriteCond %{REQUEST_FILENAME} /robots.txt
+RewriteCond "%{DOCUMENT_ROOT}/robots_%{HTTP_HOST}.txt" -f
+RewriteRule ^(.*)$ robots_%{HTTP_HOST}.txt [NC,L]
+RewriteRule ^main$ page40738358.html [NC]
+RewriteRule ^main/$ page40738358.html [NC]
+
+RewriteRule ^privacy$ page40861203.html [NC]
+RewriteRule ^privacy/$ page40861203.html [NC]
+
+RewriteRule ^happynewyear$ page41124919.html [NC]
+RewriteRule ^happynewyear/$ page41124919.html [NC]
+
+RewriteRule ^blog$ page68079733.html [NC]
+RewriteRule ^blog/$ page68079733.html [NC]
+
+RewriteRule ^korporativnye-myagkie-igrushki-s-logotipom$ page69512967.html [NC]
+RewriteRule ^korporativnye-myagkie-igrushki-s-logotipom/$ page69512967.html [NC]
+
+RewriteRule ^korporativnye-podarki-na-novyj-god$ page69877857.html [NC]
+RewriteRule ^korporativnye-podarki-na-novyj-god/$ page69877857.html [NC]
+
+RewriteRule ^korporativnye-podarki-na-8-marta$ page69880855.html [NC]
+RewriteRule ^korporativnye-podarki-na-8-marta/$ page69880855.html [NC]
+
+RewriteRule ^korporativnye-podarki-na-23-fevralya$ page69883579.html [NC]
+RewriteRule ^korporativnye-podarki-na-23-fevralya/$ page69883579.html [NC]
+
+RewriteRule ^korporativnye-novogodnie-podarki-detyam$ page69886785.html [NC]
+RewriteRule ^korporativnye-novogodnie-podarki-detyam/$ page69886785.html [NC]
+
+RewriteRule ^podarki-sotrudnikam-na-den-rozhdeniya-kompanii$ page70261533.html [NC]
+RewriteRule ^podarki-sotrudnikam-na-den-rozhdeniya-kompanii/$ page70261533.html [NC]
+
+RewriteRule ^proizvodstvo-plastikovyh-igrushek-na-zakaz$ page70664017.html [NC]
+RewriteRule ^proizvodstvo-plastikovyh-igrushek-na-zakaz/$ page70664017.html [NC]
+
+RewriteRule ^slider$ page68731663.html [NC]
+RewriteRule ^slider/$ page68731663.html [NC]
+
+RewriteRule ^header$ page69516079.html [NC]
+RewriteRule ^header/$ page69516079.html [NC]
+
+RewriteRule ^footer$ page69516455.html [NC]
+RewriteRule ^footer/$ page69516455.html [NC]
+
+

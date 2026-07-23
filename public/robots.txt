@@ -1,0 +1,19 @@
+User-Agent: *
+Disallow: /page69516079.html
+Disallow: /header
+Disallow: /page69516455.html
+Disallow: /footer
+Disallow: /page71447431.html
+Disallow: /tilda/form*
+Disallow: /tilda/rec*
+Disallow: /tilda/click*
+Disallow: /tilda/scroll*
+Disallow: /tilda/popup*
+Disallow: /tilda/cart*
+Disallow: /tilda/product*
+Disallow: /tilda/event*
+Disallow:
+
+
+Sitemap: https://pushistyzavod.ru/sitemap.xml
+Sitemap: https://pushistyzavod.ru/sitemap-feeds.xml
