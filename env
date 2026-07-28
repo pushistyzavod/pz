@@ -1,0 +1,20 @@
+# ========== MongoDB ==========
+MONGO_USER=tsyrenovtimur_db_user
+MONGO_PASSWORD=JnBTOddzDCUMFQtd
+MONGO_DB=pushistyzavod
+MONGO_HOST=mongo
+MONGO_PORT=27017
+MONGO_URI=mongodb://tsyrenovtimur_db_user:JnBTOddzDCUMFQtd@mongo:27017/pushistyzavod?authSource=admin
+
+# ========== Server ==========
+PORT=3000
+NODE_ENV=production
+
+# ========== Tilda API ==========
+TILDA_PUBLIC_KEY=rh0hzdx3ny9s0qfvhaxy
+TILDA_SECRET_KEY=da692f9520d78acf6ed8
+TILDA_PROJECT_ID=8044481
+TILDA_FEED_UID=461488483431
+
+# ========== Site ==========
+SITE_URL=https://pushistyzavod.ru

@@ -25,7 +25,7 @@
     + '.site-header .wrap{max-width:none;width:100%;margin:0;padding:0 32px;display:flex;align-items:center;justify-content:space-between;gap:24px;height:78px;box-sizing:border-box}'
 
     + '.site-logo{font-weight:700;font-size:21px;letter-spacing:-.2px;display:inline-flex;align-items:center;gap:11px;color:var(--sink);text-decoration:none;white-space:nowrap;flex:0 0 auto;margin-right:auto}'
-    + '.site-logo .dot{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,var(--sblue),var(--spink));display:inline-flex;align-items:center;justify-content:center;font-size:20px;box-shadow:0 6px 16px -6px rgba(255,96,153,.6)}'
+    + '.site-logo .logo-pic{height:46px;width:auto;display:block;object-fit:contain}'
     // menu (centered)
     + '.site-menu{display:flex;align-items:center;justify-content:center;gap:2px;font-weight:500;font-size:15px;min-width:0;flex-wrap:nowrap;flex:0 1 auto}'
     + '.site-menu>a,.site-mega-trigger{position:relative;color:#3a3d46;text-decoration:none;padding:10px 12px;border-radius:10px;transition:color .15s,background .15s;white-space:nowrap}'
@@ -70,6 +70,7 @@
     + '.site-footer h4{color:#fff;margin:0 0 16px;font-size:15px;letter-spacing:.2px}'
     + '.site-footer a{display:block;padding:6px 0;opacity:.8;color:#c4c7d2;text-decoration:none;transition:.15s}.site-footer a:hover{opacity:1;color:#fff}'
     + '.site-footer .brand b{color:#fff;font-size:20px}.site-footer .brand p{margin-top:12px;font-size:14px;max-width:300px;line-height:1.6}'
+    + '.site-footer .brand .flogo{height:64px;width:auto;display:block;object-fit:contain;margin-bottom:14px}'
     + '.site-footer .btn-inline{margin-top:14px;display:inline-flex;padding:11px 22px;border-radius:28px;background:var(--spink);color:#fff;font-weight:600}.site-footer .btn-inline:hover{background:var(--sblue);opacity:1}'
     + '.site-footer .sochead{color:#fff;font-size:13px;margin-top:16px;margin-bottom:8px;opacity:.9}'
     + '.site-footer .socials{display:flex;gap:10px;margin-bottom:4px}'
@@ -101,6 +102,7 @@
     + '.site-menu.open{display:flex}'
     + '@media(max-width:1040px){'
     + '  .site-header .wrap{height:70px;gap:14px}'
+    + '  .site-logo .logo-pic{height:38px}'
     + '  .site-menu{position:fixed;top:70px;left:0;right:0;bottom:0;flex-direction:column;justify-content:flex-start;align-items:stretch;gap:2px;background:#fff;padding:18px 24px;transform:translateX(100%);transition:transform .25s;overflow-y:auto;box-shadow:-10px 0 40px -20px rgba(0,0,0,.3);display:flex}'
     + '  .site-menu.open{transform:translateX(0)}'
     + '  .site-menu>a,.site-mega-trigger{padding:15px 6px;font-size:17px;border-radius:8px}'
@@ -135,7 +137,7 @@
 
   var header =
     '<header class="site-header"><div class="wrap">'
-    + '<a class="site-logo" href="/"><span class="dot">🧸</span>Пушистый&nbsp;Завод</a>'
+    + '<a class="site-logo" href="/"><img class="logo-pic" src="/prototype/images/logo.png" alt="Пушистый Завод">Пушистый&nbsp;Завод</a>'
     + '<nav class="site-menu">'
     + '<a href="/" data-m="home">Главная</a>'
     + '<div class="site-mega-wrap">'
@@ -171,7 +173,7 @@
   var footer =
     '<footer class="site-footer"><div class="wrap">'
     + '<div class="cols">'
-    + '  <div class="brand"><b>🏭 Пушистый Завод</b><p>Фабрика полного цикла по производству мягких и пластиковых изделий на заказ для бизнеса. Опт от 100 штук, работа с юрлицами по договору.</p></div>'
+    + '  <div class="brand"><img class="flogo" src="/prototype/images/logo.png" alt="Пушистый Завод"><b>Пушистый Завод</b><p>Фабрика полного цикла по производству мягких и пластиковых изделий на заказ для бизнеса. Опт от 100 штук, работа с юрлицами по договору.</p></div>'
     + '  <div><h4>Продукция</h4>'
     + '    <a href="/soft-toys.html">Мягкие игрушки</a>'
     + '    <a href="/pvc-figures.html">Пластиковые фигурки из ПВХ</a>'
@@ -199,7 +201,7 @@
     + '</div>'
     + '<div class="legal">'
     + '  <span>© ' + year + ' Пушистый Завод. Производство на заказ. Все права защищены.</span>'
-    + '  <span>ИП Иванов И.И. · ИНН 000000000000 · ОГРНИП 000000000000000 · <a href="/privacy.html">Политика конфиденциальности</a></span>'
+    + '  <span>ИП Цыренов Тимур Борисович · ИНН 031320564462 · ОГРНИП 323030000049231 · <a href="/privacy.html">Политика конфиденциальности</a></span>'
     + '</div>'
     + '</div></footer>';
 

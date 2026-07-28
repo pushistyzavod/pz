@@ -43,7 +43,7 @@ h2 span{color:var(--blue)}
 header.nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.95);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
 .nav .container{display:flex;align-items:center;justify-content:space-between;height:74px;gap:20px}
 .logo{font-weight:700;font-size:22px;display:flex;align-items:center;gap:9px}
-.logo .dot{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--pink))}
+.logo img{height:40px;width:auto;display:block;object-fit:contain}
 .menu{display:flex;gap:24px;font-weight:500;font-size:15px}
 .menu a:hover{color:var(--blue)}
 .nav-cta{display:flex;gap:12px;align-items:center}
@@ -205,7 +205,7 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
 <!-- ШАПКА -->
 <header class="nav">
   <div class="container">
-    <a class="logo" href="/"><span class="dot"></span>Пушистый&nbsp;Завод</a>
+    <a class="logo" href="/"><img src="/prototype/images/logo.png" alt="Пушистый Завод">Пушистый&nbsp;Завод</a>
     <nav class="menu">
       <a href="/">Главная</a>
       <a href="/#products">Что производим</a>
@@ -450,7 +450,7 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
   <div class="container">
     <div class="foot">
       <div class="brand">
-        <b>🏭 Пушистый Завод</b>
+        <img src="/prototype/images/logo.png" alt="Пушистый Завод" style="height:56px;width:auto;display:block;margin-bottom:12px"><b>Пушистый Завод</b>
         <p>Фабрика полного цикла по производству мягких и пластиковых изделий на заказ для бизнеса.</p>
       </div>
       <div>

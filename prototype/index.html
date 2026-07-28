@@ -55,7 +55,7 @@ h2 span{color:var(--blue)}
 header.nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.95);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
 .nav .container{display:flex;align-items:center;justify-content:space-between;height:74px;gap:20px}
 .logo{font-weight:700;font-size:22px;display:flex;align-items:center;gap:9px}
-.logo .dot{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--pink))}
+.logo img{height:40px;width:auto;display:block;object-fit:contain}
 .menu{display:flex;gap:26px;font-weight:500;font-size:15px}
 .menu a:hover{color:var(--blue)}
 .nav-cta{display:flex;gap:12px;align-items:center}
@@ -87,12 +87,60 @@ header.nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.95);bac
 .cat-head{display:flex;align-items:center;gap:13px;margin-bottom:12px}
 .cat-ico{width:56px;height:56px;border-radius:14px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:30px}
 .cat-card h3{font-size:22px}
-.cat-card>p{color:#41506b;font-size:15px;margin-bottom:18px}
+.cat-card>p,.cat-card .cat-body>p{color:#41506b;font-size:15px;margin-bottom:18px}
+
 .chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px}
 .chips span{background:#fff;border:1px solid rgba(0,0,0,.05);border-radius:20px;padding:7px 14px;font-size:13px;font-weight:500;color:#41506b}
 .cat-card{color:var(--ink);cursor:pointer}
 .cat-card .more{margin-top:auto}
 .cat-card:hover .more{text-decoration:underline}
+
+/* --- Витрина товара: изделие продолжает фон карточки + мягкая тень --- */
+.cat-card .cat-body{display:flex;flex-direction:column;flex:1}
+.cat-card.has-photo{padding:0;overflow:hidden;position:relative}
+.cat-card.has-photo .cat-body{padding:6px 30px 30px}
+/* единый вертикальный градиент карточки — витрина и текст как одно полотно */
+.cat-card.c1.has-photo{background:linear-gradient(180deg,#e9eef8 0%,#e1e7f2 46%,#dde4f1 100%)}
+.cat-card.c2.has-photo{background:linear-gradient(180deg,#fff2ea 0%,#ffe8de 46%,#ffe1d4 100%)}
+.cat-card.c3.has-photo{background:linear-gradient(180deg,#fff8fc 0%,#fff2fb 46%,#ffeaf7 100%)}
+
+.cat-stage{
+  position:relative;
+  aspect-ratio:4/3;
+  display:flex;align-items:flex-end;justify-content:center;
+  /* фон-полотно не задаём — витрина продолжает фон карточки,
+     сверху лишь мягкий световой блик для объёма */
+  background:radial-gradient(58% 52% at 50% 42%,rgba(255,255,255,.55) 0%,rgba(255,255,255,0) 72%);
+  /* без обрезки: тень изделия свободно уходит в текстовый блок и не обрывается */
+  overflow:visible;
+}
+/* Тень-эллипс под изделием */
+.cat-stage .shadow{
+  position:absolute;bottom:2%;left:50%;transform:translateX(-50%);
+  width:52%;height:11%;border-radius:50%;
+  background:radial-gradient(closest-side,rgba(40,55,95,.24),rgba(40,55,95,0) 76%);
+  filter:blur(7px);
+  transition:.45s cubic-bezier(.22,.8,.3,1);
+}
+.cat-card.c2.has-photo .cat-stage .shadow{background:radial-gradient(closest-side,rgba(120,70,45,.20),rgba(120,70,45,0) 76%)}
+.cat-card.c3.has-photo .cat-stage .shadow{background:radial-gradient(closest-side,rgba(120,50,90,.18),rgba(120,50,90,0) 76%)}
+.cat-stage img{
+  position:relative;z-index:2;
+  width:auto;max-width:74%;height:88%;object-fit:contain;object-position:bottom;
+  filter:drop-shadow(0 18px 22px rgba(30,45,85,.16));
+  transition:transform .45s cubic-bezier(.22,.8,.3,1);
+}
+.cat-card.has-photo:hover .cat-stage img{transform:translateY(-4%) scale(1.03)}
+.cat-card.has-photo:hover .cat-stage .shadow{width:46%;opacity:.75;filter:blur(9px)}
+@media(max-width:900px){
+  .cat-stage{aspect-ratio:16/10}
+  .cat-stage img{height:86%;max-width:58%}
+}
+
+
+
+
+
 .more{color:var(--blue);font-weight:600;font-size:14px}
 
 
@@ -264,7 +312,7 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
 <!-- ШАПКА -->
 <header class="nav">
   <div class="container">
-    <a class="logo" href="#"><span class="dot"></span>Пушистый&nbsp;Завод</a>
+    <a class="logo" href="#"><img src="/prototype/images/logo.png" alt="Пушистый Завод">Пушистый&nbsp;Завод</a>
     <nav class="menu">
       <a href="/">Главная</a>
       <div class="has-mega">
@@ -340,43 +388,72 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
     <p class="lead">Три больших направления фабрики. Всё под ключ по вашему ТЗ или дизайну — разрабатываем, производим и брендируем.</p>
     <div class="grid cat-grid">
       <!-- Вся карточка кликабельна целиком → ведёт на страницу категории -->
-      <a class="cat-card c1" href="/soft-toys.html">
-
-        <div class="cat-head"><span class="cat-ico">🧸</span><h3>Мягкие игрушки</h3></div>
-        <p>Плюшевые изделия любой сложности с символикой вашего бренда.</p>
-        <div class="chips">
-          <span>Маскоты для компаний</span>
-          <span>Символ года</span>
-          <span>Плюшевые брелоки</span>
-          <span>Брендированные игрушки</span>
-          <span>Персонажи из мультфильмов</span>
+      <a class="cat-card c1 has-photo" href="/soft-toys.html">
+        <div class="cat-stage">
+          <span class="shadow" aria-hidden="true"></span>
+          <img src="/prototype/images/soft-toys-cutout.png"
+               alt="Мягкая игрушка на заказ с брендингом — производство Пушистый Завод"
+               width="690" height="760" loading="lazy" decoding="async">
         </div>
-        <span class="more">Подробнее →</span>
-      </a>
-      <a class="cat-card c2" href="/pvc-figures.html">
-        <div class="cat-head"><span class="cat-ico">🧩</span><h3>Пластиковые фигурки из ПВХ</h3></div>
+        <div class="cat-body">
+          <div class="cat-head"><h3>Мягкие игрушки</h3></div>
 
-        <p>Изготовление изделий из ПВХ на заказ по вашей 3D-модели или образцу.</p>
-        <div class="chips">
-          <span>Фигурки ПВХ</span>
-          <span>Брелоки ПВХ</span>
-          <span>Флешки ПВХ</span>
-          <span>Джибитсы (Jibbitz)</span>
+          <p>Плюшевые изделия любой сложности с символикой вашего бренда.</p>
+          <div class="chips">
+            <span>Маскоты для компаний</span>
+            <span>Символ года</span>
+            <span>Плюшевые брелоки</span>
+            <span>Брендированные игрушки</span>
+            <span>Персонажи из мультфильмов</span>
+          </div>
+          <span class="more">Подробнее →</span>
         </div>
-        <span class="more">Подробнее →</span>
       </a>
-      <a class="cat-card c3" href="/soft-goods.html">
-        <div class="cat-head"><span class="cat-ico">🎒</span><h3>Мягкая продукция</h3></div>
 
-        <p>Текстильные изделия и аксессуары под брендинг компании.</p>
-        <div class="chips">
-          <span>Рюкзаки</span>
-          <span>Тапочки</span>
-          <span>Подушки</span>
-          <span>Аксессуары</span>
+      <a class="cat-card c2 has-photo" href="/pvc-figures.html">
+        <div class="cat-stage">
+          <span class="shadow" aria-hidden="true"></span>
+          <img src="/prototype/images/pvc-figures-cutout.png"
+               alt="Пластиковые фигурки из ПВХ на заказ — производство Пушистый Завод"
+               width="690" height="760" loading="lazy" decoding="async">
         </div>
-        <span class="more">Подробнее →</span>
+        <div class="cat-body">
+          <div class="cat-head"><h3>Пластиковые фигурки из ПВХ</h3></div>
+
+
+          <p>Изготовление изделий из ПВХ на заказ по вашей 3D-модели или образцу.</p>
+          <div class="chips">
+            <span>Фигурки ПВХ</span>
+            <span>Брелоки ПВХ</span>
+            <span>Флешки ПВХ</span>
+            <span>Джибитсы (Jibbitz)</span>
+          </div>
+          <span class="more">Подробнее →</span>
+        </div>
       </a>
+
+      <a class="cat-card c3 has-photo" href="/soft-goods.html">
+        <div class="cat-stage">
+          <span class="shadow" aria-hidden="true"></span>
+          <img src="/prototype/images/soft-goods-cutout.png"
+               alt="Мягкая продукция на заказ — рюкзаки, тапочки, подушки с брендингом"
+               width="690" height="760" loading="lazy" decoding="async">
+        </div>
+        <div class="cat-body">
+          <div class="cat-head"><h3>Мягкая продукция</h3></div>
+
+
+          <p>Текстильные изделия и аксессуары под брендинг компании.</p>
+          <div class="chips">
+            <span>Рюкзаки</span>
+            <span>Тапочки</span>
+            <span>Подушки</span>
+            <span>Аксессуары</span>
+          </div>
+          <span class="more">Подробнее →</span>
+        </div>
+      </a>
+
     </div>
 
 
@@ -584,7 +661,7 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
   <div class="container">
     <div class="foot">
       <div class="brand">
-        <b>🏭 Пушистый Завод</b>
+        <img src="/prototype/images/logo.png" alt="Пушистый Завод" style="height:56px;width:auto;display:block;margin-bottom:12px"><b>Пушистый Завод</b>
         <p>Фабрика полного цикла по производству мягких и пластиковых изделий на заказ для бизнеса.</p>
       </div>
       <div>
