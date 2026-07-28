@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Пушистый Завод — производство мягких и пластиковых изделий на заказ для бизнеса</title>
+<meta name="description" content="Фабрика полного цикла: мягкие игрушки, рюкзаки, тапочки, ПВХ-фигурки, мягкие и пластиковые брелоки с вашим логотипом. Опт от 100 штук, работа с юрлицами, договор, отсрочка." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --blue:#639aee;
+  --blue-dark:#4c8de1;
+  --pink:#ff6099;
+  --pink-soft:#e96996;
+  --ink:#2d2d2d;
+  --muted:#6b6b76;
+  --bg:#ffffff;
+  --bg-blue:#e1e7f2;
+  --bg-peach:#ffe8de;
+  --bg-pink:#fff2fb;
+  --line:#ececf2;
+  --radius:24px;
+  --shadow:0 15px 40px -18px rgba(20,30,80,.25);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Montserrat Alternates',Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+.container{max-width:1200px;margin:0 auto;padding:0 20px}
+section{padding:70px 0}
+h2{font-size:38px;font-weight:700;line-height:1.15;margin-bottom:14px}
+h2 span{color:var(--blue)}
+.lead{color:var(--muted);font-size:18px;max-width:680px;margin-bottom:44px}
+.center{text-align:center;margin-left:auto;margin-right:auto}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:15px 30px;border-radius:32px;font-weight:600;font-size:15px;cursor:pointer;border:none;transition:.2s;white-space:nowrap}
+.btn-primary{background:var(--pink);color:#fff}
+.btn-primary:hover{background:var(--blue)}
+.btn-blue{background:var(--blue);color:#fff}
+.btn-blue:hover{background:var(--pink)}
+.btn-ghost{background:#eef1f8;color:var(--ink)}
+.btn-ghost:hover{background:#e2e7f2}
+
+/* Top bar */
+.topbar{background:var(--ink);color:#fff;font-size:13px}
+.topbar .container{display:flex;justify-content:space-between;align-items:center;padding-top:8px;padding-bottom:8px;flex-wrap:wrap;gap:8px}
+.topbar a{opacity:.85}.topbar a:hover{opacity:1}
+.topbar .tb-right{display:flex;gap:18px;align-items:center}
+
+/* Header */
+header.nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.95);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.nav .container{display:flex;align-items:center;justify-content:space-between;height:74px;gap:20px}
+.logo{font-weight:700;font-size:22px;display:flex;align-items:center;gap:9px}
+.logo .dot{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--pink))}
+.menu{display:flex;gap:26px;font-weight:500;font-size:15px}
+.menu a:hover{color:var(--blue)}
+.nav-cta{display:flex;gap:12px;align-items:center}
+.phone{font-weight:700;font-size:16px;white-space:nowrap}
+.burger{display:none;font-size:26px;background:none;border:none;cursor:pointer}
+
+/* Mega-menu */
+.has-mega{position:relative;display:flex;align-items:center}
+.mega-trigger{display:inline-flex;align-items:center;gap:6px;cursor:pointer}
+.mega-trigger .arr{font-size:11px;transition:.2s}
+.has-mega:hover .mega-trigger{color:var(--blue)}
+.has-mega:hover .mega-trigger .arr{transform:rotate(180deg)}
+.mega{position:fixed;left:0;right:0;top:74px;background:#fff;border-top:1px solid var(--line);box-shadow:0 30px 50px -20px rgba(20,30,80,.25);opacity:0;visibility:hidden;transform:translateY(8px);transition:.18s;z-index:60}
+.has-mega:hover .mega{opacity:1;visibility:visible;transform:translateY(0)}
+.mega-inner{max-width:1200px;margin:0 auto;padding:26px 20px;display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.mega-cat{display:flex;flex-direction:column;gap:6px;padding:22px 24px;border-radius:16px;background:#f7f9fd;border:1px solid transparent;transition:.18s}
+.mega-cat:hover{background:#fff;border-color:var(--blue);box-shadow:0 12px 26px -14px rgba(20,30,80,.35);transform:translateY(-2px)}
+.mega-cat .mc-ico{font-size:30px}
+.mega-cat b{font-size:17px;color:var(--ink)}
+.mega-cat .mc-desc{font-size:13px;color:var(--muted)}
+.mega-cat .mc-more{font-size:13px;font-weight:600;color:var(--blue);margin-top:4px}
+
+
+/* Category cards */
+.cat-grid{grid-template-columns:repeat(3,1fr)}
+.cat-card{border:1px solid var(--line);border-radius:22px;padding:30px;transition:.2s;display:flex;flex-direction:column}
+.cat-card:hover{transform:translateY(-4px);box-shadow:var(--shadow);border-color:transparent}
+.cat-card.c1{background:var(--bg-blue)}.cat-card.c2{background:var(--bg-peach)}.cat-card.c3{background:var(--bg-pink)}
+.cat-head{display:flex;align-items:center;gap:13px;margin-bottom:12px}
+.cat-ico{width:56px;height:56px;border-radius:14px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:30px}
+.cat-card h3{font-size:22px}
+.cat-card>p{color:#41506b;font-size:15px;margin-bottom:18px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px}
+.chips span{background:#fff;border:1px solid rgba(0,0,0,.05);border-radius:20px;padding:7px 14px;font-size:13px;font-weight:500;color:#41506b}
+.cat-card{color:var(--ink);cursor:pointer}
+.cat-card .more{margin-top:auto}
+.cat-card:hover .more{text-decoration:underline}
+.more{color:var(--blue);font-weight:600;font-size:14px}
+
+
+/* Works with captions */
+.works-grid{grid-template-columns:repeat(4,1fr)}
+.work{border-radius:18px;overflow:hidden;border:1px solid var(--line);background:#fff;transition:.2s}
+.work:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+.work .ph{aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;font-size:52px;background:var(--bg-blue)}
+.work:nth-child(3n) .ph{background:var(--bg-peach)}
+.work:nth-child(3n+1) .ph{background:var(--bg-pink)}
+.work .cap{padding:14px 16px}
+.work .cap b{font-size:14px;display:block}
+.work .cap .meta{font-size:12px;color:var(--muted);margin-top:6px;display:flex;gap:12px;flex-wrap:wrap}
+.work .cap .meta i{font-style:normal;color:var(--blue);font-weight:700}
+
+/* Trust strip */
+.trust-grid{grid-template-columns:repeat(4,1fr)}
+.trust{background:#fff;border:1px solid var(--line);border-radius:18px;padding:24px;text-align:center}
+.trust .ic{font-size:34px;margin-bottom:10px}
+.trust b{display:block;font-size:16px;margin-bottom:6px}
+.trust p{font-size:13px;color:var(--muted)}
+
+/* Cases */
+.cases-grid{grid-template-columns:1fr 1fr}
+.case{background:#fff;border:1px solid var(--line);border-radius:20px;padding:28px;display:flex;flex-direction:column;gap:12px}
+.case .cimg{aspect-ratio:16/9;border-radius:14px;background:var(--bg-blue);display:flex;align-items:center;justify-content:center;font-size:54px}
+.case h4{font-size:19px}
+.case ul{list-style:none;font-size:14px;color:var(--muted);display:grid;gap:6px;padding:0}
+.case ul b{color:var(--ink)}
+.case .more{margin-top:auto}
+
+/* Cost */
+.cost-grid{grid-template-columns:repeat(5,1fr)}
+.cost{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px;text-align:center;font-size:14px;font-weight:500}
+.cost .ic{font-size:28px;margin-bottom:8px}
+.cycle-note{margin-top:30px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px 26px;display:flex;flex-wrap:wrap;gap:16px 28px;align-items:center;justify-content:center;font-size:14px;color:var(--muted);text-align:center}
+.cycle-note>b{color:var(--ink);font-size:15px}
+.cycle-note span b{color:var(--blue)}
+
+
+
+/* Hero */
+
+.hero{background:var(--bg-blue);border-radius:var(--radius);margin:24px auto;max-width:1200px;overflow:hidden}
+.hero-inner{display:grid;grid-template-columns:1.1fr .9fr;align-items:center;gap:30px;padding:56px}
+.hero .tag{display:inline-block;background:#fff;color:var(--blue);font-weight:600;font-size:13px;padding:7px 15px;border-radius:20px;margin-bottom:20px}
+.hero h1{font-size:46px;line-height:1.08;font-weight:700;margin-bottom:18px}
+.hero h1 span{color:var(--blue)}
+.hero p{font-size:19px;color:#41506b;margin-bottom:28px;max-width:520px}
+.hero-actions{display:flex;gap:14px;flex-wrap:wrap}
+.hero-badges{display:flex;gap:26px;margin-top:32px;flex-wrap:wrap}
+.hero-badges b{display:block;font-size:26px;color:var(--blue)}
+.hero-badges span{font-size:13px;color:#5b6a86}
+.hero-art{aspect-ratio:1/1;border-radius:50%;background:radial-gradient(circle at 30% 30%,#fff,#ced9ef);display:flex;align-items:center;justify-content:center;font-size:120px}
+
+/* Products */
+.grid{display:grid;gap:22px}
+.products{grid-template-columns:repeat(3,1fr)}
+.card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:26px;transition:.2s}
+.card:hover{transform:translateY(-4px);box-shadow:var(--shadow);border-color:transparent}
+.card .ico{width:64px;height:64px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:32px;margin-bottom:16px}
+.card h3{font-size:20px;margin-bottom:8px}
+.card p{color:var(--muted);font-size:15px;margin-bottom:14px}
+.card .more{color:var(--blue);font-weight:600;font-size:14px}
+.c1{background:var(--bg-blue)}.c2{background:var(--bg-peach)}.c3{background:var(--bg-pink)}
+.c4{background:#e6f7ee}.c5{background:#fff4d6}.c6{background:#eee6fb}
+
+/* Why / advantages */
+.why{background:var(--bg-blue)}
+.adv{grid-template-columns:repeat(3,1fr)}
+.adv .card{background:#fff;border:none}
+.adv .ico{background:#eef1f8}
+
+/* Steps */
+.steps{grid-template-columns:repeat(5,1fr)}
+.step{text-align:center;position:relative}
+.step .num{width:56px;height:56px;border-radius:50%;background:var(--pink);color:#fff;font-weight:700;font-size:22px;display:flex;align-items:center;justify-content:center;margin:0 auto 14px}
+.step:nth-child(even) .num{background:var(--blue)}
+.step h4{font-size:16px;margin-bottom:6px}
+.step p{font-size:13px;color:var(--muted)}
+
+/* Portfolio */
+.gallery{grid-template-columns:repeat(4,1fr)}
+.gallery .tile{aspect-ratio:1/1;border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:54px;background:var(--bg-blue)}
+.gallery .tile:nth-child(3n){background:var(--bg-peach)}
+.gallery .tile:nth-child(3n+1){background:var(--bg-pink)}
+
+/* Clients logos */
+.clients{background:#fafaff}
+.logos{display:flex;flex-wrap:wrap;gap:18px;justify-content:center;align-items:center}
+.logos .lg{background:#fff;border:1px solid var(--line);border-radius:14px;height:80px;flex:1 1 160px;max-width:190px;display:flex;align-items:center;justify-content:center;font-weight:700;color:#9aa0b3;font-size:17px}
+
+/* Reviews */
+.reviews-grid{grid-template-columns:repeat(3,1fr)}
+.review{background:#fff;border:1px solid var(--line);border-radius:20px;padding:28px}
+.review .stars{color:#ffb400;margin-bottom:12px;letter-spacing:2px}
+.review p{font-size:15px;margin-bottom:18px}
+.review .who{display:flex;align-items:center;gap:12px}
+.review .av{width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--pink));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700}
+.review .who b{display:block;font-size:15px}
+.review .who span{font-size:13px;color:var(--muted)}
+
+/* FAQ */
+.faq details{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px 24px;margin-bottom:14px;cursor:pointer}
+.faq summary{font-weight:600;font-size:17px;list-style:none;display:flex;justify-content:space-between;align-items:center}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:'+';color:var(--blue);font-size:26px}
+.faq details[open] summary::after{content:'–'}
+.faq p{color:var(--muted);margin-top:14px;font-size:15px}
+
+/* CTA form */
+.cta{background:linear-gradient(120deg,var(--blue),var(--pink));border-radius:var(--radius);color:#fff;padding:56px;max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+.cta h2{color:#fff}.cta h2 span{color:#fff;text-decoration:underline}
+.cta p{opacity:.92;font-size:17px}
+.form{background:#fff;border-radius:20px;padding:30px;color:var(--ink)}
+.form h3{font-size:22px;margin-bottom:6px}
+.form small{color:var(--muted);display:block;margin-bottom:18px}
+.form input,.form select{width:100%;padding:14px 16px;border:1px solid #d7d7e0;border-radius:14px;margin-bottom:12px;font-family:inherit;font-size:15px}
+.form .btn{width:100%}
+.form .agree{font-size:12px;color:var(--muted);margin-top:10px}
+
+/* Footer */
+footer{background:var(--ink);color:#cfd2dc;padding:56px 0 30px;margin-top:70px}
+.foot{display:grid;grid-template-columns:2fr 1fr 1fr 1.4fr;gap:30px}
+footer h4{color:#fff;margin-bottom:16px;font-size:16px}
+footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:#fff}
+.foot .brand b{color:#fff;font-size:20px}
+.foot .brand p{margin-top:10px;font-size:14px;max-width:280px}
+.copyright{border-top:1px solid #3a3a46;margin-top:36px;padding-top:20px;font-size:13px;opacity:.7;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+
+@media(max-width:900px){
+  h2{font-size:30px}
+  .hero-inner{grid-template-columns:1fr;padding:36px}
+  .hero h1{font-size:34px}
+  .hero-art{max-width:280px;margin:0 auto}
+  .products,.adv,.reviews-grid{grid-template-columns:1fr 1fr}
+  .steps{grid-template-columns:1fr 1fr;gap:30px}
+  .gallery{grid-template-columns:1fr 1fr}
+  .cta{grid-template-columns:1fr;padding:36px}
+  .foot{grid-template-columns:1fr 1fr}
+  .menu,.topbar .tb-left{display:none}
+  .burger{display:block}
+  .cat-grid{grid-template-columns:1fr}
+  .mega{display:none}
+  .has-mega{width:100%}
+  .mega-trigger{width:100%}
+}
+
+@media(max-width:560px){
+  .products,.adv,.reviews-grid,.gallery,.foot{grid-template-columns:1fr}
+  .steps{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ТОП-БАР: контакты и режим для B2B -->
+<div class="topbar">
+  <div class="container">
+    <div class="tb-left">🏭 Собственное производство в РФ · Работаем с юрлицами по договору</div>
+    <div class="tb-right">
+      <a href="mailto:pushistyzavod@mail.ru">pushistyzavod@mail.ru</a>
+      <a href="https://t.me/pushistyzavod" target="_blank">Telegram</a>
+      <a href="https://vk.com/pushistyzavod" target="_blank">VK</a>
+    </div>
+  </div>
+</div>
+
+<!-- ШАПКА -->
+<header class="nav">
+  <div class="container">
+    <a class="logo" href="#"><span class="dot"></span>Пушистый&nbsp;Завод</a>
+    <nav class="menu">
+      <a href="/">Главная</a>
+      <div class="has-mega">
+        <a href="#products" class="mega-trigger">Что производим <span class="arr">▼</span></a>
+        <div class="mega">
+          <div class="mega-inner">
+            <a class="mega-cat" href="/soft-toys.html">
+              <span class="mc-ico">🧸</span>
+              <b>Мягкие игрушки</b>
+              <span class="mc-desc">Маскоты, символ года, брелоки, персонажи</span>
+              <span class="mc-more">Перейти →</span>
+            </a>
+            <a class="mega-cat" href="/pvc-figures.html">
+              <span class="mc-ico">🧩</span>
+              <b>Пластиковые фигурки из ПВХ</b>
+              <span class="mc-desc">Фигурки, брелоки, флешки, джибитсы</span>
+              <span class="mc-more">Перейти →</span>
+            </a>
+            <a class="mega-cat" href="/soft-goods.html">
+              <span class="mc-ico">🎒</span>
+              <b>Мягкая продукция</b>
+              <span class="mc-desc">Рюкзаки, тапочки, подушки, аксессуары</span>
+              <span class="mc-more">Перейти →</span>
+            </a>
+          </div>
+        </div>
+
+      </div>
+      <a href="/works.html">Наши работы</a>
+      <a href="/production.html">Производство</a>
+
+      <a href="/blog">Новости</a>
+
+
+      <a href="#cta">Контакты</a>
+    </nav>
+
+    <div class="nav-cta">
+      <a class="phone" href="tel:+79896051010">+7 (989) 605-10-10</a>
+      <a class="btn btn-primary" href="#cta">Рассчитать заказ</a>
+    </div>
+    <button class="burger" aria-label="Меню">☰</button>
+  </div>
+</header>
+
+<!-- ГЕРОЙ -->
+<div class="hero">
+  <div class="hero-inner">
+    <div>
+      <span class="tag">B2B · Опт от 100 штук · Изделия с вашим логотипом</span>
+      <h1>Фабрика мягких и пластиковых изделий <span>на заказ для бизнеса</span></h1>
+      <p>Производим мягкие игрушки, рюкзаки, тапочки, ПВХ-фигурки и брелоки с символикой вашего бренда. Полный цикл: от эскиза до отгрузки партии.</p>
+      <div class="hero-actions">
+        <a class="btn btn-blue" href="#cta">Получить расчёт за 1 день</a>
+        <a class="btn btn-ghost" href="#works">Смотреть наши работы</a>
+
+      </div>
+      <div class="hero-badges">
+        <div><b>10+</b><span>лет на рынке</span></div>
+        <div><b>500+</b><span>реализованных партий</span></div>
+        <div><b>−5%</b><span>к цене конкурента</span></div>
+        <div><b>от 100</b><span>штук в партии</span></div>
+      </div>
+    </div>
+    <div class="hero-art">🧸</div>
+  </div>
+</div>
+
+<!-- ЧТО ПРОИЗВОДИМ -->
+<section id="products">
+  <div class="container">
+    <h2>Что мы <span>производим</span></h2>
+    <p class="lead">Три больших направления фабрики. Всё под ключ по вашему ТЗ или дизайну — разрабатываем, производим и брендируем.</p>
+    <div class="grid cat-grid">
+      <!-- Вся карточка кликабельна целиком → ведёт на страницу категории -->
+      <a class="cat-card c1" href="/soft-toys.html">
+
+        <div class="cat-head"><span class="cat-ico">🧸</span><h3>Мягкие игрушки</h3></div>
+        <p>Плюшевые изделия любой сложности с символикой вашего бренда.</p>
+        <div class="chips">
+          <span>Маскоты для компаний</span>
+          <span>Символ года</span>
+          <span>Плюшевые брелоки</span>
+          <span>Брендированные игрушки</span>
+          <span>Персонажи из мультфильмов</span>
+        </div>
+        <span class="more">Подробнее →</span>
+      </a>
+      <a class="cat-card c2" href="/pvc-figures.html">
+        <div class="cat-head"><span class="cat-ico">🧩</span><h3>Пластиковые фигурки из ПВХ</h3></div>
+
+        <p>Изготовление изделий из ПВХ на заказ по вашей 3D-модели или образцу.</p>
+        <div class="chips">
+          <span>Фигурки ПВХ</span>
+          <span>Брелоки ПВХ</span>
+          <span>Флешки ПВХ</span>
+          <span>Джибитсы (Jibbitz)</span>
+        </div>
+        <span class="more">Подробнее →</span>
+      </a>
+      <a class="cat-card c3" href="/soft-goods.html">
+        <div class="cat-head"><span class="cat-ico">🎒</span><h3>Мягкая продукция</h3></div>
+
+        <p>Текстильные изделия и аксессуары под брендинг компании.</p>
+        <div class="chips">
+          <span>Рюкзаки</span>
+          <span>Тапочки</span>
+          <span>Подушки</span>
+          <span>Аксессуары</span>
+        </div>
+        <span class="more">Подробнее →</span>
+      </a>
+    </div>
+
+
+  </div>
+</section>
+
+<!-- ДОВЕРИЕ / ПРОИЗВОДСТВО -->
+<section id="trust" style="padding-top:24px">
+  <div class="container">
+    <div class="grid trust-grid">
+      <div class="trust"><div class="ic">🏭</div><b>Собственное производство</b><p>Полный цикл в России, без посредников — держим качество и сроки под контролем.</p></div>
+      <div class="trust"><div class="ic">📜</div><b>Сертификаты качества</b><p>Продукция сертифицирована и безопасна, в том числе для детских товаров.</p></div>
+      <div class="trust"><div class="ic">🏷️</div><b>Работаем с «Честным знаком»</b><p>Маркируем продукцию по требованиям законодательства РФ.</p></div>
+      <div class="trust"><div class="ic">✅</div><b>Контроль на каждом этапе</b><p>Проверка образца и партии перед отгрузкой — брак до вас не доедет.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ПОЧЕМУ МЫ -->
+<section id="why" class="why">
+
+  <div class="container">
+    <h2>Почему бизнес выбирает <span>Пушистый Завод</span></h2>
+    <p class="lead">Мы закрываем всё, что важно закупщику и бренд-менеджеру: цену, сроки, качество и документы.</p>
+    <div class="grid adv">
+      <div class="card"><div class="ico">🏭</div><h3>Собственное производство</h3><p>Без посредников и переплат — контролируем каждый этап и держим цену ниже рынка.</p></div>
+      <div class="card"><div class="ico">💰</div><h3>Снизим цену конкурента на 5%</h3><p>Нашли дешевле? Пришлите КП — сделаем выгоднее при том же качестве.</p></div>
+      <div class="card"><div class="ico">📄</div><h3>Работа с юрлицами</h3><p>Договор, счёт, закрывающие документы, оплата по безналу, работа с НДС.</p></div>
+      <div class="card"><div class="ico">✏️</div><h3>Бесплатный дизайн-макет</h3><p>Наши художники нарисуют изделие по вашему ТЗ и покажут 3D-визуализацию до старта.</p></div>
+      <div class="card"><div class="ico">📦</div><h3>Образец перед тиражом</h3><p>Согласуем и изготовим предсерийный образец — вы платите за тираж, только всё утвердив.</p></div>
+      <div class="card"><div class="ico">🚚</div><h3>Сроки и доставка по РФ и СНГ</h3><p>Прогнозируемые сроки под дедлайн акции, отгрузка в любой регион.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- КАК РАБОТАЕМ -->
+<section id="how">
+  <div class="container">
+    <h2 class="center">Как мы <span>работаем</span></h2>
+    <p class="lead center">Прозрачный процесс от заявки до готовой партии</p>
+    <div class="grid steps">
+      <div class="step"><div class="num">1</div><h4>Заявка и бриф</h4><p>Обсуждаем изделие, тираж, сроки и бюджет.</p></div>
+      <div class="step"><div class="num">2</div><h4>Макет и КП</h4><p>Рисуем дизайн, считаем стоимость, присылаем договор.</p></div>
+      <div class="step"><div class="num">3</div><h4>Образец</h4><p>Изготавливаем образец и согласуем с вами.</p></div>
+      <div class="step"><div class="num">4</div><h4>Производство</h4><p>Запускаем тираж на собственной фабрике.</p></div>
+      <div class="step"><div class="num">5</div><h4>Отгрузка</h4><p>Проверка качества и доставка с документами.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ЧТО ВЛИЯЕТ НА СТОИМОСТЬ -->
+<section id="cost" style="background:#fafaff">
+  <div class="container">
+    <h2 class="center">Что влияет на <span>стоимость</span></h2>
+    <p class="lead center">Цена всегда индивидуальна. Вот из чего она складывается — рассчитаем точно после брифа.</p>
+    <div class="grid cost-grid">
+      <div class="cost"><div class="ic">📦</div>Тираж партии</div>
+      <div class="cost"><div class="ic">📐</div>Размер и сложность</div>
+      <div class="cost"><div class="ic">🧵</div>Материалы</div>
+      <div class="cost"><div class="ic">🎨</div>Брендирование</div>
+      <div class="cost"><div class="ic">⏱️</div>Срочность</div>
+    </div>
+    <div class="cycle-note">
+      <b>Цикл производства:</b>
+      <span>Минимальный тираж — <b>от 100 штук</b></span>
+      <span>Сигнальный образец — <b>около 10 рабочих дней</b></span>
+      <span>Производство тиража — <b>от 3 до 6 недель</b> (зависит от сложности изделия и объёма партии)</span>
+    </div>
+  </div>
+</section>
+
+
+<!-- НАШИ РАБОТЫ (витрина) -->
+<section id="works">
+  <div class="container">
+    <h2>Наши <span>работы</span></h2>
+    <p class="lead">Реализованные партии с фактами: для кого, какой тираж и за сколько дней. Эмодзи заменяются на реальные фото изделий.</p>
+    <div class="grid works-grid">
+      <div class="work"><div class="ph">🧸</div><div class="cap"><b>Маскот для FMCG-бренда</b><div class="meta"><i>2 000 шт</i><span>18 дней</span></div></div></div>
+      <div class="work"><div class="ph">🎒</div><div class="cap"><b>Промо-рюкзаки для банка</b><div class="meta"><i>1 500 шт</i><span>21 день</span></div></div></div>
+      <div class="work"><div class="ph">🔑</div><div class="cap"><b>Мягкие брелоки к выставке</b><div class="meta"><i>3 000 шт</i><span>12 дней</span></div></div></div>
+      <div class="work"><div class="ph">🧩</div><div class="cap"><b>ПВХ-фигурки, IT-компания</b><div class="meta"><i>800 шт</i><span>25 дней</span></div></div></div>
+      <div class="work"><div class="ph">🐻</div><div class="cap"><b>«Символ года» для ритейла</b><div class="meta"><i>5 000 шт</i><span>30 дней</span></div></div></div>
+      <div class="work"><div class="ph">🥿</div><div class="cap"><b>Тапочки для сети отелей</b><div class="meta"><i>1 000 шт</i><span>16 дней</span></div></div></div>
+      <div class="work"><div class="ph">🏷️</div><div class="cap"><b>Пластиковые брелоки</b><div class="meta"><i>10 000 шт</i><span>20 дней</span></div></div></div>
+      <div class="work"><div class="ph">🎁</div><div class="cap"><b>Подарочный набор к НГ</b><div class="meta"><i>2 500 шт</i><span>28 дней</span></div></div></div>
+    </div>
+    <div style="text-align:center;margin-top:38px"><a class="btn btn-ghost" href="/works.html">Смотреть все работы →</a></div>
+  </div>
+</section>
+
+<!-- ПОДРОБНЫЕ КЕЙСЫ -->
+<section id="cases" style="background:#fafaff">
+  <div class="container">
+    <h2>Кейсы <span>в деталях</span></h2>
+    <p class="lead">Как мы решали задачи клиентов — от брифа до отгрузки партии, с цифрами и сроками.</p>
+    <div class="grid cases-grid">
+
+      <div class="case">
+        <div class="cimg">🧸</div>
+        <h4>Маскот бренда для FMCG-компании</h4>
+        <p style="color:var(--muted);font-size:14px">Клиенту нужен был фирменный плюшевый маскот к выставке — с точным попаданием в цвета бренда и в жёсткий дедлайн.</p>
+        <ul>
+          <li><b>Задача:</b> 2 000 маскотов с логотипом к дате выставки</li>
+          <li><b>Что сделали:</b> отрисовали макет и 3D-визуализацию, согласовали образец за 3 дня</li>
+          <li><b>Тираж:</b> 2 000 шт · <b>Срок:</b> 18 дней</li>
+          <li><b>Результат:</b> партия отгружена за 2 дня до выставки, брак — 0%</li>
+        </ul>
+        <a class="more" href="#cta">Хочу так же →</a>
+      </div>
+
+      <div class="case">
+        <div class="cimg">🎒</div>
+        <h4>Промо-рюкзаки для банка</h4>
+        <p style="color:var(--muted);font-size:14px">Отделу маркетинга банка требовались детские рюкзаки с фирменной символикой в ограниченный бюджет.</p>
+        <ul>
+          <li><b>Задача:</b> 1 500 брендированных рюкзаков в рамках бюджета акции</li>
+          <li><b>Что сделали:</b> подобрали материалы, помогли с дизайном, снизили цену конкурента</li>
+          <li><b>Тираж:</b> 1 500 шт · <b>Срок:</b> 21 день</li>
+          <li><b>Результат:</b> уложились в бюджет, полный пакет закрывающих документов</li>
+        </ul>
+        <a class="more" href="#cta">Хочу так же →</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- КЛИЕНТЫ -->
+
+
+<section class="clients">
+  <div class="container">
+    <h2 class="center">Нам <span>доверяют</span></h2>
+    <p class="lead center">Более 500 компаний заказали фирменную продукцию на нашей фабрике</p>
+    <div class="logos">
+      <div class="lg">ЛОГО</div><div class="lg">ЛОГО</div><div class="lg">ЛОГО</div>
+      <div class="lg">ЛОГО</div><div class="lg">ЛОГО</div><div class="lg">ЛОГО</div>
+    </div>
+  </div>
+</section>
+
+<!-- ОТЗЫВЫ -->
+<section id="reviews">
+  <div class="container">
+    <h2>Отзывы <span>клиентов</span></h2>
+    <p class="lead">Что говорят закупщики и маркетологи, которые заказывали у нас партии.</p>
+    <div class="grid reviews-grid">
+      <div class="review"><div class="stars">★★★★★</div><p>«Заказывали 2000 мягких брелоков с нашим маскотом к выставке. Сделали образец за 3 дня, тираж — точно в срок. Документы для бухгалтерии без вопросов.»</p><div class="who"><div class="av">А</div><div><b>Анна К.</b><span>бренд-менеджер, FMCG</span></div></div></div>
+      <div class="review"><div class="stars">★★★★★</div><p>«Нужны были рюкзаки с логотипом для детского праздника банка. Помогли с дизайном, уложились в бюджет и снизили цену относительно другого поставщика.»</p><div class="who"><div class="av">Д</div><div><b>Дмитрий Р.</b><span>отдел маркетинга, банк</span></div></div></div>
+      <div class="review"><div class="stars">★★★★★</div><p>«Берём игрушки „символ года“ для корпоративных подарков третий год подряд. Стабильное качество и адекватные сроки. Рекомендую как надёжного подрядчика.»</p><div class="who"><div class="av">Е</div><div><b>Елена М.</b><span>HR-директор, IT-компания</span></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" class="why">
+  <div class="container" style="max-width:840px">
+    <h2 class="center">Частые <span>вопросы</span></h2>
+    <p class="lead center">Всё, что важно знать перед заказом партии</p>
+    <div class="faq">
+      <details open><summary>Какой минимальный тираж?</summary><p>Стандартно от 100 штук. По некоторым позициям возможны меньшие партии — уточните у менеджера под ваш проект.</p></details>
+      <details><summary>Сколько занимает производство?</summary><p>Сначала делаем сигнальный образец — около 10 рабочих дней. После вашего утверждения запускаем тираж: производство занимает от 3 до 6 недель в зависимости от сложности изделия и объёма партии. Точный срок фиксируем в договоре под ваш дедлайн.</p></details>
+
+      <details><summary>Можно ли изготовить игрушку по фото?</summary><p>Да. Достаточно фото, эскиза или образца — наши художники нарисуют макет и 3D-визуализацию, которые вы утвердите до старта производства.</p></details>
+      <details><summary>Какие материалы вы используете?</summary><p>Сертифицированные и безопасные материалы: плюш, флис, мягкий ПВХ, пластик, смола, качественная фурнитура. Подбираем под задачу и бюджет.</p></details>
+      <details><summary>Работаете ли с юрлицами и НДС?</summary><p>Да. Договор, счёт, закрывающие документы, оплата по безналу, работа с НДС и маркировка «Честный знак».</p></details>
+      <details><summary>Доставляете в регионы?</summary><p>Отгружаем по всей России и СНГ удобной транспортной компанией.</p></details>
+    </div>
+
+  </div>
+</section>
+
+<!-- CTA / ФОРМА -->
+<section id="cta">
+  <div class="cta">
+    <div>
+      <h2>Рассчитаем ваш заказ <span>за 1 день</span></h2>
+      <p>Оставьте заявку — менеджер свяжется, поможет с дизайном и пришлёт коммерческое предложение с ценой и сроками. Консультация бесплатна.</p>
+      <p style="margin-top:18px">📞 <a href="tel:+79896051010"><b>+7 (989) 605-10-10</b></a><br>✉️ <a href="mailto:pushistyzavod@mail.ru">pushistyzavod@mail.ru</a></p>
+    </div>
+    <form class="form" onsubmit="event.preventDefault();alert('Спасибо! Заявка отправлена (демо-макет).');">
+      <h3>Получить расчёт</h3>
+      <small>Ответим в течение рабочего дня</small>
+      <input type="text" placeholder="Компания / Имя" required>
+      <input type="tel" placeholder="Телефон" required>
+      <input type="email" placeholder="E-mail">
+      <select>
+        <option>Что нужно произвести?</option>
+        <option>Мягкие игрушки</option>
+        <option>Рюкзаки / сумки</option>
+        <option>Тапочки</option>
+        <option>ПВХ-фигурки</option>
+        <option>Мягкие брелоки</option>
+        <option>Пластиковые брелоки</option>
+      </select>
+      <button class="btn btn-primary" type="submit">Отправить заявку</button>
+      <div class="agree">Нажимая кнопку, вы соглашаетесь с политикой конфиденциальности.</div>
+    </form>
+  </div>
+</section>
+
+<!-- ФУТЕР -->
+<footer>
+  <div class="container">
+    <div class="foot">
+      <div class="brand">
+        <b>🏭 Пушистый Завод</b>
+        <p>Фабрика полного цикла по производству мягких и пластиковых изделий на заказ для бизнеса.</p>
+      </div>
+      <div>
+        <h4>Продукция</h4>
+        <a href="/soft-toys.html">Мягкие игрушки</a>
+        <a href="/pvc-figures.html">Пластиковые фигурки из ПВХ</a>
+        <a href="/soft-goods.html">Мягкая продукция</a>
+        <a href="#products">Все направления</a>
+      </div>
+      <div>
+        <h4>Компания</h4>
+        <a href="/production.html">Наше производство</a>
+        <a href="#how">Как работаем</a>
+        <a href="/works.html">Наши работы</a>
+        <a href="#cases">Кейсы</a>
+        <a href="#reviews">Отзывы</a>
+        <a href="/blog">Блог</a>
+
+      </div>
+
+      <div>
+        <h4>Контакты</h4>
+        <a href="tel:+79896051010">+7 (989) 605-10-10</a>
+        <a href="mailto:pushistyzavod@mail.ru">pushistyzavod@mail.ru</a>
+        <a href="https://t.me/pushistyzavod" target="_blank">Telegram</a>
+        <a href="https://vk.com/pushistyzavod" target="_blank">ВКонтакте</a>
+        <a href="#cta" class="btn btn-primary" style="margin-top:12px">Оставить заявку</a>
+      </div>
+    </div>
+    <div class="copyright">
+      <span>© 2025 Пушистый Завод. Производство на заказ.</span>
+      <span>Прототип улучшенной главной страницы</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.querySelector('.burger').addEventListener('click',function(){
+    var m=document.querySelector('.menu');
+    m.style.display=(m.style.display==='flex')?'none':'flex';
+    m.style.position='absolute';m.style.top='74px';m.style.left='0';m.style.right='0';
+    m.style.flexDirection='column';m.style.background='#fff';m.style.padding='18px 20px';
+    m.style.borderBottom='1px solid #ececf2';m.style.gap='14px';
+  });
+</script>
+<script src="/prototype/js/site.js"></script>
+</body>
+</html>
+

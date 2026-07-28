@@ -4,6 +4,8 @@ const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
 const path = require('path');
+const fs = require('fs');
+
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -129,10 +131,18 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', mongo: mongoose.connection.readyState === 1 });
 });
 
-// Serve static Tilda export files
-const staticDir = path.join(__dirname, 'public');
+// Serve static files (Tilda export + new landing).
+// Locally the "public" folder lives at the repo root, in Docker it is mounted at /app/public.
+// STATIC_DIR lets us override the path without breaking the container setup.
+const staticDir = process.env.STATIC_DIR
+  ? path.resolve(process.env.STATIC_DIR)
+  : path.join(__dirname, 'public');
+console.log('📁 Serving static from:', staticDir);
+
 app.use(express.static(staticDir, {
+  index: false, // let the "/" route serve the new prototype homepage
   setHeaders: (res, filePath) => {
+
     if (filePath.endsWith('.css')) {
       res.setHeader('Content-Type', 'text/css');
     }
@@ -145,10 +155,51 @@ app.use(express.static(staticDir, {
   }
 }));
 
+// New B2B prototype site (folder "prototype" at repo root).
+// PROTOTYPE_DIR lets us override the path (e.g. in Docker).
+// Try common locations so it works both in Docker (mounted at /app/prototype)
+// and locally (folder at the repo root, i.e. one level above /backend).
+const prototypeCandidates = [
+  process.env.PROTOTYPE_DIR && path.resolve(process.env.PROTOTYPE_DIR),
+  path.join(__dirname, 'prototype'),        // Docker: /app/prototype
+  path.join(__dirname, '..', 'prototype'),  // Local: <repo>/prototype
+].filter(Boolean);
+
+const prototypeDir =
+  prototypeCandidates.find((dir) => fs.existsSync(path.join(dir, 'index.html'))) ||
+  prototypeCandidates[prototypeCandidates.length - 1];
+
+console.log('🆕 Serving new prototype from:', prototypeDir);
+
+
+// Serve prototype static assets (if any are added later, e.g. /prototype/img/...)
+app.use('/prototype', express.static(prototypeDir));
+
+const prototypePages = {
+  '/': 'index.html',
+  '/soft-toys.html': 'soft-toys.html',
+  '/soft-goods.html': 'soft-goods.html',
+  '/pvc-figures.html': 'pvc-figures.html',
+  '/works.html': 'works.html',
+  '/production.html': 'production.html',
+  '/news.html': 'news.html',
+  '/privacy.html': 'privacy.html',
+};
+
+
+Object.entries(prototypePages).forEach(([route, file]) => {
+  app.get(route, (req, res) => {
+    res.sendFile(path.join(prototypeDir, file));
+  });
+});
+
 // Route mapping (from htaccess)
 const pageRoutes = {
-  '/': 'page40738358.html',
+  '/legacy': 'index.html',
+  '/old': 'page40738358.html',
   '/main': 'page40738358.html',
+
+
   '/privacy': 'page40861203.html',
   '/happynewyear': 'page41124919.html',
   '/blog': 'page68079733.html',

@@ -16,6 +16,8 @@ services:
     restart: unless-stopped
     volumes:
       - ./public:/app/public:ro
+      - ./prototype:/app/prototype:ro
+
 
   mongo:
     image: mongo:7

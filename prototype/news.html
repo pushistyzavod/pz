@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Новости и статьи — производство на заказ | Пушистый Завод</title>
+<meta name="description" content="Новости фабрики «Пушистый Завод», кейсы и полезные статьи о производстве мягких игрушек, ПВХ-изделий и корпоративной сувенирной продукции на заказ." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--blue:#639aee;--pink:#ff6099;--ink:#22242b;--muted:#6b6b76;--bg:#fff;--bg-blue:#e1e7f2;--bg-peach:#ffe8de;--bg-pink:#fff2fb;--line:#eceef3;--radius:24px;--shadow:0 15px 40px -18px rgba(20,30,80,.25)}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Montserrat Alternates',Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+.container{max-width:1240px;margin:0 auto;padding:0 40px}
+section{padding:56px 0}
+
+/* Page head */
+.pagehead{background:linear-gradient(180deg,#f4f7fd 0%,#fff 100%);border-bottom:1px solid var(--line);padding:48px 0}
+.crumbs{font-size:13px;color:#8a93a6;margin-bottom:16px}.crumbs a{color:#8a93a6}.crumbs a:hover{color:var(--blue)}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;font-weight:600;font-size:13px;letter-spacing:.03em;text-transform:uppercase;color:var(--blue);margin-bottom:16px}
+.eyebrow::before{content:'';width:28px;height:2px;background:var(--blue);border-radius:2px}
+.pagehead h1{font-size:46px;line-height:1.06;margin-bottom:14px}.pagehead h1 span{color:var(--blue)}
+.pagehead p{color:#51607a;font-size:18px;max-width:720px}
+
+/* News grid */
+.grid{display:grid;gap:26px;grid-template-columns:repeat(3,1fr)}
+.post{border:1px solid var(--line);border-radius:20px;overflow:hidden;background:#fff;transition:.2s;display:flex;flex-direction:column}
+.post:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+.post .ph{aspect-ratio:16/10;background-size:cover;background-position:center;display:flex;align-items:center;justify-content:center;font-size:60px;background-color:var(--bg-blue)}
+.post:nth-child(3n) .ph{background-color:var(--bg-peach)}
+.post:nth-child(3n+1) .ph{background-color:var(--bg-pink)}
+.post .body{padding:22px;display:flex;flex-direction:column;flex:1}
+.post .tagline{display:flex;gap:10px;align-items:center;font-size:12px;color:var(--muted);margin-bottom:10px}
+.post .cat{background:#eef1f8;color:var(--blue);font-weight:600;border-radius:20px;padding:4px 12px}
+.post h3{font-size:19px;line-height:1.3;margin-bottom:8px}
+.post p{font-size:14px;color:var(--muted);margin-bottom:16px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.post .more{margin-top:auto;color:var(--blue);font-weight:600;font-size:14px}
+.loading{grid-column:1/-1;text-align:center;color:var(--muted);padding:40px 0;font-size:16px}
+
+/* Subscribe */
+.sub{background:linear-gradient(120deg,var(--blue),var(--pink));border-radius:var(--radius);color:#fff;padding:46px;text-align:center;max-width:1240px;margin:0 auto}
+.sub h2{color:#fff;font-size:30px;margin-bottom:10px}.sub p{opacity:.92;font-size:17px;max-width:560px;margin:0 auto 24px}
+.sub form{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.sub input{padding:14px 18px;border:none;border-radius:30px;font-family:inherit;font-size:15px;min-width:280px}
+.sub button{padding:14px 30px;border:none;border-radius:30px;font-family:inherit;font-weight:600;font-size:15px;background:#fff;color:var(--ink);cursor:pointer}
+
+@media(max-width:1040px){.container{padding:0 24px}.grid{grid-template-columns:1fr 1fr}.pagehead h1{font-size:34px}}
+@media(max-width:560px){.container{padding:0 16px}.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<!-- ЗАГОЛОВОК -->
+<div class="pagehead">
+  <div class="container">
+    <div class="crumbs"><a href="/">Главная</a> / <span>Новости</span></div>
+    <span class="eyebrow">📰 Блог и новости</span>
+    <h1>Новости и <span>статьи</span></h1>
+    <p>Рассказываем о новинках производства, свежих кейсах и делимся полезным для бизнеса: как заказать сувенирную продукцию, спланировать тираж и уложиться в дедлайн.</p>
+  </div>
+</div>
+
+<!-- ЛЕНТА -->
+<section>
+  <div class="container">
+    <div class="grid" id="feed">
+      <div class="loading">Загружаем статьи…</div>
+    </div>
+  </div>
+</section>
+
+<!-- ПОДПИСКА -->
+<section style="padding-top:0">
+  <div class="sub">
+    <h2>Хотите первыми узнавать о новинках и акциях?</h2>
+    <p>Подпишитесь — присылаем свежие кейсы, сезонные предложения и полезные материалы для бизнеса. Без спама.</p>
+    <form onsubmit="event.preventDefault();this.reset();alert('Спасибо! Вы подписаны (демо-макет).');">
+      <input type="email" placeholder="Ваш e-mail" required>
+      <button type="submit">Подписаться</button>
+    </form>
+  </div>
+</section>
+
+<script>
+(function(){
+  var feed=document.getElementById('feed');
+
+  // Запасные карточки, если блог из базы недоступен
+  var fallback=[
+    {title:'Открыли приём заказов на «Символ года»',description:'Запускаем производство новогодних игрушек-символов года. Резервируйте тираж заранее — слоты декабря ограничены.',emoji:'🎄'},
+    {title:'2 000 маскотов для FMCG-бренда за 18 дней',description:'Как мы отрисовали фирменного персонажа, согласовали образец за 3 дня и отгрузили партию к выставке без брака.',emoji:'🧸'},
+    {title:'Как заказать мягкую игрушку с логотипом: чек-лист',description:'Что подготовить для расчёта, какой тираж выгоден и как спланировать сроки под дату акции.',emoji:'📋'},
+    {title:'Промо-рюкзаки для банка в рамках бюджета',description:'Подобрали материалы, помогли с дизайном и уложились в бюджет акции — 1 500 брендированных рюкзаков за 21 день.',emoji:'🎒'},
+    {title:'ПВХ или пластик: что выбрать для брелоков',description:'Разбираем отличия материалов, сроки, стойкость и цену за штуку на разных тиражах.',emoji:'🧩'},
+    {title:'Расширили мощности швейного цеха',description:'Новое оборудование позволяет запускать крупные тиражи быстрее и держать сроки даже в высокий сезон.',emoji:'🏭'},
+    {title:'Джибитсы для обувного бренда: тираж 10 000',description:'Сделали коллекцию значков-джибитсов под кроксы с фирменными персонажами для молодёжного бренда.',emoji:'🐊'},
+    {title:'Корпоративные подарки к 8 Марта и 23 Февраля',description:'Собрали идеи брендированных подарков сотрудникам и клиентам к весенним праздникам.',emoji:'🎁'}
+  ];
+
+  function fmtDate(d){
+    try{var dt=new Date(d);if(isNaN(dt))return '';return dt.toLocaleDateString('ru-RU',{day:'numeric',month:'long',year:'numeric'});}catch(e){return '';}
+  }
+  function esc(s){return (s||'').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+  function render(items){
+    feed.innerHTML='';
+    items.slice(0,8).forEach(function(a){
+      var href=a.url||a.slug||'#';
+      var img=a.image?('style="background-image:url(\''+a.image+'\')"'):'';
+      var emoji=a.image?'':(a.emoji||'📝');
+      var date=fmtDate(a.pubDate);
+      var card=document.createElement('a');
+      card.className='post';card.href=href;
+      card.innerHTML=
+        '<div class="ph" '+img+'>'+emoji+'</div>'
+        +'<div class="body">'
+        +'<div class="tagline"><span class="cat">Статья</span>'+(date?'<span>'+date+'</span>':'')+'</div>'
+        +'<h3>'+esc(a.title)+'</h3>'
+        +'<p>'+esc(a.description||'')+'</p>'
+        +'<span class="more">Читать →</span>'
+        +'</div>';
+      feed.appendChild(card);
+    });
+  }
+
+  fetch('/api/blog').then(function(r){return r.json();}).then(function(d){
+    if(d&&d.status==='success'&&d.articles&&d.articles.length){render(d.articles);}
+    else{render(fallback);}
+  }).catch(function(){render(fallback);});
+})();
+</script>
+<script src="/prototype/js/site.js"></script>
+</body>
+</html>
