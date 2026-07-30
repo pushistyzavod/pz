@@ -258,7 +258,8 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
     <a href="#figures">Фигурки ПВХ</a>
     <a href="#keychains">Брелоки ПВХ</a>
     <a href="#usb">Флешки ПВХ</a>
-    <a href="#jibbitz">Джибитсы (Jibbitz)</a>
+    <a href="#jibbitz">Джибитсы</a>
+    <a href="#hard-plastic">Фигурки из твёрдого пластика</a>
   </div>
 </nav>
 
@@ -266,7 +267,7 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
 <section>
   <div class="container">
     <h2>Что мы делаем в этой <span>категории</span></h2>
-    <p class="lead">Четыре направления изделий из мягкого ПВХ под задачи бизнеса. Любое изделие изготавливаем по вашему логотипу, персонажу или образцу.</p>
+    <p class="lead">Пять направлений изделий из пластика под задачи бизнеса. Любое изделие изготавливаем по вашему логотипу, персонажу или образцу.</p>
 
     <div class="subcat" id="figures">
       <div class="subcat-img">🧩</div>
@@ -313,7 +314,7 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
     <div class="subcat" id="jibbitz">
       <div class="subcat-img">🐊</div>
       <div>
-        <h3>Джибитсы (Jibbitz)</h3>
+        <h3>Джибитсы</h3>
         <p>Украшения-значки для обуви (кроксов) из мягкого ПВХ с вашим логотипом или персонажем. Трендовый и вирусный формат мерча для молодой аудитории.</p>
         <ul>
           <li>Стандартное крепление под кроксы</li>
@@ -321,6 +322,20 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
           <li>Отлично работают наборами и коллекциями</li>
         </ul>
         <div class="who">Кому подходит: молодёжные бренды, обувь, маркетплейсы, коллаборации.</div>
+      </div>
+    </div>
+
+    <div class="subcat" id="hard-plastic">
+      <div class="subcat-img">🤖</div>
+      <div>
+        <h3>Фигурки из твёрдого пластика</h3>
+        <p>Детализированные фигурки из жёсткого пластика — премиальный формат для коллекционных и промо-серий. Твёрдая основа держит мельчайшие детали и ровную покраску, изделие выглядит дорого и служит годами.</p>
+        <ul>
+          <li>Изготовление по вашей 3D-модели, эскизу или образцу</li>
+          <li>Высокая точность деталей и качественная покраска</li>
+          <li>Коллекционные серии и лимитированные тиражи</li>
+        </ul>
+        <div class="who">Кому подходит: коллекционный мерч, премиум-подарки, фан-серии, фигурки для точек продаж.</div>
       </div>
     </div>
   </div>
@@ -433,18 +448,20 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
       <p>Оставьте заявку — менеджер свяжется, поможет с дизайном и пришлёт коммерческое предложение с ценой и сроками. Консультация бесплатна.</p>
       <p style="margin-top:18px">📞 <a href="tel:+79896051010"><b>+7 (989) 605-10-10</b></a><br>✉️ <a href="mailto:pushistyzavod@mail.ru">pushistyzavod@mail.ru</a></p>
     </div>
-    <form class="form" onsubmit="event.preventDefault();alert('Спасибо! Заявка отправлена (демо-макет).');">
+    <form class="form" data-api-form data-form-name="ПВХ-фигурки — расчёт заказа">
       <h3>Получить расчёт</h3>
       <small>Ответим в течение рабочего дня</small>
-      <input type="text" placeholder="Компания / Имя" required>
-      <input type="tel" placeholder="Телефон" required>
-      <input type="email" placeholder="E-mail">
-      <select>
-        <option>Что нужно изготовить?</option>
+      <input type="text" name="name" placeholder="Компания / Имя" required>
+      <input type="tel" name="phone" placeholder="Телефон" required>
+      <input type="email" name="email" placeholder="E-mail">
+      <select name="product">
+        <option value="">Что нужно изготовить?</option>
+
         <option>Фигурки ПВХ</option>
         <option>Брелоки ПВХ</option>
         <option>Флешки ПВХ</option>
-        <option>Джибитсы (Jibbitz)</option>
+        <option>Джибитсы</option>
+        <option>Фигурки из твёрдого пластика</option>
       </select>
       <button class="btn btn-primary" type="submit">Отправить заявку</button>
       <div class="agree">Нажимая кнопку, вы соглашаетесь с политикой конфиденциальности.</div>

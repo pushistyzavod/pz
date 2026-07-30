@@ -77,8 +77,9 @@ section{padding:56px 0}
   <div class="sub">
     <h2>Хотите первыми узнавать о новинках и акциях?</h2>
     <p>Подпишитесь — присылаем свежие кейсы, сезонные предложения и полезные материалы для бизнеса. Без спама.</p>
-    <form onsubmit="event.preventDefault();this.reset();alert('Спасибо! Вы подписаны (демо-макет).');">
-      <input type="email" placeholder="Ваш e-mail" required>
+    <form data-api-form data-form-name="Подписка на новости">
+      <input type="email" name="email" placeholder="Ваш e-mail" required>
+
       <button type="submit">Подписаться</button>
     </form>
   </div>

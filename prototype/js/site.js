@@ -255,9 +255,76 @@
     }
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', inject);
-  } else {
+  // ---------- Отправка форм на бэкенд ----------
+  // Раньше формы просто показывали alert («демо-макет») и заявки никуда не уходили.
+  function initForms() {
+    var forms = document.querySelectorAll('form[data-api-form]');
+    Array.prototype.forEach.call(forms, function (form) {
+      if (form.dataset.bound === '1') return;
+      form.dataset.bound = '1';
+
+      var status = document.createElement('div');
+      status.style.cssText = 'margin-top:12px;font-size:13.5px;line-height:1.4;display:none';
+      form.appendChild(status);
+
+      function show(text, ok) {
+        status.textContent = text;
+        status.style.color = ok ? '#1a9c5b' : '#d93025';
+        status.style.display = 'block';
+      }
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        var btn = form.querySelector('button[type="submit"], button:not([type])');
+        var oldText = btn ? btn.innerHTML : '';
+        if (btn) { btn.disabled = true; btn.innerHTML = 'Отправляем…'; }
+
+        var payload = {
+          formName: form.getAttribute('data-form-name') || 'Форма сайта',
+          formPage: location.pathname,
+        };
+        Array.prototype.forEach.call(form.elements, function (el) {
+          if (!el.name || el.type === 'submit') return;
+          payload[el.name] = el.value;
+        });
+        if (payload.product) {
+          payload.message = 'Интересует: ' + payload.product;
+        }
+
+        fetch('/api/form', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        })
+          .then(function (r) { return r.json(); })
+          .then(function (d) {
+            if (d && d.status === 'success') {
+              show(d.message || 'Спасибо! Заявка отправлена — свяжемся с вами.', true);
+              form.reset();
+            } else {
+              show('Не удалось отправить. Позвоните нам: ' + PHONE_HUMAN, false);
+            }
+          })
+          .catch(function () {
+            show('Нет связи с сервером. Позвоните нам: ' + PHONE_HUMAN, false);
+          })
+          .then(function () {
+            if (btn) { btn.disabled = false; btn.innerHTML = oldText; }
+          });
+      });
+    });
+  }
+
+  function start() {
     inject();
+    initForms();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', start);
+  } else {
+    start();
   }
 })();
+

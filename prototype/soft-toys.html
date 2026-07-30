@@ -16,22 +16,22 @@
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{font-family:'Montserrat Alternates',Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.55;-webkit-font-smoothing:antialiased}
+body{font-family:'Montserrat Alternates',Arial,sans-serif;color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased;background:radial-gradient(42% 32% at 88% 6%,rgba(255,96,153,.07) 0%,rgba(255,96,153,0) 70%),radial-gradient(38% 30% at 6% 20%,rgba(99,154,238,.09) 0%,rgba(99,154,238,0) 70%),radial-gradient(34% 26% at 92% 82%,rgba(141,127,240,.07) 0%,rgba(141,127,240,0) 70%),radial-gradient(30% 24% at 4% 88%,rgba(255,96,153,.06) 0%,rgba(255,96,153,0) 70%),#fff;background-attachment:fixed}
 a{color:inherit;text-decoration:none}
 img{max-width:100%;display:block}
 .container{max-width:1200px;margin:0 auto;padding:0 20px}
 section{padding:64px 0}
 h2{font-size:34px;font-weight:700;line-height:1.15;margin-bottom:14px}
-h2 span{color:var(--blue)}
+h2 span{background:linear-gradient(100deg,var(--blue) 5%,#8d7ff0 55%,var(--pink) 105%);-webkit-background-clip:text;background-clip:text;color:transparent}
 .lead{color:var(--muted);font-size:18px;max-width:720px;margin-bottom:40px}
 .center{text-align:center;margin-left:auto;margin-right:auto}
 .grid{display:grid;gap:22px}
 
 /* Buttons */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:15px 30px;border-radius:32px;font-weight:600;font-size:15px;cursor:pointer;border:none;transition:.2s;white-space:nowrap}
-.btn-primary{background:var(--pink);color:#fff}.btn-primary:hover{background:var(--blue)}
-.btn-blue{background:var(--blue);color:#fff}.btn-blue:hover{background:var(--pink)}
-.btn-ghost{background:#eef1f8;color:var(--ink)}.btn-ghost:hover{background:#e2e7f2}
+.btn-primary{background:linear-gradient(120deg,#ff6099,#ff8ab8);color:#fff;box-shadow:0 12px 26px -10px rgba(255,96,153,.65)}.btn-primary:hover{background:linear-gradient(120deg,#639aee,#8db8f5);box-shadow:0 14px 28px -10px rgba(99,154,238,.7);transform:translateY(-2px)}
+.btn-blue{background:linear-gradient(120deg,#639aee,#8db8f5);color:#fff;box-shadow:0 12px 26px -10px rgba(99,154,238,.65)}.btn-blue:hover{background:linear-gradient(120deg,#ff6099,#ff8ab8);box-shadow:0 14px 28px -10px rgba(255,96,153,.7);transform:translateY(-2px)}
+.btn-ghost{background:#eef1f8;color:var(--ink)}.btn-ghost:hover{background:#e2e7f2;transform:translateY(-2px)}
 
 /* Top bar */
 .topbar{background:var(--ink);color:#fff;font-size:13px}
@@ -57,13 +57,14 @@ header.nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.95);bac
 .crumbs span{color:var(--ink);font-weight:500}
 
 /* Category hero — clean, full-width, no frame */
-.chero{position:relative;background:linear-gradient(180deg,#f4f7fd 0%,#ffffff 100%);border-bottom:1px solid var(--line);overflow:hidden}
-.chero::before{content:'';position:absolute;top:-140px;right:-90px;width:440px;height:440px;border-radius:50%;background:radial-gradient(circle,rgba(99,154,238,.16),transparent 68%);pointer-events:none}
+.chero{position:relative;background:linear-gradient(115deg,#dceaff 0%,#eceffc 42%,#ffe6f3 100%);border-bottom:1px solid var(--line);overflow:hidden}
+.chero::before{content:'';position:absolute;top:-140px;right:-90px;width:440px;height:440px;border-radius:50%;background:radial-gradient(circle,rgba(99,154,238,.22),transparent 68%);pointer-events:none}
+.chero::after{content:'';position:absolute;bottom:-170px;left:-90px;width:430px;height:430px;border-radius:50%;background:radial-gradient(circle,rgba(255,96,153,.20),transparent 68%);pointer-events:none}
 .chero-inner{position:relative;display:grid;grid-template-columns:1.3fr .7fr;align-items:center;gap:40px;padding:48px 0 56px}
 .eyebrow{display:inline-flex;align-items:center;gap:10px;font-weight:600;font-size:13px;letter-spacing:.03em;text-transform:uppercase;color:var(--blue);margin-bottom:20px}
-.eyebrow::before{content:'';width:28px;height:2px;background:var(--blue);border-radius:2px}
+.eyebrow .eb-logo{height:24px;width:auto;border-radius:6px;display:block}
 .chero h1{font-size:48px;line-height:1.05;font-weight:700;margin-bottom:18px;letter-spacing:-.01em}
-.chero h1 span{color:var(--blue)}
+.chero h1 span{background:linear-gradient(100deg,var(--blue) 0%,#8d7ff0 60%,var(--pink) 115%);-webkit-background-clip:text;background-clip:text;color:transparent}
 .chero .sub{font-size:19px;color:#51607a;margin-bottom:30px;max-width:580px}
 .chero-actions{display:flex;gap:14px;flex-wrap:wrap}
 .chero-stats{display:flex;margin-top:38px;flex-wrap:wrap;gap:18px 0}
@@ -71,7 +72,9 @@ header.nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.95);bac
 .chero-stats div:first-child{padding-left:0;border-left:none}
 .chero-stats b{display:block;font-size:27px;font-weight:700;color:var(--ink);line-height:1.1}
 .chero-stats span{font-size:13px;color:#7d879b}
-.chero-visual{justify-self:center;font-size:180px;line-height:1;filter:drop-shadow(0 24px 34px rgba(20,30,80,.16))}
+.chero-visual{position:relative;justify-self:center}
+.chero-visual img{position:relative;z-index:2;width:min(520px,118%);height:auto;filter:drop-shadow(0 6px 8px rgba(30,45,85,.16))}
+.chero-visual .cv-shadow{position:absolute;bottom:-1%;left:50%;transform:translateX(-50%);width:64%;height:30px;border-radius:50%;background:radial-gradient(closest-side,rgba(30,45,85,.36),transparent 74%);filter:blur(10px);z-index:1}
 
 
 /* Quick nav (anchor chips) */
@@ -81,13 +84,16 @@ header.nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.95);bac
 .qnav a:hover{background:var(--blue);color:#fff}
 
 /* Subcategory blocks */
-.subcat{display:grid;grid-template-columns:1fr 1fr;gap:34px;align-items:center;margin-bottom:26px}
+.subcat{display:grid;grid-template-columns:1.15fr 1fr;gap:30px;align-items:center;margin-bottom:26px;background:#fff;border:1px solid var(--line);border-radius:24px;padding:26px 30px;transition:.25s;scroll-margin-top:150px}
+section[id]{scroll-margin-top:110px}
+.subcat:hover{transform:translateY(-4px);box-shadow:var(--shadow);border-color:transparent}
 .subcat:nth-child(even) .subcat-img{order:2}
-.subcat-img{aspect-ratio:4/3;border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:96px;background:var(--bg-blue)}
-.subcat:nth-child(2) .subcat-img{background:var(--bg-peach)}
-.subcat:nth-child(3) .subcat-img{background:var(--bg-pink)}
-.subcat:nth-child(4) .subcat-img{background:#e6f7ee}
-.subcat:nth-child(5) .subcat-img{background:#fff4d6}
+.subcat-img{position:relative;aspect-ratio:4/3;display:flex;align-items:flex-end;justify-content:center}
+.subcat-img::after{content:'';position:absolute;bottom:2%;left:50%;transform:translateX(-50%);width:56%;height:20px;border-radius:50%;background:radial-gradient(closest-side,rgba(30,45,85,.32),transparent 74%);filter:blur(9px)}
+.subcat-img img{position:relative;z-index:2;width:auto;max-width:100%;height:100%;object-fit:contain;object-position:bottom;filter:drop-shadow(0 5px 7px rgba(30,45,85,.16))}
+/* фото без вырезки — на всю область, слив с белой карточкой */
+.subcat-img--photo::after{display:none}
+.subcat-img--photo img{width:100%;height:100%;max-width:100%;object-fit:cover;filter:none}
 .subcat h3{font-size:26px;margin-bottom:10px}
 .subcat p{color:var(--muted);font-size:15px;margin-bottom:16px}
 .subcat ul{list-style:none;display:grid;gap:8px;margin-bottom:20px}
@@ -95,18 +101,16 @@ header.nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.95);bac
 .subcat li::before{content:'✓';position:absolute;left:0;color:var(--blue);font-weight:700}
 .subcat .who{display:inline-block;font-size:13px;color:#41506b;background:#f4f5fb;border-radius:12px;padding:10px 14px;margin-bottom:18px}
 
-/* Options / materials */
-.opts{grid-template-columns:repeat(4,1fr)}
-.opt{background:#fff;border:1px solid var(--line);border-radius:18px;padding:24px}
-.opt .ic{font-size:30px;margin-bottom:10px}
-.opt b{display:block;margin-bottom:8px;font-size:16px}
-.opt p{font-size:13px;color:var(--muted)}
-
-/* Steps */
-.steps{grid-template-columns:repeat(5,1fr)}
-.step{text-align:center}
-.step .num{width:54px;height:54px;border-radius:50%;background:var(--pink);color:#fff;font-weight:700;font-size:21px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px}
-.step:nth-child(even) .num{background:var(--blue)}
+/* Steps — этапы с фото, как на главной */
+.steps{grid-template-columns:repeat(5,1fr);gap:18px}
+.step{position:relative;text-align:center;background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px 14px 18px;transition:.2s}
+.step:hover{transform:translateY(-4px);box-shadow:var(--shadow);border-color:transparent}
+.step .ph{position:relative;aspect-ratio:4/3;border-radius:12px;background:var(--bg-blue);overflow:hidden;margin-bottom:12px}
+.step .ph img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s ease}
+.step:hover .ph img{transform:scale(1.05)}
+.step .num{position:absolute;top:8px;left:8px;z-index:2;width:30px;height:30px;border-radius:50%;background:var(--pink);color:#fff;font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center;margin:0;box-shadow:0 4px 10px -3px rgba(255,96,153,.7)}
+.step:nth-child(even) .num{background:var(--blue);box-shadow:0 4px 10px -3px rgba(99,154,238,.7)}
+.step:not(:last-child)::after{content:"→";position:absolute;top:26%;right:-17px;font-size:19px;font-weight:700;color:var(--blue);z-index:3}
 .step h4{font-size:15px;margin-bottom:6px}
 .step p{font-size:13px;color:var(--muted)}
 
@@ -114,9 +118,8 @@ header.nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.95);bac
 .works-grid{grid-template-columns:repeat(4,1fr)}
 .work{border-radius:18px;overflow:hidden;border:1px solid var(--line);background:#fff;transition:.2s}
 .work:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
-.work .ph{aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;font-size:52px;background:var(--bg-blue)}
-.work:nth-child(3n) .ph{background:var(--bg-peach)}
-.work:nth-child(3n+1) .ph{background:var(--bg-pink)}
+.work .ph{aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;font-size:52px;background:#fff;border-bottom:1px solid var(--line)}
+.work .ph img{width:100%;height:100%;object-fit:contain;display:block;padding:8px}
 .work .cap{padding:14px 16px}
 .work .cap b{font-size:14px;display:block}
 .work .cap .meta{font-size:12px;color:var(--muted);margin-top:6px;display:flex;gap:12px;flex-wrap:wrap}
@@ -125,7 +128,8 @@ header.nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.95);bac
 /* Trust */
 .trust-grid{grid-template-columns:repeat(4,1fr)}
 .trust{background:#fff;border:1px solid var(--line);border-radius:18px;padding:24px;text-align:center}
-.trust .ic{font-size:34px;margin-bottom:10px}
+.trust .ic{width:64px;height:64px;margin:0 auto 12px;border-radius:18px;background:#f4f5fb;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.trust .ic img{width:100%;height:100%;object-fit:cover;display:block}
 .trust b{display:block;font-size:16px;margin-bottom:6px}
 .trust p{font-size:13px;color:var(--muted)}
 
@@ -171,12 +175,13 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
   h2{font-size:28px}
   .chero-inner{grid-template-columns:1fr;padding:32px 0 40px}
   .chero h1{font-size:32px}
-  .chero-visual{font-size:120px;order:-1}
+  .chero-visual{order:-1}
+  .chero-visual img{width:min(300px,100%)}
 
   .subcat{grid-template-columns:1fr;gap:20px}
   .subcat:nth-child(even) .subcat-img{order:0}
-  .opts{grid-template-columns:1fr 1fr}
-  .steps{grid-template-columns:1fr 1fr;gap:26px}
+  .steps{grid-template-columns:1fr 1fr;gap:18px}
+  .step:not(:last-child)::after{display:none}
   .works-grid{grid-template-columns:1fr 1fr}
   .trust-grid{grid-template-columns:1fr 1fr}
   .cta{grid-template-columns:1fr;padding:34px}
@@ -187,7 +192,7 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
   .qnav{position:static}
 }
 @media(max-width:560px){
-  .opts,.works-grid,.trust-grid,.steps,.foot{grid-template-columns:1fr}
+  .works-grid,.trust-grid,.steps,.foot{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -231,7 +236,7 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
     <div class="crumbs"><a href="/">Главная</a> / <a href="/#products">Что производим</a> / <span>Мягкие игрушки</span></div>
     <div class="chero-inner">
       <div>
-        <span class="eyebrow">🧸 Мягкие игрушки · опт от 100 штук</span>
+        <span class="eyebrow"><img src="/prototype/images/logo.png" alt="Пушистый Завод" class="eb-logo">Мягкие игрушки · опт от 100 штук</span>
         <h1>Мягкие игрушки <span>на заказ для бизнеса</span></h1>
         <p class="sub">Разрабатываем и производим плюшевые изделия с символикой вашего бренда: корпоративные маскоты, игрушки «символ года», мягкие брелоки и персонажей по фото или эскизу. Полный цикл — от рисунка до отгрузки партии.</p>
         <div class="chero-actions">
@@ -242,10 +247,9 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
           <div><b>от 100</b><span>штук в партии</span></div>
           <div><b>~10 дн.</b><span>образец</span></div>
           <div><b>3–6 нед.</b><span>тираж</span></div>
-          <div><b>−5%</b><span>к цене конкурента</span></div>
         </div>
       </div>
-      <div class="chero-visual">🧸</div>
+      <div class="chero-visual"><img src="/prototype/images/toys/hero-business.png" alt="Мягкие игрушки на заказ для бизнеса — производство Пушистый Завод" fetchpriority="high" decoding="async"><span class="cv-shadow" aria-hidden="true"></span></div>
     </div>
   </div>
 </section>
@@ -257,19 +261,19 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
     <a href="#mascots">Корпоративные маскоты</a>
     <a href="#newyear">Символ года</a>
     <a href="#keychains">Мягкие брелоки</a>
-    <a href="#branded">Брендированные игрушки</a>
-    <a href="#characters">Персонажи по фото</a>
+    <a href="#branded">Брендированные игрушки и персонажи</a>
+    <a href="#combo">Комбинированные (плюш + винил)</a>
   </div>
 </nav>
 
 <!-- ПОДКАТЕГОРИИ -->
-<section>
+<section style="background:#f7f9fd">
   <div class="container">
     <h2>Что мы делаем в этой <span>категории</span></h2>
     <p class="lead">Пять направлений мягких игрушек под задачи бизнеса. Любое изделие адаптируем под ваш бренд, бюджет и тираж.</p>
 
     <div class="subcat" id="mascots">
-      <div class="subcat-img">🧸</div>
+      <div class="subcat-img"><img src="/prototype/images/toys/toy-1.png" alt="Плюшевый корпоративный маскот на заказ — Пушистый Завод" loading="lazy" decoding="async"></div>
       <div>
         <h3>Корпоративные маскоты</h3>
         <p>Плюшевый талисман компании или продукта — узнаваемый, объёмный, «живой». Делаем по вашему фирменному персонажу или разрабатываем образ с нуля.</p>
@@ -283,7 +287,7 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
     </div>
 
     <div class="subcat" id="newyear">
-      <div class="subcat-img">🐻</div>
+      <div class="subcat-img"><img src="/prototype/images/toys/toy-2.png" alt="Мягкая игрушка «Символ года» на заказ — Пушистый Завод" loading="lazy" decoding="async"></div>
       <div>
         <h3>Игрушки «Символ года»</h3>
         <p>Сезонный хит для корпоративных подарков и новогодних акций. Успеваем к сезону, если заявка подана заранее — планируем производство под ваш дедлайн.</p>
@@ -297,7 +301,7 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
     </div>
 
     <div class="subcat" id="keychains">
-      <div class="subcat-img">🔑</div>
+      <div class="subcat-img subcat-img--photo"><img src="/prototype/images/toys/toy-3.jpg" alt="Мягкие плюшевые брелоки на заказ — Пушистый Завод" loading="lazy" decoding="async"></div>
       <div>
         <h3>Мягкие (плюшевые) брелоки</h3>
         <p>Недорогой массовый сувенир с высоким «вау-эффектом». Идеальны для выставок, мерча и подарков за покупку — быстро окупаются на больших тиражах.</p>
@@ -311,30 +315,30 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
     </div>
 
     <div class="subcat" id="branded">
-      <div class="subcat-img">🎀</div>
+      <div class="subcat-img"><img src="/prototype/images/toys/toy-4.png" alt="Брендированная игрушка и персонаж по фото на заказ — Пушистый Завод" loading="lazy" decoding="async"></div>
       <div>
-        <h3>Брендированные игрушки</h3>
-        <p>Классические плюшевые игрушки (мишки, зайцы, животные) с вашим логотипом, вышивкой или фирменной атрибутикой. Готовые формы + ваш брендинг = быстрый запуск.</p>
+        <h3>Брендированные игрушки и персонажи по фото</h3>
+        <p>Классические плюшевые игрушки с вашим логотипом (мишки, зайцы, животные) и персонажи по фото или эскизу — из рекламного ролика, приложения, книги или детского рисунка. Достаточно картинки: художник нарисует макет и 3D-визуализацию до старта.</p>
         <ul>
-          <li>Вышивка или печать логотипа</li>
-          <li>Фирменные ленты, футболки, худи для игрушки</li>
-          <li>Короткие сроки за счёт готовых лекал</li>
+          <li>Вышивка или печать логотипа, фирменная одежда для игрушки</li>
+          <li>Воплотим в плюше любого персонажа с сохранением узнаваемости</li>
+          <li>Короткие сроки за счёт готовых лекал и собственного производства</li>
         </ul>
-        <div class="who">Кому подходит: акции «подарок за покупку», лояльность, детские зоны.</div>
+        <div class="who">Кому подходит: акции «подарок за покупку», лояльность, медиа, издательства и разработчики игр.</div>
       </div>
     </div>
 
-    <div class="subcat" id="characters">
-      <div class="subcat-img">🦊</div>
+    <div class="subcat" id="combo">
+      <div class="subcat-img"><img src="/prototype/images/toys/toy-5.png" alt="Комбинированная игрушка плюш + винил с пластиковым лицом — Пушистый Завод" loading="lazy" decoding="async"></div>
       <div>
-        <h3>Персонажи по фото или эскизу</h3>
-        <p>Воплотим в плюше любого персонажа — из вашего рекламного ролика, приложения, книги или детского рисунка. Достаточно фото или наброска.</p>
+        <h3>Комбинированные игрушки: плюш + винил</h3>
+        <p>Мягкое плюшевое тело и лицо или голова из твёрдого винила — трендовый формат коллекционных фигурок, как Лабубу. Выразительное детализированное лицо плюс приятное на ощупь тело: игрушку хочется и рассматривать, и обнимать.</p>
         <ul>
-          <li>Художник рисует макет и 3D-визуализацию до старта</li>
-          <li>Сложные формы, несколько цветов и фактур</li>
-          <li>Сохраняем узнаваемость оригинала</li>
+          <li>Пластиковое лицо, голова или отдельные элементы из винила</li>
+          <li>Высокая детализация и аккуратная покраска лица</li>
+          <li>Коллекционные серии, подвесы-брелоки и крупные фигуры</li>
         </ul>
-        <div class="who">Кому подходит: медиа, издательства, разработчики игр и приложений.</div>
+        <div class="who">Кому подходит: бренды, которые хотят «своего Лабубу», — коллекционный мерч и фан-серии.</div>
       </div>
     </div>
   </div>
@@ -344,24 +348,10 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
 <section class="why" style="padding:48px 0">
   <div class="container">
     <div class="grid trust-grid">
-      <div class="trust"><div class="ic">🏭</div><b>Собственное производство</b><p>Полный цикл в России, без посредников — держим цену и сроки.</p></div>
-      <div class="trust"><div class="ic">📜</div><b>Сертификаты качества</b><p>Безопасно, в том числе для детских товаров.</p></div>
-      <div class="trust"><div class="ic">🏷️</div><b>«Честный знак»</b><p>Маркируем продукцию по требованиям закона.</p></div>
-      <div class="trust"><div class="ic">✏️</div><b>Бесплатный макет</b><p>Нарисуем и покажем 3D-визуализацию до оплаты тиража.</p></div>
-    </div>
-  </div>
-</section>
-
-<!-- МАТЕРИАЛЫ И ОПЦИИ -->
-<section>
-  <div class="container">
-    <h2 class="center">Материалы и <span>опции</span></h2>
-    <p class="lead center">Подбираем под задачу, безопасность и бюджет — от бюджетного мерча до премиум-подарка.</p>
-    <div class="grid opts">
-      <div class="opt"><div class="ic">🧵</div><b>Ткани</b><p>Плюш, мех, велюр, флис, минки — гладкие и с ворсом, любые фактуры.</p></div>
-      <div class="opt"><div class="ic">☁️</div><b>Наполнитель</b><p>Гипоаллергенный холлофайбер, синтепух; утяжелители и гранулят по запросу.</p></div>
-      <div class="opt"><div class="ic">📏</div><b>Размеры</b><p>От 8 см (брелок) до ростовых кукол. Оптимальные — 15–30 см.</p></div>
-      <div class="opt"><div class="ic">🎨</div><b>Брендирование</b><p>Вышивка, шелкография, бирки, ярлыки, фирменная одежда для игрушки.</p></div>
+      <div class="trust"><div class="ic"><img src="/prototype/images/logo.png" alt="Пушистый Завод — собственное производство" style="object-fit:contain;padding:10px;background:#fff" loading="lazy" decoding="async"></div><b>Собственное производство</b><p>Полный цикл в России, без посредников — держим цену и сроки.</p></div>
+      <div class="trust"><div class="ic"><img src="/prototype/images/perks/perk-2.jpg" alt="Сертификаты качества" loading="lazy" decoding="async"></div><b>Сертификаты качества</b><p>Безопасно, в том числе для детских товаров.</p></div>
+      <div class="trust"><div class="ic"><img src="/prototype/images/perks/perk-3.jpg" alt="Маркировка «Честный знак»" loading="lazy" decoding="async"></div><b>«Честный знак»</b><p>Маркируем продукцию по требованиям закона.</p></div>
+      <div class="trust"><div class="ic"><img src="/prototype/images/steps/step-3.jpg" alt="Сигнальный образец игрушки перед тиражом" loading="lazy" decoding="async"></div><b>Бесплатный сигнальный образец</b><p>При заказе тиража от 1 000 штук.</p></div>
     </div>
   </div>
 </section>
@@ -372,11 +362,11 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
     <h2 class="center">Как мы делаем вашу <span>игрушку</span></h2>
     <p class="lead center">Прозрачный процесс — вы контролируете результат на каждом этапе</p>
     <div class="grid steps">
-      <div class="step"><div class="num">1</div><h4>Бриф</h4><p>Обсуждаем идею, тираж, сроки и бюджет.</p></div>
-      <div class="step"><div class="num">2</div><h4>Макет и КП</h4><p>Художник рисует эскиз и 3D, присылаем цену и договор.</p></div>
-      <div class="step"><div class="num">3</div><h4>Образец</h4><p>Шьём сигнальный образец (~10 раб. дней) и согласуем.</p></div>
-      <div class="step"><div class="num">4</div><h4>Тираж</h4><p>Запускаем партию на фабрике (3–6 недель).</p></div>
-      <div class="step"><div class="num">5</div><h4>Отгрузка</h4><p>Контроль качества, маркировка и доставка с документами.</p></div>
+      <div class="step"><div class="ph"><span class="num">1</span><img src="/prototype/images/steps/step-1.jpg" alt="Бриф — обсуждаем идею, тираж и сроки" loading="lazy" decoding="async"></div><h4>Бриф</h4><p>Обсуждаем идею, тираж, сроки и бюджет.</p></div>
+      <div class="step"><div class="ph"><span class="num">2</span><img src="/prototype/images/steps/step-2.jpg" alt="Макет и КП — эскиз и 3D-визуализация" loading="lazy" decoding="async"></div><h4>Макет и КП</h4><p>Художник рисует эскиз и 3D, присылаем цену и договор.</p></div>
+      <div class="step"><div class="ph"><span class="num">3</span><img src="/prototype/images/steps/step-3.jpg" alt="Сигнальный образец игрушки перед тиражом" loading="lazy" decoding="async"></div><h4>Образец</h4><p>Шьём сигнальный образец (~10 раб. дней) и согласуем.</p></div>
+      <div class="step"><div class="ph"><span class="num">4</span><img src="/prototype/images/steps/step-4.jpg" alt="Производство тиража на фабрике" loading="lazy" decoding="async"></div><h4>Тираж</h4><p>Запускаем партию на фабрике (3–6 недель).</p></div>
+      <div class="step"><div class="ph"><span class="num">5</span><img src="/prototype/images/steps/step-5.jpg" alt="Контроль качества и отгрузка партии" loading="lazy" decoding="async"></div><h4>Отгрузка</h4><p>Контроль качества, маркировка и доставка с документами.</p></div>
     </div>
   </div>
 </section>
@@ -385,16 +375,16 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
 <section id="works">
   <div class="container">
     <h2>Примеры <span>работ</span></h2>
-    <p class="lead">Реализованные партии мягких игрушек с фактами: для кого, тираж и срок. Эмодзи заменяются на реальные фото.</p>
+    <p class="lead">Реализованные партии мягких игрушек с фактами: для кого делали, какой тираж и за сколько дней.</p>
     <div class="grid works-grid">
-      <div class="work"><div class="ph">🧸</div><div class="cap"><b>Маскот для FMCG-бренда</b><div class="meta"><i>2 000 шт</i><span>18 дней</span></div></div></div>
-      <div class="work"><div class="ph">🐻</div><div class="cap"><b>«Символ года» для ритейла</b><div class="meta"><i>5 000 шт</i><span>30 дней</span></div></div></div>
-      <div class="work"><div class="ph">🔑</div><div class="cap"><b>Мягкие брелоки к выставке</b><div class="meta"><i>3 000 шт</i><span>12 дней</span></div></div></div>
-      <div class="work"><div class="ph">🦊</div><div class="cap"><b>Персонаж приложения по эскизу</b><div class="meta"><i>500 шт</i><span>22 дня</span></div></div></div>
-      <div class="work"><div class="ph">🎀</div><div class="cap"><b>Брендированные мишки, банк</b><div class="meta"><i>1 500 шт</i><span>20 дней</span></div></div></div>
-      <div class="work"><div class="ph">🐰</div><div class="cap"><b>Промо-игрушка к акции</b><div class="meta"><i>4 000 шт</i><span>26 дней</span></div></div></div>
-      <div class="work"><div class="ph">🐼</div><div class="cap"><b>Маскот IT-компании</b><div class="meta"><i>800 шт</i><span>17 дней</span></div></div></div>
-      <div class="work"><div class="ph">🎁</div><div class="cap"><b>Подарочный набор к НГ</b><div class="meta"><i>2 500 шт</i><span>28 дней</span></div></div></div>
+      <div class="work"><div class="ph"><img src="/prototype/images/works/maskot-pyaterochka-300000.jpg" alt="Маскот пятерочка — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>Маскот пятерочка</b><div class="meta"><i>300 000 шт</i><span>2 месяца</span></div></div></div>
+      <div class="work"><div class="ph"><img src="/prototype/images/works/personazh-soka-dobryy-100000.jpg" alt="Персонаж сока Добрый — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>Персонаж сока Добрый</b><div class="meta"><i>100 000 шт</i><span>2 месяца</span></div></div></div>
+      <div class="work"><div class="ph"><img src="/prototype/images/works/maskot-dlya-bmw-10000.jpg" alt="Маскот для BMW — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>Маскот для BMW</b><div class="meta"><i>10 000 шт</i><span>2 месяца</span></div></div></div>
+      <div class="work"><div class="ph"><img src="/prototype/images/works/talisman-lokomotiv-10000.jpg" alt="Талисман Локомотив — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>Талисман Локомотив</b><div class="meta"><i>10 000 шт</i><span>2 месяца</span></div></div></div>
+      <div class="work"><div class="ph"><img src="/prototype/images/works/personazh-aeroflot-3000.jpg" alt="Персонаж аэрофлот — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>Персонаж аэрофлот</b><div class="meta"><i>3 000 шт</i><span>40 дней</span></div></div></div>
+      <div class="work"><div class="ph"><img src="/prototype/images/works/promo-detskiy-mir-6000.jpg" alt="Промо детский мир — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>Промо детский мир</b><div class="meta"><i>6 000 шт</i><span>45 дней</span></div></div></div>
+      <div class="work"><div class="ph"><img src="/prototype/images/works/personazh-dlya-otelya-radisson-350.jpg" alt="Персонаж для отеля radisson — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>Персонаж для отеля radisson</b><div class="meta"><i>350 шт</i><span>28 дней</span></div></div></div>
+      <div class="work"><div class="ph"><img src="/prototype/images/works/personazh-dlya-roskosmosa-strelka-100.jpg" alt="Персонаж для Роскосмоса Стрелка — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>Персонаж для Роскосмоса Стрелка</b><div class="meta"><i>100 шт</i><span>28 дней</span></div></div></div>
     </div>
   </div>
 </section>
@@ -403,16 +393,16 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
 <section class="why">
   <div class="container">
     <h2 class="center">Тиражи и <span>сроки</span></h2>
-    <p class="lead center">Ориентир по производству. Точную цену считаем индивидуально после брифа.</p>
+    <p class="lead center">Примерная цена за игрушку 25 см из плюша. Чем больше тираж, тем ниже цена за штуку — точный расчёт делаем индивидуально после брифа.</p>
     <div class="ptable">
       <div class="row head"><span>Тираж</span><span>Срок производства</span><span>Цена за штуку</span></div>
-      <div class="row"><span>100 шт</span><span>3–4 недели</span><b>по запросу</b></div>
-      <div class="row"><span>500 шт</span><span>3–4 недели</span><b>ниже</b></div>
-      <div class="row"><span>1 000 шт</span><span>4–5 недель</span><b>ещё ниже</b></div>
-      <div class="row"><span>2 000 шт</span><span>4–5 недель</span><b>ещё ниже</b></div>
-      <div class="row"><span>5 000 шт</span><span>5–6 недель</span><b>минимальная</b></div>
-      <div class="row"><span>10 000 шт</span><span>5–6 недель</span><b>минимальная</b></div>
-
+      <div class="row"><span>100 шт</span><span>3–4 недели</span><b>2 600 ₽/шт</b></div>
+      <div class="row"><span>300 шт</span><span>3–4 недели</span><b>2 100 ₽/шт</b></div>
+      <div class="row"><span>500 шт</span><span>3–4 недели</span><b>1 650 ₽/шт</b></div>
+      <div class="row"><span>1 000 шт</span><span>4–5 недель</span><b>1 150 ₽/шт</b></div>
+      <div class="row"><span>2 000 шт</span><span>4–5 недель</span><b>800 ₽/шт</b></div>
+      <div class="row"><span>5 000 шт</span><span>5–6 недель</span><b>600 ₽/шт</b></div>
+      <div class="row"><span>10 000 шт</span><span>5–6 недель</span><b>500 ₽/шт</b></div>
     </div>
     <div class="cycle-note">
       <b>Цикл производства:</b>
@@ -447,19 +437,20 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
       <p>Оставьте заявку — менеджер свяжется, поможет с дизайном и пришлёт коммерческое предложение с ценой и сроками. Консультация бесплатна.</p>
       <p style="margin-top:18px">📞 <a href="tel:+79896051010"><b>+7 (989) 605-10-10</b></a><br>✉️ <a href="mailto:pushistyzavod@mail.ru">pushistyzavod@mail.ru</a></p>
     </div>
-    <form class="form" onsubmit="event.preventDefault();alert('Спасибо! Заявка отправлена (демо-макет).');">
+    <form class="form" data-api-form data-form-name="Мягкие игрушки — расчёт заказа">
       <h3>Получить расчёт</h3>
       <small>Ответим в течение рабочего дня</small>
-      <input type="text" placeholder="Компания / Имя" required>
-      <input type="tel" placeholder="Телефон" required>
-      <input type="email" placeholder="E-mail">
-      <select>
-        <option>Что нужно изготовить?</option>
+      <input type="text" name="name" placeholder="Компания / Имя" required>
+      <input type="tel" name="phone" placeholder="Телефон" required>
+      <input type="email" name="email" placeholder="E-mail">
+      <select name="product">
+        <option value="">Что нужно изготовить?</option>
+
         <option>Корпоративный маскот</option>
         <option>Символ года</option>
         <option>Мягкие брелоки</option>
-        <option>Брендированные игрушки</option>
-        <option>Персонаж по фото/эскизу</option>
+        <option>Брендированные игрушки / персонаж по фото</option>
+        <option>Комбинированная игрушка (плюш + винил)</option>
       </select>
       <button class="btn btn-primary" type="submit">Отправить заявку</button>
       <div class="agree">Нажимая кнопку, вы соглашаетесь с политикой конфиденциальности.</div>

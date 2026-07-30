@@ -26,24 +26,24 @@
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{font-family:'Montserrat Alternates',Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.55;-webkit-font-smoothing:antialiased}
+body{font-family:'Montserrat Alternates',Arial,sans-serif;color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased;background:radial-gradient(42% 32% at 88% 6%,rgba(255,96,153,.07) 0%,rgba(255,96,153,0) 70%),radial-gradient(38% 30% at 6% 20%,rgba(99,154,238,.09) 0%,rgba(99,154,238,0) 70%),radial-gradient(34% 26% at 92% 82%,rgba(141,127,240,.07) 0%,rgba(141,127,240,0) 70%),radial-gradient(30% 24% at 4% 88%,rgba(255,96,153,.06) 0%,rgba(255,96,153,0) 70%),#fff;background-attachment:fixed}
 a{color:inherit;text-decoration:none}
 img{max-width:100%;display:block}
 .container{max-width:1200px;margin:0 auto;padding:0 20px}
 section{padding:70px 0}
 h2{font-size:38px;font-weight:700;line-height:1.15;margin-bottom:14px}
-h2 span{color:var(--blue)}
+h2 span{background:linear-gradient(100deg,var(--blue) 5%,#8d7ff0 55%,var(--pink) 105%);-webkit-background-clip:text;background-clip:text;color:transparent}
 .lead{color:var(--muted);font-size:18px;max-width:680px;margin-bottom:44px}
 .center{text-align:center;margin-left:auto;margin-right:auto}
 
 /* Buttons */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:15px 30px;border-radius:32px;font-weight:600;font-size:15px;cursor:pointer;border:none;transition:.2s;white-space:nowrap}
-.btn-primary{background:var(--pink);color:#fff}
-.btn-primary:hover{background:var(--blue)}
-.btn-blue{background:var(--blue);color:#fff}
-.btn-blue:hover{background:var(--pink)}
+.btn-primary{background:linear-gradient(120deg,#ff6099,#ff8ab8);color:#fff;box-shadow:0 12px 26px -10px rgba(255,96,153,.65)}
+.btn-primary:hover{background:linear-gradient(120deg,#639aee,#8db8f5);box-shadow:0 14px 28px -10px rgba(99,154,238,.7);transform:translateY(-2px)}
+.btn-blue{background:linear-gradient(120deg,#639aee,#8db8f5);color:#fff;box-shadow:0 12px 26px -10px rgba(99,154,238,.65)}
+.btn-blue:hover{background:linear-gradient(120deg,#ff6099,#ff8ab8);box-shadow:0 14px 28px -10px rgba(255,96,153,.7);transform:translateY(-2px)}
 .btn-ghost{background:#eef1f8;color:var(--ink)}
-.btn-ghost:hover{background:#e2e7f2}
+.btn-ghost:hover{background:#e2e7f2;transform:translateY(-2px)}
 
 /* Top bar */
 .topbar{background:var(--ink);color:#fff;font-size:13px}
@@ -82,7 +82,7 @@ header.nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.95);bac
 /* Category cards */
 .cat-grid{grid-template-columns:repeat(3,1fr)}
 .cat-card{border:1px solid var(--line);border-radius:22px;padding:30px;transition:.2s;display:flex;flex-direction:column}
-.cat-card:hover{transform:translateY(-4px);box-shadow:var(--shadow);border-color:transparent}
+.cat-card:hover{transform:translateY(-4px);box-shadow:0 24px 48px -20px rgba(141,127,240,.4);border-color:transparent}
 .cat-card.c1{background:var(--bg-blue)}.cat-card.c2{background:var(--bg-peach)}.cat-card.c3{background:var(--bg-pink)}
 .cat-head{display:flex;align-items:center;gap:13px;margin-bottom:12px}
 .cat-ico{width:56px;height:56px;border-radius:14px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:30px}
@@ -148,20 +148,13 @@ header.nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.95);bac
 .works-grid{grid-template-columns:repeat(4,1fr)}
 .work{border-radius:18px;overflow:hidden;border:1px solid var(--line);background:#fff;transition:.2s}
 .work:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
-.work .ph{aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;font-size:52px;background:var(--bg-blue)}
-.work:nth-child(3n) .ph{background:var(--bg-peach)}
-.work:nth-child(3n+1) .ph{background:var(--bg-pink)}
+.work .ph{aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;font-size:52px;background:#fff}
+.work .ph:has(img){background:#fff;border-bottom:1px solid var(--line)}
 .work .cap{padding:14px 16px}
 .work .cap b{font-size:14px;display:block}
 .work .cap .meta{font-size:12px;color:var(--muted);margin-top:6px;display:flex;gap:12px;flex-wrap:wrap}
 .work .cap .meta i{font-style:normal;color:var(--blue);font-weight:700}
-
-/* Trust strip */
-.trust-grid{grid-template-columns:repeat(4,1fr)}
-.trust{background:#fff;border:1px solid var(--line);border-radius:18px;padding:24px;text-align:center}
-.trust .ic{font-size:34px;margin-bottom:10px}
-.trust b{display:block;font-size:16px;margin-bottom:6px}
-.trust p{font-size:13px;color:var(--muted)}
+.work .ph img{width:100%;height:100%;object-fit:contain;display:block;padding:8px}
 
 /* Cases */
 .cases-grid{grid-template-columns:1fr 1fr}
@@ -174,8 +167,11 @@ header.nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.95);bac
 
 /* Cost */
 .cost-grid{grid-template-columns:repeat(5,1fr)}
-.cost{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px;text-align:center;font-size:14px;font-weight:500}
-.cost .ic{font-size:28px;margin-bottom:8px}
+.cost{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px;text-align:center;font-size:14px;font-weight:500;transition:.2s}
+.cost:hover{transform:translateY(-3px);box-shadow:var(--shadow);border-color:transparent}
+.cost .ic{width:56px;height:56px;margin:0 auto 10px;transition:.2s}
+.cost:hover .ic{transform:scale(1.07)}
+.cost .ic img{width:100%;height:100%;object-fit:contain;display:block}
 .cycle-note{margin-top:30px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px 26px;display:flex;flex-wrap:wrap;gap:16px 28px;align-items:center;justify-content:center;font-size:14px;color:var(--muted);text-align:center}
 .cycle-note>b{color:var(--ink);font-size:15px}
 .cycle-note span b{color:var(--blue)}
@@ -184,17 +180,22 @@ header.nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.95);bac
 
 /* Hero */
 
-.hero{background:var(--bg-blue);border-radius:var(--radius);margin:24px auto;max-width:1200px;overflow:hidden}
-.hero-inner{display:grid;grid-template-columns:1.1fr .9fr;align-items:center;gap:30px;padding:56px}
+.hero{position:relative;background:linear-gradient(120deg,#dcebff 0%,#e4e8fb 36%,#ffe1f1 76%,#ffd3e8 100%);border-radius:var(--radius);margin:24px auto;max-width:1200px;overflow:hidden;box-shadow:0 30px 60px -30px rgba(120,110,230,.35)}
+/* Декоративные мягкие круги в фоне hero */
+.hero::before{content:"";position:absolute;top:-110px;right:-80px;width:320px;height:320px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.6) 0%,rgba(255,255,255,0) 70%)}
+.hero::after{content:"";position:absolute;bottom:-130px;left:-90px;width:380px;height:380px;border-radius:50%;background:radial-gradient(circle,rgba(255,96,153,.24) 0%,rgba(255,96,153,0) 70%)}
+.hero-inner{position:relative;z-index:1;display:grid;grid-template-columns:1.1fr .9fr;align-items:center;gap:30px;padding:56px}
 .hero .tag{display:inline-block;background:#fff;color:var(--blue);font-weight:600;font-size:13px;padding:7px 15px;border-radius:20px;margin-bottom:20px}
 .hero h1{font-size:46px;line-height:1.08;font-weight:700;margin-bottom:18px}
-.hero h1 span{color:var(--blue)}
+.hero h1 span{background:linear-gradient(100deg,var(--blue) 0%,#8d7ff0 60%,var(--pink) 115%);-webkit-background-clip:text;background-clip:text;color:transparent}
 .hero p{font-size:19px;color:#41506b;margin-bottom:28px;max-width:520px}
 .hero-actions{display:flex;gap:14px;flex-wrap:wrap}
 .hero-badges{display:flex;gap:26px;margin-top:32px;flex-wrap:wrap}
 .hero-badges b{display:block;font-size:26px;color:var(--blue)}
 .hero-badges span{font-size:13px;color:#5b6a86}
-.hero-art{aspect-ratio:1/1;border-radius:50%;background:radial-gradient(circle at 30% 30%,#fff,#ced9ef);display:flex;align-items:center;justify-content:center;font-size:120px}
+.hero-art{position:relative;display:flex;align-items:center;justify-content:center}
+.hero-art img{position:relative;z-index:2;width:100%;max-width:460px;height:auto;transform:scale(1.28);filter:drop-shadow(0 22px 28px rgba(30,40,80,.18))}
+.hero-art .shadow{position:absolute;bottom:1%;left:50%;transform:translateX(-50%);width:66%;height:26px;border-radius:50%;background:rgba(30,40,80,.22);filter:blur(13px);z-index:1}
 
 /* Products */
 .grid{display:grid;gap:22px}
@@ -208,19 +209,31 @@ header.nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.95);bac
 .c1{background:var(--bg-blue)}.c2{background:var(--bg-peach)}.c3{background:var(--bg-pink)}
 .c4{background:#e6f7ee}.c5{background:#fff4d6}.c6{background:#eee6fb}
 
-/* Why / advantages */
+/* Why / perks — яркая бренд-полоса */
 .why{background:var(--bg-blue)}
-.adv{grid-template-columns:repeat(3,1fr)}
-.adv .card{background:#fff;border:none}
-.adv .ico{background:#eef1f8}
+.perks{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;background:linear-gradient(120deg,var(--blue) 0%,#8d7ff0 55%,var(--pink) 100%);border-radius:var(--radius);padding:26px 22px;box-shadow:0 26px 46px -22px rgba(120,110,230,.6)}
+.perk{display:flex;align-items:center;gap:12px;padding:4px 6px;transition:.2s}
+.perk:hover{transform:translateY(-3px)}
+.perk .pi{width:64px;height:64px;flex:0 0 64px;border-radius:18px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:23px;overflow:hidden;box-shadow:0 8px 16px -8px rgba(40,50,110,.35);transition:.2s}
+.perk:hover .pi{transform:scale(1.06) rotate(-2deg)}
+.perk .pi img{width:100%;height:100%;object-fit:cover;display:block}
+.perk b{display:block;font-size:13.5px;line-height:1.25;margin-bottom:2px;color:#fff}
+.perk span{font-size:11.5px;color:rgba(255,255,255,.85);line-height:1.3}
 
-/* Steps */
-.steps{grid-template-columns:repeat(5,1fr)}
-.step{text-align:center;position:relative}
-.step .num{width:56px;height:56px;border-radius:50%;background:var(--pink);color:#fff;font-weight:700;font-size:22px;display:flex;align-items:center;justify-content:center;margin:0 auto 14px}
-.step:nth-child(even) .num{background:var(--blue)}
-.step h4{font-size:16px;margin-bottom:6px}
-.step p{font-size:13px;color:var(--muted)}
+/* Steps — этапы с фото и стрелками */
+.steps{grid-template-columns:repeat(5,1fr);gap:18px}
+.step{position:relative;text-align:center;background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px 14px 18px;transition:.2s}
+.step:hover{transform:translateY(-4px);box-shadow:var(--shadow);border-color:transparent}
+.step .ph{position:relative;aspect-ratio:4/3;border-radius:12px;background:var(--bg-blue);display:flex;align-items:center;justify-content:center;overflow:hidden;margin-bottom:12px}
+.step:nth-child(3n) .ph{background:var(--bg-peach)}
+.step:nth-child(3n+1) .ph{background:var(--bg-pink)}
+.step .ph img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s ease}
+.step:hover .ph img{transform:scale(1.05)}
+.step .num{position:absolute;top:8px;left:8px;z-index:2;width:30px;height:30px;border-radius:50%;background:var(--pink);color:#fff;font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 10px -3px rgba(255,96,153,.7)}
+.step:nth-child(even) .num{background:var(--blue);box-shadow:0 4px 10px -3px rgba(99,154,238,.7)}
+.step:not(:last-child)::after{content:"→";position:absolute;top:26%;right:-17px;font-size:19px;font-weight:700;color:var(--blue);z-index:3}
+.step h4{font-size:15px;margin-bottom:4px}
+.step p{font-size:12.5px;color:var(--muted)}
 
 /* Portfolio */
 .gallery{grid-template-columns:repeat(4,1fr)}
@@ -230,18 +243,62 @@ header.nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.95);bac
 
 /* Clients logos */
 .clients{background:#fafaff}
-.logos{display:flex;flex-wrap:wrap;gap:18px;justify-content:center;align-items:center}
-.logos .lg{background:#fff;border:1px solid var(--line);border-radius:14px;height:80px;flex:1 1 160px;max-width:190px;display:flex;align-items:center;justify-content:center;font-weight:700;color:#9aa0b3;font-size:17px}
+.logos{display:flex;flex-wrap:nowrap;gap:14px;justify-content:center;align-items:stretch}
+.logos .lg{background:#fff;border:1px solid var(--line);border-radius:16px;height:110px;flex:1 1 0;min-width:0;display:flex;align-items:center;justify-content:center;padding:14px 16px;transition:.2s}
+.logos .lg:hover{transform:translateY(-3px);box-shadow:var(--shadow);border-color:transparent}
+.logos .lg img{max-width:100%;max-height:68px;width:auto;height:auto;object-fit:contain;opacity:.95;transition:.2s}
+@media(max-width:900px){
+  .logos{flex-wrap:wrap}
+  .logos .lg{flex:1 1 28%;height:100px}
+}
+@media(max-width:560px){
+  .logos .lg{flex:1 1 44%;height:92px}
+}
+.logos .lg:hover img{opacity:1}
 
 /* Reviews */
-.reviews-grid{grid-template-columns:repeat(3,1fr)}
-.review{background:#fff;border:1px solid var(--line);border-radius:20px;padding:28px}
+.reviews-grid{grid-template-columns:repeat(2,1fr)}
+.review{display:block;background:#fff;border:1px solid var(--line);border-radius:20px;padding:28px;color:inherit;transition:.2s}
+.review:hover{transform:translateY(-4px);box-shadow:var(--shadow);border-color:transparent}
 .review .stars{color:#ffb400;margin-bottom:12px;letter-spacing:2px}
 .review p{font-size:15px;margin-bottom:18px}
 .review .who{display:flex;align-items:center;gap:12px}
-.review .av{width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--pink));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700}
+.review .av{width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--pink));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;flex:0 0 46px}
 .review .who b{display:block;font-size:15px}
 .review .who span{font-size:13px;color:var(--muted)}
+.review .who .yx{color:#fc3f1d;font-weight:600}
+.review .who .ygo{color:var(--blue);font-weight:600}
+.review:hover .who .ygo{text-decoration:underline}
+.review .rphoto{width:76px;height:76px;flex:0 0 76px;object-fit:cover;border-radius:16px;background:#f7f9fd;border:1px solid var(--line);margin-left:auto;box-shadow:0 8px 16px -8px rgba(20,30,80,.18);transition:.2s}
+.review:hover .rphoto{transform:scale(1.05);box-shadow:0 14px 24px -8px rgba(20,30,80,.28)}
+
+/* Case carousel — все фото одного размера, ничего не обрезается:
+   фон — размытая копия фото, сверху само фото целиком */
+.case .carousel{position:relative}
+.case .track{display:grid}
+.case .slide{grid-area:1/1;opacity:0;transition:opacity .35s;pointer-events:none}
+.case .slide.active{opacity:1;pointer-events:auto}
+.case .ph-frame{position:relative;aspect-ratio:3/2;border-radius:14px;overflow:hidden;background:var(--bg-blue)}
+.case .ph-frame .ph-bg{position:absolute;inset:0;background-size:cover;background-position:center;filter:blur(22px) brightness(1.03);transform:scale(1.3)}
+.case .ph-frame img{position:relative;width:100%;height:100%;object-fit:contain}
+.case .ph-frame--white{background:#fff}
+.car-btn{position:absolute;top:calc(50% - 14px);transform:translateY(-50%);z-index:3;width:38px;height:38px;border-radius:50%;border:none;background:rgba(255,255,255,.94);box-shadow:0 4px 12px rgba(20,30,80,.22);font-size:18px;line-height:1;cursor:pointer;color:var(--ink);transition:.15s}
+.car-btn:hover{background:var(--blue);color:#fff}
+.car-prev{left:10px}.car-next{right:10px}
+.car-dots{display:flex;gap:7px;justify-content:center;margin-top:12px}
+.car-dots button{width:8px;height:8px;border-radius:50%;border:none;background:#d4d9e6;cursor:pointer;padding:0;transition:.15s}
+.car-dots button.active{background:var(--pink);transform:scale(1.3)}
+
+/* Peek toys — крупные игрушки на стыках секций (как на старом сайте) + плавный параллакс */
+body{overflow-x:clip}
+section{position:relative}
+.peek{position:absolute;z-index:6;width:290px;pointer-events:none;opacity:0;transform:translateY(70px) scale(.85);transition:opacity .8s ease,transform 1.1s cubic-bezier(.22,.8,.3,1);will-change:transform}
+.peek.pl{left:14px}
+.peek.pr{right:14px}
+.peek.show{opacity:1;transform:translateY(var(--py,0px)) scale(1)}
+.peek img{width:100%;height:auto;filter:drop-shadow(0 26px 30px rgba(30,45,85,.25))}
+@media(max-width:1100px){.peek{width:170px}}
+@media(max-width:760px){.peek{display:none}}
 
 /* FAQ */
 .faq details{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px 24px;margin-bottom:14px;cursor:pointer}
@@ -276,8 +333,11 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
   .hero-inner{grid-template-columns:1fr;padding:36px}
   .hero h1{font-size:34px}
   .hero-art{max-width:280px;margin:0 auto}
-  .products,.adv,.reviews-grid{grid-template-columns:1fr 1fr}
-  .steps{grid-template-columns:1fr 1fr;gap:30px}
+  .hero-art img{transform:scale(1.15)}
+  .products,.reviews-grid{grid-template-columns:1fr 1fr}
+  .perks{grid-template-columns:1fr 1fr;padding:20px 18px}
+  .steps{grid-template-columns:1fr 1fr;gap:18px}
+  .step:not(:last-child)::after{display:none}
   .gallery{grid-template-columns:1fr 1fr}
   .cta{grid-template-columns:1fr;padding:36px}
   .foot{grid-template-columns:1fr 1fr}
@@ -290,7 +350,7 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
 }
 
 @media(max-width:560px){
-  .products,.adv,.reviews-grid,.gallery,.foot{grid-template-columns:1fr}
+  .products,.reviews-grid,.gallery,.foot,.perks{grid-template-columns:1fr}
   .steps{grid-template-columns:1fr}
 }
 </style>
@@ -373,11 +433,10 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
       <div class="hero-badges">
         <div><b>10+</b><span>лет на рынке</span></div>
         <div><b>500+</b><span>реализованных партий</span></div>
-        <div><b>−5%</b><span>к цене конкурента</span></div>
         <div><b>от 100</b><span>штук в партии</span></div>
       </div>
     </div>
-    <div class="hero-art">🧸</div>
+    <div class="hero-art"><img src="/prototype/images/hero-toy.png" alt="Фирменная мягкая игрушка от фабрики Пушистый Завод"><span class="shadow"></span></div>
   </div>
 </div>
 
@@ -421,12 +480,13 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
           <div class="cat-head"><h3>Пластиковые фигурки из ПВХ</h3></div>
 
 
-          <p>Изготовление изделий из ПВХ на заказ по вашей 3D-модели или образцу.</p>
+          <p>Изготовление изделий из ПВХ и твёрдого пластика на заказ по вашей 3D-модели или образцу.</p>
           <div class="chips">
             <span>Фигурки ПВХ</span>
             <span>Брелоки ПВХ</span>
             <span>Флешки ПВХ</span>
-            <span>Джибитсы (Jibbitz)</span>
+            <span>Джибитсы</span>
+            <span>Фигурки из твёрдого пластика</span>
           </div>
           <span class="more">Подробнее →</span>
         </div>
@@ -460,47 +520,51 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
   </div>
 </section>
 
-<!-- ДОВЕРИЕ / ПРОИЗВОДСТВО -->
-<section id="trust" style="padding-top:24px">
+<!-- ПРЕИМУЩЕСТВА (компактная полоса) -->
+<section id="why" style="padding:30px 0 6px">
   <div class="container">
-    <div class="grid trust-grid">
-      <div class="trust"><div class="ic">🏭</div><b>Собственное производство</b><p>Полный цикл в России, без посредников — держим качество и сроки под контролем.</p></div>
-      <div class="trust"><div class="ic">📜</div><b>Сертификаты качества</b><p>Продукция сертифицирована и безопасна, в том числе для детских товаров.</p></div>
-      <div class="trust"><div class="ic">🏷️</div><b>Работаем с «Честным знаком»</b><p>Маркируем продукцию по требованиям законодательства РФ.</p></div>
-      <div class="trust"><div class="ic">✅</div><b>Контроль на каждом этапе</b><p>Проверка образца и партии перед отгрузкой — брак до вас не доедет.</p></div>
-    </div>
-  </div>
-</section>
-
-<!-- ПОЧЕМУ МЫ -->
-<section id="why" class="why">
-
-  <div class="container">
-    <h2>Почему бизнес выбирает <span>Пушистый Завод</span></h2>
-    <p class="lead">Мы закрываем всё, что важно закупщику и бренд-менеджеру: цену, сроки, качество и документы.</p>
-    <div class="grid adv">
-      <div class="card"><div class="ico">🏭</div><h3>Собственное производство</h3><p>Без посредников и переплат — контролируем каждый этап и держим цену ниже рынка.</p></div>
-      <div class="card"><div class="ico">💰</div><h3>Снизим цену конкурента на 5%</h3><p>Нашли дешевле? Пришлите КП — сделаем выгоднее при том же качестве.</p></div>
-      <div class="card"><div class="ico">📄</div><h3>Работа с юрлицами</h3><p>Договор, счёт, закрывающие документы, оплата по безналу, работа с НДС.</p></div>
-      <div class="card"><div class="ico">✏️</div><h3>Бесплатный дизайн-макет</h3><p>Наши художники нарисуют изделие по вашему ТЗ и покажут 3D-визуализацию до старта.</p></div>
-      <div class="card"><div class="ico">📦</div><h3>Образец перед тиражом</h3><p>Согласуем и изготовим предсерийный образец — вы платите за тираж, только всё утвердив.</p></div>
-      <div class="card"><div class="ico">🚚</div><h3>Сроки и доставка по РФ и СНГ</h3><p>Прогнозируемые сроки под дедлайн акции, отгрузка в любой регион.</p></div>
+    <div class="perks">
+      <div class="perk"><span class="pi"><img src="/prototype/images/logo.png" alt="Логотип Пушистый Завод — собственное производство" style="object-fit:contain;padding:9px" loading="lazy" decoding="async"></span><div><b>Собственное производство</b><span>Полный цикл, без посредников</span></div></div>
+      <div class="perk"><span class="pi"><img src="/prototype/images/perks/perk-2.jpg" alt="Сертификаты качества" loading="lazy" decoding="async"></span><div><b>Сертификаты качества</b><span>Включая детские товары</span></div></div>
+      <div class="perk"><span class="pi"><img src="/prototype/images/perks/perk-3.jpg" alt="Маркировка Честный знак" loading="lazy" decoding="async"></span><div><b>«Честный знак»</b><span>Маркировка по закону РФ</span></div></div>
+      <div class="perk"><span class="pi"><img src="/prototype/images/perks/perk-4.jpg" alt="Доставка по РФ и СНГ" loading="lazy" decoding="async"></span><div><b>Доставка по РФ и СНГ</b><span>Отгрузка в любой регион</span></div></div>
+      <div class="perk"><span class="pi"><img src="/prototype/images/perks/perk-5.jpg" alt="Работа с юрлицами" loading="lazy" decoding="async"></span><div><b>Работа с юрлицами</b><span>Договор, безнал, НДС</span></div></div>
     </div>
   </div>
 </section>
 
 <!-- КАК РАБОТАЕМ -->
-<section id="how">
+<section id="how" style="background:#f7f9fd">
   <div class="container">
     <h2 class="center">Как мы <span>работаем</span></h2>
     <p class="lead center">Прозрачный процесс от заявки до готовой партии</p>
+    <!-- реальные фото этапов производства, единый формат 4:3 -->
     <div class="grid steps">
-      <div class="step"><div class="num">1</div><h4>Заявка и бриф</h4><p>Обсуждаем изделие, тираж, сроки и бюджет.</p></div>
-      <div class="step"><div class="num">2</div><h4>Макет и КП</h4><p>Рисуем дизайн, считаем стоимость, присылаем договор.</p></div>
-      <div class="step"><div class="num">3</div><h4>Образец</h4><p>Изготавливаем образец и согласуем с вами.</p></div>
-      <div class="step"><div class="num">4</div><h4>Производство</h4><p>Запускаем тираж на собственной фабрике.</p></div>
-      <div class="step"><div class="num">5</div><h4>Отгрузка</h4><p>Проверка качества и доставка с документами.</p></div>
+      <div class="step"><div class="ph"><span class="num">1</span><img src="/prototype/images/steps/step-1.jpg" alt="Заявка и бриф — обсуждаем изделие, тираж и сроки" loading="lazy" decoding="async"></div><h4>Заявка и бриф</h4><p>Обсуждаем изделие, тираж, сроки и бюджет.</p></div>
+      <div class="step"><div class="ph"><span class="num">2</span><img src="/prototype/images/steps/step-2.jpg" alt="Макет и КП — дизайн и визуализация изделия" loading="lazy" decoding="async"></div><h4>Макет и КП</h4><p>Рисуем дизайн, считаем стоимость, присылаем договор.</p></div>
+      <div class="step"><div class="ph"><span class="num">3</span><img src="/prototype/images/steps/step-3.jpg" alt="Образец изделия перед запуском тиража" loading="lazy" decoding="async"></div><h4>Образец</h4><p>Изготавливаем образец и согласуем с вами.</p></div>
+      <div class="step"><div class="ph"><span class="num">4</span><img src="/prototype/images/steps/step-4.jpg" alt="Производство тиража на собственной фабрике" loading="lazy" decoding="async"></div><h4>Производство</h4><p>Запускаем тираж на собственной фабрике.</p></div>
+      <div class="step"><div class="ph"><span class="num">5</span><img src="/prototype/images/steps/step-5.jpg" alt="Проверка качества и отгрузка готовой партии" loading="lazy" decoding="async"></div><h4>Отгрузка</h4><p>Проверка качества и доставка с документами.</p></div>
     </div>
+  </div>
+</section>
+
+<!-- НАШИ РАБОТЫ (витрина) -->
+<section id="works">
+  <div class="container">
+    <h2>Наши <span>работы</span></h2>
+    <p class="lead">Реальные фото изделий с нашего производства: для кого делали, какой тираж и за сколько дней.</p>
+    <div class="grid works-grid">
+      <div class="work"><div class="ph"><img src="/prototype/images/works/maskot-pyaterochka-300000.jpg" alt="Маскот пятерочка — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>Маскот пятерочка</b><div class="meta"><i>300 000 шт</i><span>2 месяца</span></div></div></div>
+      <div class="work"><div class="ph"><img src="/prototype/images/works/personazh-soka-dobryy-100000.jpg" alt="Персонаж сока Добрый — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>Персонаж сока Добрый</b><div class="meta"><i>100 000 шт</i><span>2 месяца</span></div></div></div>
+      <div class="work"><div class="ph"><img src="/prototype/images/works/maskot-dlya-bmw-10000.jpg" alt="Маскот для BMW — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>Маскот для BMW</b><div class="meta"><i>10 000 шт</i><span>2 месяца</span></div></div></div>
+      <div class="work"><div class="ph"><img src="/prototype/images/works/talisman-lokomotiv-10000.jpg" alt="Талисман Локомотив — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>Талисман Локомотив</b><div class="meta"><i>10 000 шт</i><span>2 месяца</span></div></div></div>
+      <div class="work"><div class="ph"><img src="/prototype/images/works/personazh-aeroflot-3000.jpg" alt="Персонаж аэрофлот — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>Персонаж аэрофлот</b><div class="meta"><i>3 000 шт</i><span>40 дней</span></div></div></div>
+      <div class="work"><div class="ph"><img src="/prototype/images/works/promo-detskiy-mir-6000.jpg" alt="Промо детский мир — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>Промо детский мир</b><div class="meta"><i>6 000 шт</i><span>45 дней</span></div></div></div>
+      <div class="work"><div class="ph"><img src="/prototype/images/works/personazh-dlya-otelya-radisson-350.jpg" alt="Персонаж для отеля radisson — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>Персонаж для отеля radisson</b><div class="meta"><i>350 шт</i><span>28 дней</span></div></div></div>
+      <div class="work"><div class="ph"><img src="/prototype/images/works/personazh-dlya-roskosmosa-strelka-100.jpg" alt="Персонаж для Роскосмоса Стрелка — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>Персонаж для Роскосмоса Стрелка</b><div class="meta"><i>100 шт</i><span>28 дней</span></div></div></div>
+    </div>
+    <div style="text-align:center;margin-top:38px"><a class="btn btn-ghost" href="/works.html">Смотреть все работы →</a></div>
   </div>
 </section>
 
@@ -510,11 +574,11 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
     <h2 class="center">Что влияет на <span>стоимость</span></h2>
     <p class="lead center">Цена всегда индивидуальна. Вот из чего она складывается — рассчитаем точно после брифа.</p>
     <div class="grid cost-grid">
-      <div class="cost"><div class="ic">📦</div>Тираж партии</div>
-      <div class="cost"><div class="ic">📐</div>Размер и сложность</div>
-      <div class="cost"><div class="ic">🧵</div>Материалы</div>
-      <div class="cost"><div class="ic">🎨</div>Брендирование</div>
-      <div class="cost"><div class="ic">⏱️</div>Срочность</div>
+      <div class="cost"><div class="ic"><img src="/prototype/images/cost/cost-1.jpg" alt="Тираж партии" loading="lazy" decoding="async"></div>Тираж партии</div>
+      <div class="cost"><div class="ic"><img src="/prototype/images/cost/cost-2.jpg" alt="Размер и сложность" loading="lazy" decoding="async"></div>Размер и сложность</div>
+      <div class="cost"><div class="ic"><img src="/prototype/images/cost/cost-3.jpg" alt="Материалы" loading="lazy" decoding="async"></div>Материалы</div>
+      <div class="cost"><div class="ic"><img src="/prototype/images/cost/cost-4.jpg" alt="Брендирование" loading="lazy" decoding="async"></div>Брендирование</div>
+      <div class="cost"><div class="ic"><img src="/prototype/images/cost/cost-5.jpg" alt="Срочность" loading="lazy" decoding="async"></div>Срочность</div>
     </div>
     <div class="cycle-note">
       <b>Цикл производства:</b>
@@ -526,54 +590,58 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
 </section>
 
 
-<!-- НАШИ РАБОТЫ (витрина) -->
-<section id="works">
-  <div class="container">
-    <h2>Наши <span>работы</span></h2>
-    <p class="lead">Реализованные партии с фактами: для кого, какой тираж и за сколько дней. Эмодзи заменяются на реальные фото изделий.</p>
-    <div class="grid works-grid">
-      <div class="work"><div class="ph">🧸</div><div class="cap"><b>Маскот для FMCG-бренда</b><div class="meta"><i>2 000 шт</i><span>18 дней</span></div></div></div>
-      <div class="work"><div class="ph">🎒</div><div class="cap"><b>Промо-рюкзаки для банка</b><div class="meta"><i>1 500 шт</i><span>21 день</span></div></div></div>
-      <div class="work"><div class="ph">🔑</div><div class="cap"><b>Мягкие брелоки к выставке</b><div class="meta"><i>3 000 шт</i><span>12 дней</span></div></div></div>
-      <div class="work"><div class="ph">🧩</div><div class="cap"><b>ПВХ-фигурки, IT-компания</b><div class="meta"><i>800 шт</i><span>25 дней</span></div></div></div>
-      <div class="work"><div class="ph">🐻</div><div class="cap"><b>«Символ года» для ритейла</b><div class="meta"><i>5 000 шт</i><span>30 дней</span></div></div></div>
-      <div class="work"><div class="ph">🥿</div><div class="cap"><b>Тапочки для сети отелей</b><div class="meta"><i>1 000 шт</i><span>16 дней</span></div></div></div>
-      <div class="work"><div class="ph">🏷️</div><div class="cap"><b>Пластиковые брелоки</b><div class="meta"><i>10 000 шт</i><span>20 дней</span></div></div></div>
-      <div class="work"><div class="ph">🎁</div><div class="cap"><b>Подарочный набор к НГ</b><div class="meta"><i>2 500 шт</i><span>28 дней</span></div></div></div>
-    </div>
-    <div style="text-align:center;margin-top:38px"><a class="btn btn-ghost" href="/works.html">Смотреть все работы →</a></div>
-  </div>
-</section>
-
 <!-- ПОДРОБНЫЕ КЕЙСЫ -->
-<section id="cases" style="background:#fafaff">
+<section id="cases">
   <div class="container">
     <h2>Кейсы <span>в деталях</span></h2>
     <p class="lead">Как мы решали задачи клиентов — от брифа до отгрузки партии, с цифрами и сроками.</p>
     <div class="grid cases-grid">
 
       <div class="case">
-        <div class="cimg">🧸</div>
-        <h4>Маскот бренда для FMCG-компании</h4>
-        <p style="color:var(--muted);font-size:14px">Клиенту нужен был фирменный плюшевый маскот к выставке — с точным попаданием в цвета бренда и в жёсткий дедлайн.</p>
+        <div class="carousel" data-carousel>
+          <div class="track">
+            <div class="slide active"><div class="ph-frame"><span class="ph-bg" style="background-image:url('/prototype/images/cases/omchik-5.jpg')"></span><img src="/prototype/images/cases/omchik-5.jpg" alt="Команда чемпионата с маскотами Омчик" loading="lazy" decoding="async"></div></div>
+            <div class="slide"><div class="ph-frame"><span class="ph-bg" style="background-image:url('/prototype/images/cases/omchik-1.jpg')"></span><img src="/prototype/images/cases/omchik-1.jpg" alt="Маскот Омчик — команда с готовыми игрушками" loading="lazy" decoding="async"></div></div>
+            <div class="slide"><div class="ph-frame"><span class="ph-bg" style="background-image:url('/prototype/images/cases/omchik-2.jpg')"></span><img src="/prototype/images/cases/omchik-2.jpg" alt="Маскот Омчик для чемпионата России по фигурному катанию" loading="lazy" decoding="async"></div></div>
+            <div class="slide"><div class="ph-frame"><span class="ph-bg" style="background-image:url('/prototype/images/cases/omchik-3.jpg')"></span><img src="/prototype/images/cases/omchik-3.jpg" alt="Партия маскотов Омчик на производстве" loading="lazy" decoding="async"></div></div>
+            <div class="slide"><div class="ph-frame"><span class="ph-bg" style="background-image:url('/prototype/images/cases/omchik-4.jpg')"></span><img src="/prototype/images/cases/omchik-4.jpg" alt="Маскоты Омчик с логотипом чемпионата" loading="lazy" decoding="async"></div></div>
+            <div class="slide"><div class="ph-frame"><span class="ph-bg" style="background-image:url('/prototype/images/cases/omchik-6.jpg')"></span><img src="/prototype/images/cases/omchik-6.jpg" alt="Маскоты Омчик перед отгрузкой партии" loading="lazy" decoding="async"></div></div>
+            <div class="slide"><div class="ph-frame ph-frame--white"><img src="/prototype/images/cases/omchik-7.png" alt="3D-визуализация маскота Омчик от клиента" loading="lazy" decoding="async"></div></div>
+          </div>
+          <button class="car-btn car-prev" type="button" aria-label="Предыдущее фото">‹</button>
+          <button class="car-btn car-next" type="button" aria-label="Следующее фото">›</button>
+          <div class="car-dots"></div>
+        </div>
+        <h4>Маскот Омчик для чемпионата России по фигурному катанию</h4>
+        <p style="color:var(--muted);font-size:14px">Организаторам чемпионата нужен был официальный плюшевый маскот турнира — для вручения спортсменам на пьедестале и продажи болельщикам в дни соревнований.</p>
         <ul>
-          <li><b>Задача:</b> 2 000 маскотов с логотипом к дате выставки</li>
-          <li><b>Что сделали:</b> отрисовали макет и 3D-визуализацию, согласовали образец за 3 дня</li>
-          <li><b>Тираж:</b> 2 000 шт · <b>Срок:</b> 18 дней</li>
-          <li><b>Результат:</b> партия отгружена за 2 дня до выставки, брак — 0%</li>
+          <li><b>Задача:</b> 600 маскотов с логотипом чемпионата к дате первого выступления</li>
+          <li><b>Что сделали:</b> у клиента уже была готовая 3D-визуализация — перенесли её в лекала, изготовили и согласовали образец</li>
+          <li><b>Тираж:</b> 600 шт · <b>Срок:</b> 18 дней</li>
+          <li><b>Результат:</b> партия отгружена вовремя к старту турнира, брак — 0%</li>
         </ul>
         <a class="more" href="#cta">Хочу так же →</a>
       </div>
 
       <div class="case">
-        <div class="cimg">🎒</div>
-        <h4>Промо-рюкзаки для банка</h4>
-        <p style="color:var(--muted);font-size:14px">Отделу маркетинга банка требовались детские рюкзаки с фирменной символикой в ограниченный бюджет.</p>
+        <div class="carousel" data-carousel>
+          <div class="track">
+            <div class="slide active"><div class="ph-frame"><span class="ph-bg" style="background-image:url('/prototype/images/cases/amb-1.jpg')"></span><img src="/prototype/images/cases/amb-1.jpg" alt="Новогодние игрушки для Мосводоканала" loading="lazy" decoding="async"></div></div>
+            <div class="slide"><div class="ph-frame"><span class="ph-bg" style="background-image:url('/prototype/images/cases/amb-2.jpg')"></span><img src="/prototype/images/cases/amb-2.jpg" alt="Сотрудники Мосводоканала с фирменными игрушками" loading="lazy" decoding="async"></div></div>
+            <div class="slide"><div class="ph-frame"><span class="ph-bg" style="background-image:url('/prototype/images/cases/amb-3.jpg')"></span><img src="/prototype/images/cases/amb-3.jpg" alt="Подарки сотрудникам Мосводоканала и их детям" loading="lazy" decoding="async"></div></div>
+            <div class="slide"><div class="ph-frame ph-frame--white"><img src="/prototype/images/cases/amb-4.jpg" alt="Фирменная игрушка Мосводоканала" loading="lazy" decoding="async"></div></div>
+          </div>
+          <button class="car-btn car-prev" type="button" aria-label="Предыдущее фото">‹</button>
+          <button class="car-btn car-next" type="button" aria-label="Следующее фото">›</button>
+          <div class="car-dots"></div>
+        </div>
+        <h4>Новогодние игрушки для Мосводоканала</h4>
+        <p style="color:var(--muted);font-size:14px">Мосводоканал готовил новогодние подарки для сотрудников и их детей — хотели фирменную мягкую игрушку, которую приятно получить и безопасно подарить ребёнку.</p>
         <ul>
-          <li><b>Задача:</b> 1 500 брендированных рюкзаков в рамках бюджета акции</li>
-          <li><b>Что сделали:</b> подобрали материалы, помогли с дизайном, снизили цену конкурента</li>
-          <li><b>Тираж:</b> 1 500 шт · <b>Срок:</b> 21 день</li>
-          <li><b>Результат:</b> уложились в бюджет, полный пакет закрывающих документов</li>
+          <li><b>Задача:</b> 3 000 игрушек — новогодние подарки сотрудникам и их детям к праздникам</li>
+          <li><b>Что сделали:</b> разработали дизайн в фирменном стиле компании и произвели партию из сертифицированных материалов, безопасных даже для детей</li>
+          <li><b>Тираж:</b> 3 000 шт · <b>Срок:</b> 27 дней</li>
+          <li><b>Результат:</b> все подарки доставлены вовремя к Новому году, брак — 0%</li>
         </ul>
         <a class="more" href="#cta">Хочу так же →</a>
       </div>
@@ -590,8 +658,12 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
     <h2 class="center">Нам <span>доверяют</span></h2>
     <p class="lead center">Более 500 компаний заказали фирменную продукцию на нашей фабрике</p>
     <div class="logos">
-      <div class="lg">ЛОГО</div><div class="lg">ЛОГО</div><div class="lg">ЛОГО</div>
-      <div class="lg">ЛОГО</div><div class="lg">ЛОГО</div><div class="lg">ЛОГО</div>
+      <div class="lg"><img src="/prototype/images/clients/client-1.png" alt="Логотип клиента Пушистого Завода" loading="lazy" decoding="async"></div>
+      <div class="lg"><img src="/prototype/images/clients/client-2.png" alt="Логотип клиента Пушистого Завода" loading="lazy" decoding="async"></div>
+      <div class="lg"><img src="/prototype/images/clients/client-3.png" alt="Логотип клиента Пушистого Завода" loading="lazy" decoding="async"></div>
+      <div class="lg"><img src="/prototype/images/clients/client-4.png" alt="Логотип клиента Пушистого Завода" loading="lazy" decoding="async"></div>
+      <div class="lg"><img src="/prototype/images/clients/client-5.png" alt="Логотип клиента Пушистого Завода" loading="lazy" decoding="async"></div>
+      <div class="lg"><img src="/prototype/images/clients/client-6.png" alt="Логотип клиента Пушистого Завода" loading="lazy" decoding="async"></div>
     </div>
   </div>
 </section>
@@ -600,11 +672,44 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
 <section id="reviews">
   <div class="container">
     <h2>Отзывы <span>клиентов</span></h2>
-    <p class="lead">Что говорят закупщики и маркетологи, которые заказывали у нас партии.</p>
+    <p class="lead">Реальные отзывы из Яндекса — нажмите на отзыв, чтобы прочитать его на Яндексе.</p>
     <div class="grid reviews-grid">
-      <div class="review"><div class="stars">★★★★★</div><p>«Заказывали 2000 мягких брелоков с нашим маскотом к выставке. Сделали образец за 3 дня, тираж — точно в срок. Документы для бухгалтерии без вопросов.»</p><div class="who"><div class="av">А</div><div><b>Анна К.</b><span>бренд-менеджер, FMCG</span></div></div></div>
-      <div class="review"><div class="stars">★★★★★</div><p>«Нужны были рюкзаки с логотипом для детского праздника банка. Помогли с дизайном, уложились в бюджет и снизили цену относительно другого поставщика.»</p><div class="who"><div class="av">Д</div><div><b>Дмитрий Р.</b><span>отдел маркетинга, банк</span></div></div></div>
-      <div class="review"><div class="stars">★★★★★</div><p>«Берём игрушки „символ года“ для корпоративных подарков третий год подряд. Стабильное качество и адекватные сроки. Рекомендую как надёжного подрядчика.»</p><div class="who"><div class="av">Е</div><div><b>Елена М.</b><span>HR-директор, IT-компания</span></div></div></div>
+      <a class="review" href="https://reviews.yandex.ru/user/cqtnjq3jft9rxhcjnx1wek4tg8?utm_source=org&main_tab=org" target="_blank" rel="noopener" aria-label="Читать отзыв Розы Абёровой на Яндексе">
+        <div class="stars">★★★★★</div>
+        <p>«Заказали у „Пушистого завода“ кошечек по индивидуальному заказу для продажи на маркетплейсах. Хорошие швы, приятная ткань, игрушка повторяет эскиз на 100% 🔥 Единственное, по срокам опоздали на 2–3 дня, но это не критично.»</p>
+        <div class="who">
+          <div class="av">Р</div>
+          <div><b>Роза Абёрова</b><span><span class="yx">Яндекс</span> · <span class="ygo">читать отзыв →</span></span></div>
+          <img class="rphoto" src="/prototype/images/reviews/roza.png" alt="Фото из отзыва Розы — кошечки на заказ для маркетплейсов" loading="lazy" decoding="async">
+        </div>
+      </a>
+      <a class="review" href="https://reviews.yandex.ru/user/m3r2eq02a2zb8cxab08nxnxq9m?utm_source=org&main_tab=org" target="_blank" rel="noopener" aria-label="Читать отзыв Арианки Грандэ на Яндексе">
+        <div class="stars">★★★★★</div>
+        <p>«Мы заказывали игрушки для нашего бренда мёда в виде пчёлок. Игрушки качественные, с сертификацией, и их дизайн соответствует действительности. Единственный минус — задержали поставку на 2 дня.»</p>
+        <div class="who">
+          <div class="av">А</div>
+          <div><b>Арианка Грандэ</b><span><span class="yx">Яндекс</span> · <span class="ygo">читать отзыв →</span></span></div>
+          <img class="rphoto" src="/prototype/images/reviews/arianka.png" alt="Фото из отзыва Арианки — игрушки-пчёлки для бренда мёда" loading="lazy" decoding="async">
+        </div>
+      </a>
+      <a class="review" href="https://reviews.yandex.ru/user/h4ky9mejx5n9vnhuaa3r9pdnm8?utm_source=org&main_tab=org" target="_blank" rel="noopener" aria-label="Читать отзыв Лидии Юрьяновой на Яндексе">
+        <div class="stars">★★★★★</div>
+        <p>«Спасибо большое за качественную работу, игрушки красивые, хорошего качества, пришли быстро!»</p>
+        <div class="who">
+          <div class="av">Л</div>
+          <div><b>Лидия Юрьянова</b><span><span class="yx">Яндекс</span> · <span class="ygo">читать отзыв →</span></span></div>
+          <img class="rphoto" src="/prototype/images/reviews/lidiya.png" alt="Фото из отзыва Лидии — заказ мягких игрушек" loading="lazy" decoding="async">
+        </div>
+      </a>
+      <a class="review" href="https://reviews.yandex.ru/user/5qm6vuvk1twbah2qr3rndtdjbm?utm_source=org&main_tab=org" target="_blank" rel="noopener" aria-label="Читать отзыв Oyuna T. на Яндексе">
+        <div class="stars">★★★★★</div>
+        <p>«Заказали 1000 игрушек — шили быстро, качеством остались довольны! Спасибо за работу.»</p>
+        <div class="who">
+          <div class="av">O</div>
+          <div><b>Oyuna T.</b><span><span class="yx">Яндекс</span> · <span class="ygo">читать отзыв →</span></span></div>
+          <img class="rphoto" src="/prototype/images/reviews/oyuna.png" alt="Фото из отзыва Oyuna — тираж 1 000 игрушек" loading="lazy" decoding="async">
+        </div>
+      </a>
     </div>
   </div>
 </section>
@@ -633,16 +738,18 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
     <div>
       <h2>Рассчитаем ваш заказ <span>за 1 день</span></h2>
       <p>Оставьте заявку — менеджер свяжется, поможет с дизайном и пришлёт коммерческое предложение с ценой и сроками. Консультация бесплатна.</p>
+      <p style="margin-top:16px"><span style="display:inline-block;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.4);border-radius:22px;padding:9px 18px;font-size:13.5px;font-weight:600">💸 Нашли дешевле? Снизим цену конкурента на&nbsp;5%</span></p>
       <p style="margin-top:18px">📞 <a href="tel:+79896051010"><b>+7 (989) 605-10-10</b></a><br>✉️ <a href="mailto:pushistyzavod@mail.ru">pushistyzavod@mail.ru</a></p>
     </div>
-    <form class="form" onsubmit="event.preventDefault();alert('Спасибо! Заявка отправлена (демо-макет).');">
+    <form class="form" data-api-form data-form-name="Главная — расчёт заказа">
       <h3>Получить расчёт</h3>
       <small>Ответим в течение рабочего дня</small>
-      <input type="text" placeholder="Компания / Имя" required>
-      <input type="tel" placeholder="Телефон" required>
-      <input type="email" placeholder="E-mail">
-      <select>
-        <option>Что нужно произвести?</option>
+      <input type="text" name="name" placeholder="Компания / Имя" required>
+      <input type="tel" name="phone" placeholder="Телефон" required>
+      <input type="email" name="email" placeholder="E-mail">
+      <select name="product">
+        <option value="">Что нужно произвести?</option>
+
         <option>Мягкие игрушки</option>
         <option>Рюкзаки / сумки</option>
         <option>Тапочки</option>
@@ -698,6 +805,68 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
   </div>
 </footer>
 
+<script>
+  // Карусель фото в кейсах: стрелки, точки, свайп
+  document.querySelectorAll('[data-carousel]').forEach(function(car){
+    var slides=[].slice.call(car.querySelectorAll('.slide'));
+    var dotsBox=car.querySelector('.car-dots');
+    var i=0;
+    slides.forEach(function(_,n){
+      var d=document.createElement('button');
+      d.type='button';
+      d.setAttribute('aria-label','Фото '+(n+1));
+      if(n===0)d.classList.add('active');
+      d.addEventListener('click',function(){go(n);});
+      dotsBox.appendChild(d);
+    });
+    var dots=[].slice.call(dotsBox.children);
+    function go(n){
+      slides[i].classList.remove('active');dots[i].classList.remove('active');
+      i=(n+slides.length)%slides.length;
+      slides[i].classList.add('active');dots[i].classList.add('active');
+    }
+    car.querySelector('.car-prev').addEventListener('click',function(){go(i-1);});
+    car.querySelector('.car-next').addEventListener('click',function(){go(i+1);});
+    var x0=null;
+    car.addEventListener('touchstart',function(e){x0=e.touches[0].clientX;},{passive:true});
+    car.addEventListener('touchend',function(e){
+      if(x0===null)return;
+      var dx=e.changedTouches[0].clientX-x0;
+      if(Math.abs(dx)>40)go(dx<0?i+1:i-1);
+      x0=null;
+    },{passive:true});
+  });
+
+  // Игрушки выглядывают сбоку при прокрутке до секции
+  var peekIO=new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if(en.isIntersecting){en.target.classList.add('show');peekIO.unobserve(en.target);}
+    });
+  },{threshold:.15});
+  document.querySelectorAll('.peek').forEach(function(p){peekIO.observe(p);});
+
+  // Плавный параллакс игрушек при скролле (как на старом сайте)
+  (function(){
+    var peeks=[].slice.call(document.querySelectorAll('.peek'));
+    var ticking=false;
+    function update(){
+      ticking=false;
+      var vh=window.innerHeight;
+      peeks.forEach(function(p){
+        if(!p.classList.contains('show'))return;
+        var r=p.getBoundingClientRect();
+        var center=r.top+r.height/2;
+        var off=(center-vh/2)*-0.09;
+        off=Math.max(-60,Math.min(60,off));
+        p.style.setProperty('--py',off.toFixed(1)+'px');
+      });
+    }
+    window.addEventListener('scroll',function(){
+      if(!ticking){ticking=true;requestAnimationFrame(update);}
+    },{passive:true});
+    update();
+  })();
+</script>
 <script>
   document.querySelector('.burger').addEventListener('click',function(){
     var m=document.querySelector('.menu');

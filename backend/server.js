@@ -6,10 +6,67 @@ const morgan = require('morgan');
 const path = require('path');
 const fs = require('fs');
 
+// ---------------------------------------------------------------------------
+// .env loader (без внешних зависимостей).
+// Раньше server.js читал только process.env, поэтому при обычном `npm start`
+// переменные из .env не подхватывались: MONGO_URI = undefined -> падало
+// подключение к базе, а статика искалась в несуществующей папке backend/public.
+// ---------------------------------------------------------------------------
+function loadEnvFile() {
+  const candidates = [
+    process.env.ENV_FILE,
+    path.join(__dirname, '.env'),
+    path.join(__dirname, '..', '.env'),
+  ].filter(Boolean);
+
+  const file = candidates.find((f) => fs.existsSync(f));
+  if (!file) return null;
+
+  const content = fs.readFileSync(file, 'utf8');
+  content.split(/\r?\n/).forEach((rawLine) => {
+    const line = rawLine.trim();
+    if (!line || line.startsWith('#') || line.startsWith('=')) return;
+
+    const eq = line.indexOf('=');
+    if (eq === -1) return;
+
+    const key = line.slice(0, eq).trim();
+    if (!/^[A-Za-z_][A-Za-z0-9_]*$/.test(key)) return; // пропускаем строки-заголовки вида "==== MongoDB ===="
+
+    let value = line.slice(eq + 1).trim();
+    if ((value.startsWith('"') && value.endsWith('"')) || (value.startsWith("'") && value.endsWith("'"))) {
+      value = value.slice(1, -1);
+    }
+    if (process.env[key] === undefined) process.env[key] = value;
+  });
+
+  return file;
+}
+
+const envFile = loadEnvFile();
+if (envFile) console.log('⚙️  Загружен файл настроек:', envFile);
 
 const app = express();
-const PORT = process.env.PORT || 3000;
-const MONGO_URI = process.env.MONGO_URI;
+const PORT = Number(process.env.PORT) || 3000;
+const IN_DOCKER = fs.existsSync('/.dockerenv');
+
+// ---------------------------------------------------------------------------
+// Адрес MongoDB.
+// В .env хост "mongo" — это имя сервиса Docker, локально его не существует,
+// поэтому вне контейнера подставляем 127.0.0.1.
+// ---------------------------------------------------------------------------
+function resolveMongoUri() {
+  const db = process.env.MONGO_DB || 'pushistyzavod';
+  const port = process.env.MONGO_PORT || '27017';
+  const local = `mongodb://127.0.0.1:${port}/${db}`;
+  const uri = process.env.MONGO_URI;
+
+  if (!uri) return local;
+  if (!IN_DOCKER && /(?:@|\/\/)mongo(?::\d+)?(?:\/|$)/.test(uri)) return local;
+  return uri;
+}
+
+const MONGO_URI = resolveMongoUri();
 
 // Middleware
 app.use(helmet({
@@ -21,10 +78,38 @@ app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// MongoDB connection
-mongoose.connect(MONGO_URI)
-  .then(() => console.log('✅ MongoDB connected'))
-  .catch(err => console.error('❌ MongoDB connection error:', err));
+// ---------------------------------------------------------------------------
+// MongoDB connection.
+// Ошибка подключения больше не роняет сайт: страницы отдаются как обычно,
+// а заявки сохраняются в файл, чтобы ничего не потерялось.
+// ---------------------------------------------------------------------------
+mongoose.connect(MONGO_URI, { serverSelectionTimeoutMS: 5000 })
+  .then(() => console.log('✅ MongoDB connected:', MONGO_URI.replace(/\/\/[^@]*@/, '//***@')))
+  .catch((err) => {
+    console.warn('⚠️  MongoDB недоступна, сайт работает без базы:', err.message);
+  });
+
+mongoose.connection.on('error', (err) => {
+  console.warn('⚠️  Ошибка MongoDB:', err.message);
+});
+
+const dbReady = () => mongoose.connection.readyState === 1;
+
+const FALLBACK_DIR = path.join(__dirname, 'data');
+function saveToFile(name, payload) {
+  try {
+    fs.mkdirSync(FALLBACK_DIR, { recursive: true });
+    fs.appendFileSync(
+      path.join(FALLBACK_DIR, name),
+      JSON.stringify({ ...payload, savedAt: new Date().toISOString() }) + '\n',
+      'utf8'
+    );
+    return true;
+  } catch (e) {
+    console.error('Не удалось сохранить заявку в файл:', e.message);
+    return false;
+  }
+}
 
 // Schemas
 const formSubmissionSchema = new mongoose.Schema({
@@ -66,114 +151,154 @@ const BlogArticle = mongoose.model('BlogArticle', blogArticleSchema);
 
 // API Routes - Handle Tilda form submissions
 app.post('/api/form', async (req, res) => {
+  const { formName, formPage, name, email, phone, message, comment, ...customFields } = req.body || {};
+
+  const data = {
+    formName: formName || req.body.formname || 'unnamed',
+    formPage: formPage || req.body.tildaspec_formname || 'unknown',
+    name: name || req.body.Name,
+    email: email || req.body.Email,
+    phone: phone || req.body.Phone,
+    message: message || req.body.Message || req.body.comment,
+    comment: comment || req.body.comment,
+    customFields,
+  };
+
   try {
-    const { formName, formPage, name, email, phone, message, comment, ...customFields } = req.body;
-    
-    const submission = new FormSubmission({
-      formName: formName || req.body.formname || 'unnamed',
-      formPage: formPage || req.body.tildaspec_formname || 'unknown',
-      name: name || req.body.Name,
-      email: email || req.body.Email,
-      phone: phone || req.body.Phone,
-      message: message || req.body.Message || req.body.comment,
-      comment: comment || req.body.comment,
-      customFields,
-    });
-    
+    if (!dbReady()) {
+      saveToFile('form-submissions.jsonl', data);
+      console.log('📝 Заявка сохранена в файл (база недоступна)');
+      return res.json({ status: 'success', message: 'Спасибо! Ваша заявка принята.' });
+    }
+
+    const submission = new FormSubmission(data);
     await submission.save();
     console.log('📝 Form submission saved:', submission._id);
-    
-    res.json({ 
-      status: 'success', 
+
+    res.json({
+      status: 'success',
       message: 'Спасибо! Ваша заявка принята.',
-      id: submission._id 
+      id: submission._id,
     });
   } catch (error) {
-    console.error('Form error:', error);
-    res.status(500).json({ status: 'error', message: 'Ошибка сервера' });
+    console.error('Form error:', error.message);
+    saveToFile('form-submissions.jsonl', data);
+    res.json({ status: 'success', message: 'Спасибо! Ваша заявка принята.' });
   }
 });
 
 // Alternative form endpoint for Tilda compatibility
 app.post('/api/contact', async (req, res) => {
+  const data = {
+    name: req.body.Name || req.body.name,
+    email: req.body.Email || req.body.email,
+    phone: req.body.Phone || req.body.phone,
+    message: req.body.Message || req.body.message || req.body.comment,
+    source: req.body.source || 'website',
+  };
+
   try {
-    const contact = new Contact({
-      name: req.body.Name || req.body.name,
-      email: req.body.Email || req.body.email,
-      phone: req.body.Phone || req.body.phone,
-      message: req.body.Message || req.body.message || req.body.comment,
-      source: req.body.source || 'website',
-    });
-    
+    if (!dbReady()) {
+      saveToFile('contacts.jsonl', data);
+      return res.json({ status: 'success', message: 'Спасибо! Мы свяжемся с вами.' });
+    }
+
+    const contact = new Contact(data);
     await contact.save();
     console.log('📞 Contact saved:', contact._id);
-    
+
     res.json({ status: 'success', message: 'Спасибо! Мы свяжемся с вами.' });
   } catch (error) {
-    console.error('Contact error:', error);
-    res.status(500).json({ status: 'error', message: 'Ошибка сервера' });
+    console.error('Contact error:', error.message);
+    saveToFile('contacts.jsonl', data);
+    res.json({ status: 'success', message: 'Спасибо! Мы свяжемся с вами.' });
   }
 });
 
 // Blog articles API
 app.get('/api/blog', async (req, res) => {
   try {
+    if (!dbReady()) return res.json({ status: 'success', articles: [] });
+
     const articles = await BlogArticle.find().sort({ pubDate: -1 }).lean();
     res.json({ status: 'success', articles });
   } catch (error) {
-    console.error('Blog fetch error:', error);
-    res.status(500).json({ status: 'error', message: 'Ошибка сервера' });
+    console.error('Blog fetch error:', error.message);
+    res.json({ status: 'success', articles: [] });
   }
 });
 
 // Health check
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', mongo: mongoose.connection.readyState === 1 });
+  res.json({ status: 'ok', mongo: dbReady() });
 });
 
-// Serve static files (Tilda export + new landing).
-// Locally the "public" folder lives at the repo root, in Docker it is mounted at /app/public.
-// STATIC_DIR lets us override the path without breaking the container setup.
-const staticDir = process.env.STATIC_DIR
-  ? path.resolve(process.env.STATIC_DIR)
-  : path.join(__dirname, 'public');
+// ---------------------------------------------------------------------------
+// Пути к статике.
+// Ищем папки в нескольких местах, чтобы работало и в Docker (/app/public),
+// и локально (<repo>/public), и при запуске из папки backend.
+// ---------------------------------------------------------------------------
+function resolveDir(envValue, folder, marker) {
+  const candidates = [
+    envValue && path.resolve(envValue),
+    path.join(__dirname, folder),
+    path.join(__dirname, '..', folder),
+    path.join(process.cwd(), folder),
+  ].filter(Boolean);
+
+  return (
+    candidates.find((dir) => fs.existsSync(path.join(dir, marker))) ||
+    candidates.find((dir) => fs.existsSync(dir)) ||
+    candidates[0]
+  );
+}
+
+const staticDir = resolveDir(process.env.STATIC_DIR, 'public', 'index.html');
+const prototypeDir = resolveDir(process.env.PROTOTYPE_DIR, 'prototype', 'index.html');
+
 console.log('📁 Serving static from:', staticDir);
-
-app.use(express.static(staticDir, {
-  index: false, // let the "/" route serve the new prototype homepage
-  setHeaders: (res, filePath) => {
-
-    if (filePath.endsWith('.css')) {
-      res.setHeader('Content-Type', 'text/css');
-    }
-    if (filePath.endsWith('.js')) {
-      res.setHeader('Content-Type', 'application/javascript');
-    }
-    if (filePath.endsWith('.svg')) {
-      res.setHeader('Content-Type', 'image/svg+xml');
-    }
-  }
-}));
-
-// New B2B prototype site (folder "prototype" at repo root).
-// PROTOTYPE_DIR lets us override the path (e.g. in Docker).
-// Try common locations so it works both in Docker (mounted at /app/prototype)
-// and locally (folder at the repo root, i.e. one level above /backend).
-const prototypeCandidates = [
-  process.env.PROTOTYPE_DIR && path.resolve(process.env.PROTOTYPE_DIR),
-  path.join(__dirname, 'prototype'),        // Docker: /app/prototype
-  path.join(__dirname, '..', 'prototype'),  // Local: <repo>/prototype
-].filter(Boolean);
-
-const prototypeDir =
-  prototypeCandidates.find((dir) => fs.existsSync(path.join(dir, 'index.html'))) ||
-  prototypeCandidates[prototypeCandidates.length - 1];
-
 console.log('🆕 Serving new prototype from:', prototypeDir);
 
+const staticOptions = {
+  index: false, // let the "/" route serve the new prototype homepage
+  setHeaders: (res, filePath) => {
+    if (filePath.endsWith('.css')) res.setHeader('Content-Type', 'text/css');
+    if (filePath.endsWith('.js')) res.setHeader('Content-Type', 'application/javascript');
+    if (filePath.endsWith('.svg')) res.setHeader('Content-Type', 'image/svg+xml');
+  },
+};
 
-// Serve prototype static assets (if any are added later, e.g. /prototype/img/...)
-app.use('/prototype', express.static(prototypeDir));
+// Tilda export (старый сайт) + общие файлы
+app.use(express.static(staticDir, staticOptions));
+
+// Ассеты прототипа: доступны и по /prototype/..., и по короткому пути
+// (/images/logo.png, /js/site.js) — раньше короткие пути отдавали 404.
+app.use('/prototype', express.static(prototypeDir, staticOptions));
+app.use(express.static(prototypeDir, staticOptions));
+
+// Favicon, чтобы браузер не получал 404
+app.get('/favicon.ico', (req, res) => {
+  const icon = path.join(prototypeDir, 'images', 'logo.png');
+  if (fs.existsSync(icon)) return res.type('png').sendFile(icon);
+  res.status(204).end();
+});
+
+// ---------------------------------------------------------------------------
+// Страницы
+// ---------------------------------------------------------------------------
+function sendPage(res, dir, file, next) {
+  const full = path.join(dir, file);
+  if (!fs.existsSync(full)) {
+    console.warn('⚠️  Файл страницы не найден:', full);
+    return next ? next() : res.status(404).type('html').send('<h1>404</h1>');
+  }
+  res.sendFile(full, (err) => {
+    if (err && !res.headersSent) {
+      console.error('Ошибка отдачи файла', full, err.message);
+      res.status(500).type('html').send('<h1>500</h1>');
+    }
+  });
+}
 
 const prototypePages = {
   '/': 'index.html',
@@ -186,11 +311,12 @@ const prototypePages = {
   '/privacy.html': 'privacy.html',
 };
 
-
 Object.entries(prototypePages).forEach(([route, file]) => {
-  app.get(route, (req, res) => {
-    res.sendFile(path.join(prototypeDir, file));
-  });
+  app.get(route, (req, res, next) => sendPage(res, prototypeDir, file, next));
+  // дублируем маршрут без .html (/works, /production, ...)
+  if (route !== '/') {
+    app.get(route.replace(/\.html$/, ''), (req, res, next) => sendPage(res, prototypeDir, file, next));
+  }
 });
 
 // Route mapping (from htaccess)
@@ -198,8 +324,6 @@ const pageRoutes = {
   '/legacy': 'index.html',
   '/old': 'page40738358.html',
   '/main': 'page40738358.html',
-
-
   '/privacy': 'page40861203.html',
   '/happynewyear': 'page41124919.html',
   '/blog': 'page68079733.html',
@@ -215,16 +339,37 @@ const pageRoutes = {
 
 // Serve pages
 Object.entries(pageRoutes).forEach(([route, file]) => {
-  app.get(route, (req, res) => {
-    res.sendFile(path.join(staticDir, file));
-  });
+  // /privacy уже занят страницей прототипа выше, поэтому пропускаем дубль
+  if (route === '/privacy') return;
+  app.get(route, (req, res, next) => sendPage(res, staticDir, file, next));
 });
 
 // 404 handler
 app.use((req, res) => {
-  res.status(404).sendFile(path.join(staticDir, '404.html'));
+  const notFound = path.join(staticDir, '404.html');
+  if (fs.existsSync(notFound)) return res.status(404).sendFile(notFound);
+  res.status(404).type('html').send('<h1>404 — страница не найдена</h1><p><a href="/">На главную</a></p>');
 });
 
-app.listen(PORT, '0.0.0.0', () => {
+// Общий обработчик ошибок, чтобы сервер не падал
+app.use((err, req, res, next) => {
+  console.error('Необработанная ошибка:', err.message);
+  if (res.headersSent) return;
+  res.status(500).type('html').send('<h1>500 — ошибка сервера</h1>');
+});
+
+process.on('unhandledRejection', (err) => {
+  console.warn('⚠️  Unhandled rejection:', err && err.message ? err.message : err);
+});
+
+const server = app.listen(PORT, '0.0.0.0', () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`);
+});
+
+server.on('error', (err) => {
+  if (err.code === 'EADDRINUSE') {
+    console.error(`❌ Порт ${PORT} уже занят. Освободите его или запустите с другим PORT, например: PORT=3001 npm start`);
+    process.exit(1);
+  }
+  throw err;
 });

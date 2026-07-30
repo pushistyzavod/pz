@@ -426,14 +426,15 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
       <p>Оставьте заявку — менеджер свяжется, поможет с дизайном и пришлёт коммерческое предложение с ценой и сроками. Консультация бесплатна.</p>
       <p style="margin-top:18px">📞 <a href="tel:+79896051010"><b>+7 (989) 605-10-10</b></a><br>✉️ <a href="mailto:pushistyzavod@mail.ru">pushistyzavod@mail.ru</a></p>
     </div>
-    <form class="form" onsubmit="event.preventDefault();alert('Спасибо! Заявка отправлена (демо-макет).');">
+    <form class="form" data-api-form data-form-name="Мягкая продукция — расчёт заказа">
       <h3>Получить расчёт</h3>
       <small>Ответим в течение рабочего дня</small>
-      <input type="text" placeholder="Компания / Имя" required>
-      <input type="tel" placeholder="Телефон" required>
-      <input type="email" placeholder="E-mail">
-      <select>
-        <option>Что нужно изготовить?</option>
+      <input type="text" name="name" placeholder="Компания / Имя" required>
+      <input type="tel" name="phone" placeholder="Телефон" required>
+      <input type="email" name="email" placeholder="E-mail">
+      <select name="product">
+        <option value="">Что нужно изготовить?</option>
+
         <option>Рюкзаки и сумки</option>
         <option>Тапочки</option>
         <option>Декоративные подушки</option>

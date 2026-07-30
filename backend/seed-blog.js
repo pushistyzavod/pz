@@ -1,7 +1,9 @@
 const mongoose = require('mongoose');
 const https = require('https');
 
-const MONGO_URI = process.env.MONGO_URI || 'mongodb://tsyrenovtimur_db_user:JnBTOddzDCUMFQtd@localhost:27017/pushistyzavod?authSource=admin';
+// Локально база работает без авторизации, поэтому по умолчанию подключаемся без логина/пароля.
+const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/pushistyzavod';
+
 
 const blogArticleSchema = new mongoose.Schema({
   title: String,
