@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
+const nodemailer = require('nodemailer');
 const path = require('path');
 const fs = require('fs');
 
@@ -136,6 +137,69 @@ const contactSchema = new mongoose.Schema({
 
 const Contact = mongoose.model('Contact', contactSchema);
 
+// ---------------------------------------------------------------------------
+// Отправка заявок на почту через SMTP REG.RU (ящик noreply@pushistyzavod.ru).
+// Настройки берутся из .env: SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, MAIL_TO.
+// Если почта не настроена или отправка упала — заявка всё равно сохраняется,
+// а клиент получает успешный ответ.
+// ---------------------------------------------------------------------------
+const mailTransporter = nodemailer.createTransport({
+  host: process.env.SMTP_HOST || 'sm42.hosting.reg.ru',
+  port: Number(process.env.SMTP_PORT) || 465,
+  secure: Number(process.env.SMTP_PORT || 465) === 465,
+  auth: {
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASS,
+  },
+});
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, (c) => ({
+    '&': '&', '<': '<', '>': '>', '"': '"', "'": '&#39;',
+  }[c]));
+}
+
+async function sendFormEmail(data) {
+  if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
+    console.warn('⚠️  SMTP не настроен (нет SMTP_USER/SMTP_PASS), письмо не отправлено');
+    return;
+  }
+
+  const to = process.env.MAIL_TO || 'info@pushistyzavod.ru';
+
+  const fields = [
+    ['Форма', data.formName],
+    ['Страница', data.formPage],
+    ['Имя', data.name],
+    ['Телефон', data.phone],
+    ['Email', data.email],
+    ['Сообщение', data.message || data.comment],
+  ];
+
+  // Дополнительные нестандартные поля формы (product, city и т.п.)
+  if (data.customFields && typeof data.customFields === 'object') {
+    Object.entries(data.customFields).forEach(([k, v]) => {
+      if (v && typeof v !== 'object') fields.push([k, v]);
+    });
+  }
+
+  const rows = fields.filter(([, v]) => v !== undefined && v !== null && v !== '');
+  const text = rows.map(([k, v]) => `${k}: ${v}`).join('\n');
+  const html = `<h2>Новая заявка с сайта pushistyzavod.ru</h2>
+<table cellpadding="6" cellspacing="0" border="1" style="border-collapse:collapse;border-color:#ddd">
+${rows.map(([k, v]) => `<tr><td><b>${escapeHtml(k)}</b></td><td>${escapeHtml(v)}</td></tr>`).join('\n')}
+</table>`;
+
+  await mailTransporter.sendMail({
+    from: `"Сайт Пушистый Завод" <${process.env.SMTP_USER}>`,
+    to,
+    subject: `Заявка с сайта: ${data.formName || 'форма'}${data.name ? ' — ' + data.name : ''}`,
+    text,
+    html,
+  });
+  console.log('📧 Заявка отправлена на', to);
+}
+
 // Blog article schema
 const blogArticleSchema = new mongoose.Schema({
   title: String,
@@ -168,18 +232,20 @@ app.post('/api/form', async (req, res) => {
     if (!dbReady()) {
       saveToFile('form-submissions.jsonl', data);
       console.log('📝 Заявка сохранена в файл (база недоступна)');
-      return res.json({ status: 'success', message: 'Спасибо! Ваша заявка принята.' });
+    } else {
+      const submission = new FormSubmission(data);
+      await submission.save();
+      console.log('📝 Form submission saved:', submission._id);
     }
 
-    const submission = new FormSubmission(data);
-    await submission.save();
-    console.log('📝 Form submission saved:', submission._id);
+    // Отправляем уведомление на почту; ошибка почты не влияет на ответ клиенту
+    try {
+      await sendFormEmail(data);
+    } catch (mailErr) {
+      console.error('📧 Ошибка отправки письма:', mailErr.message);
+    }
 
-    res.json({
-      status: 'success',
-      message: 'Спасибо! Ваша заявка принята.',
-      id: submission._id,
-    });
+    res.json({ status: 'success', message: 'Спасибо! Ваша заявка принята.' });
   } catch (error) {
     console.error('Form error:', error.message);
     saveToFile('form-submissions.jsonl', data);
@@ -200,12 +266,17 @@ app.post('/api/contact', async (req, res) => {
   try {
     if (!dbReady()) {
       saveToFile('contacts.jsonl', data);
-      return res.json({ status: 'success', message: 'Спасибо! Мы свяжемся с вами.' });
+    } else {
+      const contact = new Contact(data);
+      await contact.save();
+      console.log('📞 Contact saved:', contact._id);
     }
 
-    const contact = new Contact(data);
-    await contact.save();
-    console.log('📞 Contact saved:', contact._id);
+    try {
+      await sendFormEmail({ formName: 'Форма обратной связи', ...data });
+    } catch (mailErr) {
+      console.error('📧 Ошибка отправки письма:', mailErr.message);
+    }
 
     res.json({ status: 'success', message: 'Спасибо! Мы свяжемся с вами.' });
   } catch (error) {

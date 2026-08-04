@@ -25,6 +25,17 @@ jobs:
             prototype/ \
             ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/var/www/pushistyzavod/prototype/
 
+      - name: Deploy backend to server
+        run: |
+          rsync -az --delete --exclude node_modules --exclude data --exclude .env \
+            -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no" \
+            backend/ \
+            ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/opt/pz-backend/
+          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no \
+            ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} \
+            "cd /opt/pz-backend && npm install --omit=dev --silent && systemctl restart pz-backend"
+
       - name: Verify deployment
         run: |
           curl -sf -o /dev/null -w "Site status: %{http_code}\n" https://pushistyzavod.ru/
+          curl -sf -o /dev/null -w "API status: %{http_code}\n" https://pushistyzavod.ru/api/health
