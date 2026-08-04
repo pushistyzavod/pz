@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Мягкая продукция на заказ — рюкзаки, тапочки, подушки, аксессуары с логотипом | Пушистый Завод</title>
 <meta name="description" content="Производство мягкой и текстильной продукции на заказ для бизнеса: рюкзаки и сумки, тапочки, декоративные подушки и аксессуары с вашим логотипом. Опт от 100 штук, сертификаты, «Честный знак», работа с юрлицами." />
+<link rel="icon" type="image/png" href="/prototype/images/favicon.png">
+<link rel="apple-touch-icon" href="/prototype/images/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -61,7 +63,7 @@ header.nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.95);bac
 .chero::before{content:'';position:absolute;top:-140px;right:-90px;width:440px;height:440px;border-radius:50%;background:radial-gradient(circle,rgba(99,154,238,.16),transparent 68%);pointer-events:none}
 .chero-inner{position:relative;display:grid;grid-template-columns:1.3fr .7fr;align-items:center;gap:40px;padding:48px 0 56px}
 .eyebrow{display:inline-flex;align-items:center;gap:10px;font-weight:600;font-size:13px;letter-spacing:.03em;text-transform:uppercase;color:var(--blue);margin-bottom:20px}
-.eyebrow::before{content:'';width:28px;height:2px;background:var(--blue);border-radius:2px}
+.eyebrow .eb-logo{height:24px;width:auto;border-radius:6px;display:block}
 .chero h1{font-size:48px;line-height:1.05;font-weight:700;margin-bottom:18px;letter-spacing:-.01em}
 .chero h1 span{color:var(--blue)}
 .chero .sub{font-size:19px;color:#51607a;margin-bottom:30px;max-width:580px}
@@ -71,7 +73,9 @@ header.nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.95);bac
 .chero-stats div:first-child{padding-left:0;border-left:none}
 .chero-stats b{display:block;font-size:27px;font-weight:700;color:var(--ink);line-height:1.1}
 .chero-stats span{font-size:13px;color:#7d879b}
-.chero-visual{justify-self:center;font-size:180px;line-height:1;filter:drop-shadow(0 24px 34px rgba(20,30,80,.16))}
+.chero-visual{position:relative;justify-self:center}
+.chero-visual img{position:relative;z-index:2;width:auto;max-width:118%;height:431px;object-fit:contain;object-position:50% 100%;filter:drop-shadow(0 6px 8px rgba(30,45,85,.16));transform:scale(1.32);transform-origin:50% 100%}
+.chero-visual .cv-shadow{position:absolute;bottom:-1%;left:50%;transform:translateX(-50%);width:64%;height:30px;border-radius:50%;background:radial-gradient(closest-side,rgba(30,45,85,.36),transparent 74%);filter:blur(10px);z-index:1}
 
 /* Quick nav (anchor chips) */
 .qnav{position:sticky;top:74px;z-index:40;background:#fff;border-bottom:1px solid var(--line)}
@@ -81,6 +85,7 @@ header.nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.95);bac
 
 /* Subcategory blocks */
 .subcat{display:grid;grid-template-columns:1fr 1fr;gap:34px;align-items:center;margin-bottom:26px}
+.subcat[id],section[id]{scroll-margin-top:150px}
 .subcat:nth-child(even) .subcat-img{order:2}
 .subcat-img{aspect-ratio:4/3;border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:96px;background:radial-gradient(58% 52% at 50% 42%,rgba(255,255,255,.65) 0%,rgba(255,255,255,0) 72%),var(--bg-blue)}
 .subcat-img img{width:100%;height:100%;object-fit:contain;display:block;padding:10px;filter:drop-shadow(0 22px 24px rgba(30,45,85,.22))}
@@ -114,6 +119,16 @@ header.nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.95);bac
 .step h4{font-size:15px;margin-bottom:6px}
 .step p{font-size:13px;color:var(--muted)}
 @media(max-width:900px){.step:not(:last-child)::after{display:none}}
+
+/* Наш цех — тизер производства */
+.shops{grid-template-columns:repeat(3,1fr)}
+.shop{border-radius:20px;overflow:hidden;border:1px solid var(--line);background:#fff;transition:.2s}
+.shop:hover{transform:translateY(-4px);box-shadow:var(--shadow);border-color:transparent}
+.shop .ph{aspect-ratio:4/3;overflow:hidden;background:var(--bg-blue)}
+.shop .ph img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s ease}
+.shop:hover .ph img{transform:scale(1.05)}
+.shop .t{padding:16px 18px;font-size:15px;font-weight:600;text-align:center}
+@media(max-width:560px){.shops{grid-template-columns:1fr}}
 
 /* Works */
 .works-grid{grid-template-columns:repeat(4,1fr)}
@@ -188,7 +203,8 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
   h2{font-size:28px}
   .chero-inner{grid-template-columns:1fr;padding:32px 0 40px}
   .chero h1{font-size:32px}
-  .chero-visual{font-size:120px;order:-1}
+  .chero-visual{order:-1}
+  .chero-visual img{width:min(320px,100%);height:auto;transform:scale(1.12);transform-origin:50% 100%}
   .subcat{grid-template-columns:1fr;gap:20px}
   .subcat:nth-child(even) .subcat-img{order:0}
   .opts{grid-template-columns:1fr 1fr}
@@ -199,11 +215,17 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
   .foot{grid-template-columns:1fr 1fr}
   .menu,.topbar .tb-left{display:none}
   .burger{display:block}
-  .ptable .row{grid-template-columns:1fr;gap:4px;text-align:center}
-  .qnav{position:static}
+  .ptable .row{grid-template-columns:auto 1fr auto;gap:8px 10px;text-align:left;font-size:12.5px;padding:12px 14px;align-items:center}
+  .ptable .row.head{display:none}
+  .qnav{display:none}
+  section{padding:44px 0}
+  .lead{font-size:16px;margin-bottom:30px}
+  .chero-stats{display:grid;grid-template-columns:1fr 1fr;gap:14px 18px}
+  .chero-stats div{padding:0;border-left:none}
 }
 @media(max-width:560px){
-  .opts,.works-grid,.trust-grid,.steps,.foot{grid-template-columns:1fr}
+  .opts,.trust-grid,.steps,.foot{grid-template-columns:1fr}
+  .works-grid{grid-template-columns:1fr 1fr}
 }
 </style>
 </head>
@@ -212,7 +234,7 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
 <!-- ТОП-БАР -->
 <div class="topbar">
   <div class="container">
-    <div class="tb-left">🏭 Собственное производство в РФ · Работаем с юрлицами по договору</div>
+    <div class="tb-left">Собственное производство в РФ · Работаем с юрлицами по договору</div>
     <div class="tb-right">
       <a href="mailto:pushistyzavod@mail.ru">pushistyzavod@mail.ru</a>
       <a href="https://t.me/pushistyzavod" target="_blank">Telegram</a>
@@ -246,7 +268,7 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
     <div class="crumbs"><a href="/">Главная</a> / <a href="/#products">Что производим</a> / <span>Мягкая продукция</span></div>
     <div class="chero-inner">
       <div>
-        <span class="eyebrow">🎒 Мягкая продукция · опт от 100 штук</span>
+        <span class="eyebrow"><img src="/prototype/images/logo.png" alt="Пушистый Завод" class="eb-logo">Мягкая продукция · опт от 100 штук</span>
         <h1>Мягкая продукция <span>на заказ для бизнеса</span></h1>
         <p class="sub">Шьём текстильные изделия и аксессуары с символикой вашего бренда: рюкзаки и сумки, тапочки, декоративные подушки и мелкие аксессуары. Подбираем материалы под задачу, брендируем и производим партию под ключ.</p>
         <div class="chero-actions">
@@ -257,10 +279,9 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
           <div><b>от 100</b><span>штук в партии</span></div>
           <div><b>~10 дн.</b><span>образец</span></div>
           <div><b>3–6 нед.</b><span>тираж</span></div>
-          <div><b>−5%</b><span>к цене конкурента</span></div>
         </div>
       </div>
-      <div class="chero-visual"><img src="/prototype/images/logo.png" alt="Пушистый Завод — мягкая продукция на заказ" style="max-width:220px;height:auto" fetchpriority="high" decoding="async"></div>
+      <div class="chero-visual"><img src="/prototype/images/soft-goods-hero.png" alt="Мягкая продукция на заказ — рюкзаки, тапочки и подушки с логотипом — Пушистый Завод" fetchpriority="high" decoding="async"><span class="cv-shadow" aria-hidden="true"></span></div>
     </div>
   </div>
 </section>
@@ -398,6 +419,20 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
       <div class="lg"><img src="/prototype/images/clients/client-5.png" alt="Логотип клиента Пушистого Завода" loading="lazy" decoding="async"></div>
       <div class="lg"><img src="/prototype/images/clients/client-6.png" alt="Логотип клиента Пушистого Завода" loading="lazy" decoding="async"></div>
     </div>
+  </div>
+</section>
+
+<!-- НАШ ЦЕХ -->
+<section>
+  <div class="container">
+    <h2 class="center">Наш <span>цех</span></h2>
+    <p class="lead center">Собственное производство полного цикла — показываем, где рождаются ваши изделия.</p>
+    <div class="grid shops">
+      <div class="shop"><div class="ph"><img src="/prototype/images/workshops/shop-raskroy.jpg" alt="Раскройный цех Пушистого Завода — раскрой материалов по лекалам" loading="lazy" decoding="async"></div><div class="t">Раскройный цех</div></div>
+      <div class="shop"><div class="ph"><img src="/prototype/images/workshops/shop-shveiny.jpg" alt="Швейный цех Пушистого Завода — пошив мягких изделий" loading="lazy" decoding="async"></div><div class="t">Швейный цех</div></div>
+      <div class="shop"><div class="ph"><img src="/prototype/images/workshops/shop-branding.jpg" alt="Участок брендирования Пушистого Завода — вышивка и печать логотипов" loading="lazy" decoding="async"></div><div class="t">Участок брендирования</div></div>
+    </div>
+    <div style="text-align:center;margin-top:38px"><a class="btn btn-ghost" href="/production.html">Смотреть подробнее →</a></div>
   </div>
 </section>
 

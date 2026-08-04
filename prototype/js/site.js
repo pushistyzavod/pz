@@ -40,7 +40,7 @@
     + '.site-phone{font-weight:700;font-size:16.5px;white-space:nowrap;color:var(--sink);text-decoration:none;letter-spacing:-.2px}'
     + '.site-phone:hover{color:var(--sblue)}'
     + '.site-contact .msgs{display:flex;gap:6px;align-items:center}'
-    + '.site-contact .msg{width:30px;height:30px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;transition:.15s;overflow:hidden}'
+    + '.site-contact .msg{width:30px;height:30px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;transition:.15s;overflow:hidden;box-shadow:0 2px 7px -1px rgba(20,30,80,.25)}'
     + '.site-contact .msg img{width:100%;height:100%;object-fit:cover;display:block;border-radius:50%}'
     + '.site-contact .msg:hover{transform:translateY(-2px);filter:brightness(1.06)}'
 
@@ -58,7 +58,7 @@
     + '.site-mega .inner{max-width:1240px;margin:0 auto;padding:24px 28px;display:grid;grid-template-columns:repeat(3,1fr);gap:16px}'
     + '.site-mega .cat{display:flex;flex-direction:column;gap:5px;padding:22px 24px;border-radius:16px;background:#f7f9fd;border:1px solid transparent;transition:.18s;text-decoration:none}'
     + '.site-mega .cat:hover{background:#fff;border-color:var(--sblue);box-shadow:0 14px 30px -16px rgba(20,30,80,.4);transform:translateY(-3px)}'
-    + '.site-mega .cat .i{font-size:30px}.site-mega .cat b{font-size:17px;color:var(--sink)}'
+    + '.site-mega .cat .i{height:62px;display:flex;align-items:flex-end}.site-mega .cat .i img{height:62px;width:auto;max-width:100px;object-fit:contain;object-position:bottom left;filter:drop-shadow(0 5px 7px rgba(30,45,85,.2))}.site-mega .cat b{font-size:17px;color:var(--sink)}'
     + '.site-mega .cat span.d{font-size:13px;color:var(--smuted);line-height:1.4}.site-mega .cat span.m{font-size:13px;font-weight:600;color:var(--sblue);margin-top:6px}'
     // footer
     + '.site-footer{background:#1c1e25;color:#c4c7d2;padding:60px 0 26px;margin-top:80px;font-family:inherit}'
@@ -71,9 +71,19 @@
     + '.site-footer .btn-inline{margin-top:14px;display:inline-flex;padding:11px 22px;border-radius:28px;background:var(--spink);color:#fff;font-weight:600}.site-footer .btn-inline:hover{background:var(--sblue);opacity:1}'
     + '.site-footer .sochead{color:#fff;font-size:13px;margin-top:16px;margin-bottom:8px;opacity:.9}'
     + '.site-footer .socials{display:flex;gap:10px;margin-bottom:4px}'
-    + '.site-footer .socials a{width:42px;height:42px;padding:0;border-radius:50%;overflow:hidden;display:inline-flex;align-items:center;justify-content:center;opacity:.92;transition:.15s}'
+    + '.site-footer .socials a{width:42px;height:42px;padding:0;border-radius:50%;overflow:hidden;display:inline-flex;align-items:center;justify-content:center;opacity:.92;transition:.15s;box-shadow:0 3px 9px -2px rgba(0,0,0,.4)}'
     + '.site-footer .socials a img{width:100%;height:100%;object-fit:cover;display:block;border-radius:50%}'
     + '.site-footer .socials a:hover{opacity:1;transform:translateY(-2px)}'
+    // лайтбокс приближения фото в «Примеры работ» (только десктоп)
+    + '.wlbox{position:fixed;inset:0;z-index:400;background:rgba(15,18,30,.9);display:flex;align-items:center;justify-content:center;padding:34px;opacity:0;visibility:hidden;transition:.22s}'
+    + '.wlbox.open{opacity:1;visibility:visible}'
+    + '.wlbox .wl-in{max-width:min(860px,100%);max-height:100%;display:flex;flex-direction:column;align-items:center;gap:14px;transform:scale(.94);transition:transform .22s}'
+    + '.wlbox.open .wl-in{transform:scale(1)}'
+    + '.wlbox img{max-width:100%;max-height:78vh;object-fit:contain;border-radius:16px;background:#fff;box-shadow:0 30px 70px -20px rgba(0,0,0,.55)}'
+    + '.wlbox .wl-cap{color:#fff;font-size:15px;font-weight:600;text-align:center;opacity:.95}'
+    + '.wlbox .wl-close{position:absolute;top:16px;right:16px;width:44px;height:44px;border-radius:50%;border:none;background:rgba(255,255,255,.14);color:#fff;font-size:22px;cursor:pointer;line-height:1;transition:.15s}'
+    + '.wlbox .wl-close:hover{background:var(--spink)}'
+    + '@media(max-width:900px){.wlbox{display:none}}'
 
 
     + '.site-footer .legal{border-top:1px solid #33353f;margin-top:40px;padding-top:22px;font-size:13px;opacity:.7;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;line-height:1.6}'
@@ -95,23 +105,31 @@
     + '  .site-contact{gap:0}'
     + '  .site-btn{padding:11px 16px;font-size:13.5px}'
     + '}'
-    // mobile drawer
-    + '.site-menu.open{display:flex}'
+    // mobile drawer — выезжающее меню справа
+    + '.site-backdrop{position:fixed;inset:0;background:rgba(15,18,30,.5);z-index:290;opacity:0;visibility:hidden;transition:.25s}'
+    + '.site-backdrop.open{opacity:1;visibility:visible}'
+    + '.site-drawer{position:fixed;top:0;right:0;bottom:0;width:min(86%,360px);background:#fff;z-index:300;transform:translateX(105%);transition:transform .3s cubic-bezier(.22,.8,.3,1);display:flex;flex-direction:column;box-shadow:-16px 0 50px -20px rgba(20,30,80,.45)}'
+    + '.site-drawer.open{transform:translateX(0)}'
+    + '.site-drawer .d-head{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--sline)}'
+    + '.site-drawer .d-head img{height:34px;width:auto}'
+    + '.site-drawer .d-close{width:40px;height:40px;border-radius:50%;border:1px solid var(--sline);background:#f4f5fb;font-size:17px;line-height:1;cursor:pointer;color:var(--sink)}'
+    + '.site-drawer nav{flex:1;overflow-y:auto;padding:8px 18px 18px}'
+    + '.site-drawer nav a{display:flex;align-items:center;justify-content:space-between;padding:14px 4px;font-size:17px;font-weight:600;color:var(--sink);text-decoration:none;border-bottom:1px solid #f0f1f6}'
+    + '.site-drawer nav a.d-label{color:var(--smuted);font-size:12.5px;text-transform:uppercase;letter-spacing:.06em;border-bottom:none;padding:16px 4px 4px;font-weight:600;cursor:default}'
+    + '.site-drawer nav a.sub{padding-left:6px;font-size:15.5px;font-weight:500;color:#41454f;gap:12px;justify-content:flex-start}'
+    + '.site-drawer nav a.sub img{height:34px;width:auto;object-fit:contain}'
+    + '.site-drawer .d-foot{padding:16px 18px 22px;border-top:1px solid var(--sline);display:flex;flex-direction:column;gap:13px}'
+    + '.site-drawer .d-phone{font-weight:700;font-size:18px;color:var(--sink);text-decoration:none}'
+    + '.site-drawer .d-msgs{display:flex;gap:10px}'
+    + '.site-drawer .d-msgs a{width:38px;height:38px;border-radius:50%;overflow:hidden;box-shadow:0 2px 7px -1px rgba(20,30,80,.25);display:block}'
+    + '.site-drawer .d-msgs img{width:100%;height:100%;object-fit:cover;display:block}'
+    + '.site-drawer .d-btn{display:inline-flex;align-items:center;justify-content:center;padding:14px;border-radius:28px;background:var(--spink);color:#fff;font-weight:600;font-size:15px;text-decoration:none;box-shadow:0 10px 22px -12px rgba(255,96,153,.8)}'
     + '@media(max-width:1040px){'
     + '  .site-header .wrap{height:70px;gap:14px}'
     + '  .site-logo .logo-pic{height:38px}'
-    + '  .site-menu{position:fixed;top:70px;left:0;right:0;bottom:0;flex-direction:column;justify-content:flex-start;align-items:stretch;gap:2px;background:#fff;padding:18px 24px;transform:translateX(100%);transition:transform .25s;overflow-y:auto;box-shadow:-10px 0 40px -20px rgba(0,0,0,.3);display:flex}'
-    + '  .site-menu.open{transform:translateX(0)}'
-    + '  .site-menu>a,.site-mega-trigger{padding:15px 6px;font-size:17px;border-radius:8px}'
-    + '  .site-menu>a::after{display:none}'
-    + '  .site-mega-wrap{width:100%;flex-direction:column;align-items:stretch}'
-    + '  .site-mega{position:static;opacity:1;visibility:visible;transform:none;box-shadow:none;border:none;background:transparent}'
-    + '  .site-mega .inner{grid-template-columns:1fr;padding:0 0 8px;gap:8px}'
-    + '  .site-mega .cat{padding:12px 14px;background:#f7f9fd}'
-    + '  .site-mega-trigger .arr{margin-left:auto}'
+    + '  .site-menu{display:none}'
     + '  .site-cta{margin-left:auto;gap:10px}.site-contact{display:none}'
     + '  .site-btn{padding:12px 20px;font-size:14px}'
-
     + '  .site-burger{display:inline-flex;align-items:center;justify-content:center}'
     + '  .site-topbar .tb-left{display:none}'
     + '  .site-footer .cols{grid-template-columns:1fr 1fr}'
@@ -120,12 +138,14 @@
     + '  .site-header .wrap{padding:0 16px}.site-topbar .wrap{padding:8px 16px}'
     + '  .site-cta .site-btn{padding:11px 16px;font-size:13px}'
     + '  .site-footer .cols{grid-template-columns:1fr}'
+    + '  .site-logo{font-size:17px;gap:8px}.site-logo .logo-pic{height:32px}'
+    + '  .site-mega .inner{padding:16px}'
     + '}';
 
   // ---------- Разметка ----------
   var topbar =
     '<div class="site-topbar"><div class="wrap">'
-    + '<div class="tb-left">🏭 Собственное производство в РФ · Опт от 100 штук · Работаем с юрлицами по договору</div>'
+    + '<div class="tb-left">Собственное производство в РФ · Опт от 100 штук · Работаем с юрлицами по договору</div>'
     + '<div class="tb-right">'
     + '<span>Пн–Пт 9:00–18:00 (МСК)</span>'
     + '<a href="mailto:' + EMAIL + '">✉️ ' + EMAIL + '</a>'
@@ -140,9 +160,9 @@
     + '<div class="site-mega-wrap">'
     + '  <a href="/#products" class="site-mega-trigger" data-m="products">Что производим <span class="arr">▼</span></a>'
     + '  <div class="site-mega"><div class="inner">'
-    + '    <a class="cat" href="/soft-toys.html"><span class="i">🧸</span><b>Мягкие игрушки</b><span class="d">Маскоты, символ года, брелоки, персонажи</span><span class="m">Перейти →</span></a>'
-    + '    <a class="cat" href="/pvc-figures.html"><span class="i">🧩</span><b>Пластиковые фигурки из ПВХ</b><span class="d">Фигурки, брелоки, флешки, джибитсы</span><span class="m">Перейти →</span></a>'
-    + '    <a class="cat" href="/soft-goods.html"><span class="i">🎒</span><b>Мягкая продукция</b><span class="d">Рюкзаки, тапочки, подушки, аксессуары</span><span class="m">Перейти →</span></a>'
+    + '    <a class="cat" href="/soft-toys.html"><span class="i"><img src="/prototype/images/soft-toys-cutout.png" alt="Мягкие игрушки" loading="lazy" decoding="async"></span><b>Мягкие игрушки</b><span class="d">Маскоты, символ года, брелоки, персонажи</span><span class="m">Перейти →</span></a>'
+    + '    <a class="cat" href="/pvc-figures.html"><span class="i"><img src="/prototype/images/pvc-figures-cutout.png" alt="Пластиковые фигурки из ПВХ" loading="lazy" decoding="async"></span><b>Пластиковые фигурки из ПВХ</b><span class="d">Фигурки, брелоки, флешки, джибитсы</span><span class="m">Перейти →</span></a>'
+    + '    <a class="cat" href="/soft-goods.html"><span class="i"><img src="/prototype/images/soft-goods-cutout.png" alt="Мягкая продукция" loading="lazy" decoding="async"></span><b>Мягкая продукция</b><span class="d">Рюкзаки, тапочки, подушки, аксессуары</span><span class="m">Перейти →</span></a>'
     + '  </div></div>'
     + '</div>'
     + '<a href="/works.html" data-m="works">Наши работы</a>'
@@ -202,6 +222,32 @@
     + '</div>'
     + '</div></footer>';
 
+  var drawer =
+    '<div class="site-backdrop"></div>'
+    + '<aside class="site-drawer">'
+    + '<div class="d-head"><img src="/prototype/images/logo.png" alt="Пушистый Завод"><button class="d-close" aria-label="Закрыть меню">✕</button></div>'
+    + '<nav>'
+    + '<a href="/">Главная</a>'
+    + '<a class="d-label">Что производим</a>'
+    + '<a class="sub" href="/soft-toys.html"><img src="/prototype/images/soft-toys-cutout.png" alt="">Мягкие игрушки</a>'
+    + '<a class="sub" href="/pvc-figures.html"><img src="/prototype/images/pvc-figures-cutout.png" alt="">Пластиковые фигурки из ПВХ</a>'
+    + '<a class="sub" href="/soft-goods.html"><img src="/prototype/images/soft-goods-cutout.png" alt="">Мягкая продукция</a>'
+    + '<a href="/works.html">Наши работы</a>'
+    + '<a href="/production.html">Производство</a>'
+    + '<a href="/news.html">Новости</a>'
+    + '<a href="/#cta">Контакты</a>'
+    + '</nav>'
+    + '<div class="d-foot">'
+    + '<a class="d-phone" href="tel:' + PHONE_TEL + '">' + PHONE_HUMAN + '</a>'
+    + '<div class="d-msgs">'
+    + '<a href="https://t.me/pushistyzavod" target="_blank" rel="noopener" aria-label="Telegram"><img src="/prototype/images/icons/telegram.png" alt="Telegram"></a>'
+    + '<a href="https://max.ru/pushistyzavod" target="_blank" rel="noopener" aria-label="MAX"><img src="/prototype/images/icons/max.png" alt="MAX"></a>'
+    + '<a href="mailto:' + EMAIL + '" aria-label="E-mail"><img src="/prototype/images/icons/mail.png" alt="E-mail"></a>'
+    + '</div>'
+    + '<a class="d-btn" href="/#cta">Рассчитать заказ</a>'
+    + '</div>'
+    + '</aside>';
+
   function inject() {
     // 1) стиль
     if (!document.getElementById('site-chrome-css')) {
@@ -218,6 +264,9 @@
     // 3) вставляем единые
     document.body.insertAdjacentHTML('afterbegin', topbar + header);
     document.body.insertAdjacentHTML('beforeend', footer);
+    document.body.insertAdjacentHTML('beforeend', drawer);
+    document.body.insertAdjacentHTML('beforeend',
+      '<div class="wlbox" id="wlbox"><button class="wl-close" aria-label="Закрыть">✕</button><div class="wl-in"><img id="wlImg" src="" alt=""><div class="wl-cap" id="wlCap"></div></div></div>');
 
     // 4) активный пункт меню
     var path = location.pathname;
@@ -234,22 +283,46 @@
     function onScroll() { hdr.classList.toggle('scrolled', window.scrollY > 8); }
     window.addEventListener('scroll', onScroll); onScroll();
 
-    // 6) бургер (мобильное меню-шторка)
+    // 6) бургер — выезжающее мобильное меню
     var burger = document.querySelector('.site-burger');
-    var menu = document.querySelector('.site-menu');
-    if (burger && menu) {
-      burger.addEventListener('click', function () {
-        var open = menu.classList.toggle('open');
-        burger.innerHTML = open ? '✕' : '☰';
-        document.body.style.overflow = open ? 'hidden' : '';
-      });
-      // закрываем при переходе по ссылке
-      menu.querySelectorAll('a[href]').forEach(function (a) {
-        a.addEventListener('click', function () {
-          menu.classList.remove('open'); burger.innerHTML = '☰'; document.body.style.overflow = '';
-        });
+    var drawerEl = document.querySelector('.site-drawer');
+    var backdrop = document.querySelector('.site-backdrop');
+    function setMenu(open) {
+      drawerEl.classList.toggle('open', open);
+      backdrop.classList.toggle('open', open);
+      document.body.style.overflow = open ? 'hidden' : '';
+      burger.innerHTML = open ? '✕' : '☰';
+    }
+    if (burger && drawerEl && backdrop) {
+      burger.addEventListener('click', function () { setMenu(!drawerEl.classList.contains('open')); });
+      backdrop.addEventListener('click', function () { setMenu(false); });
+      drawerEl.querySelector('.d-close').addEventListener('click', function () { setMenu(false); });
+      drawerEl.querySelectorAll('nav a[href]').forEach(function (a) {
+        a.addEventListener('click', function () { setMenu(false); });
       });
     }
+
+    // 7) приближение фото в блоках «Примеры работ» (десктоп)
+    var wl = document.getElementById('wlbox');
+    var wlImg = document.getElementById('wlImg');
+    var wlCap = document.getElementById('wlCap');
+    function wlClose() { wl.classList.remove('open'); document.body.style.overflow = ''; }
+    document.querySelectorAll('.works-grid .work').forEach(function (w) {
+      w.style.cursor = 'zoom-in';
+      w.addEventListener('click', function () {
+        if (window.innerWidth <= 900) return;
+        var img = w.querySelector('.ph img');
+        if (!img) return;
+        wlImg.src = img.src; wlImg.alt = img.alt || '';
+        var t = w.querySelector('.cap b');
+        wlCap.textContent = t ? t.textContent : '';
+        wl.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      });
+    });
+    wl.querySelector('.wl-close').addEventListener('click', wlClose);
+    wl.addEventListener('click', function (e) { if (e.target === wl) wlClose(); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && wl.classList.contains('open')) wlClose(); });
   }
 
   // ---------- Отправка форм на бэкенд ----------
