@@ -129,7 +129,7 @@
     + '  .site-logo .logo-pic{height:38px}'
     + '  .site-menu{display:none}'
     + '  .site-cta{margin-left:auto;gap:10px}.site-contact{display:none}'
-    + '  .site-btn{padding:12px 20px;font-size:14px}'
+    + '  .site-cta .site-btn{display:none}'
     + '  .site-burger{display:inline-flex;align-items:center;justify-content:center}'
     + '  .site-topbar .tb-left{display:none}'
     + '  .site-footer .cols{grid-template-columns:1fr 1fr}'
