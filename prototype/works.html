@@ -71,6 +71,26 @@ header.nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.95);bac
 .item .tags i.n{background:#e8f0ff;color:var(--blue);font-weight:700}
 .empty{display:none;text-align:center;color:var(--muted);padding:40px 0}
 
+/* Лайтбокс — увеличенный просмотр фото */
+.lightbox{position:fixed;inset:0;z-index:200;background:rgba(20,24,40,.88);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;padding:30px;opacity:0;visibility:hidden;transition:.25s}
+.lightbox.open{opacity:1;visibility:visible}
+.lb-box{position:relative;max-width:760px;width:100%;max-height:88vh;background:#fff;border-radius:22px;overflow:hidden;box-shadow:0 40px 90px -20px rgba(0,0,0,.5);transform:scale(.92);transition:transform .25s;display:flex;flex-direction:column}
+.lightbox.open .lb-box{transform:scale(1)}
+.lb-img{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;background:#fff;padding:22px}
+.lb-img img{max-width:100%;max-height:62vh;object-fit:contain;display:block}
+.lb-cap{padding:16px 22px;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.lb-cap b{font-size:16px}
+.lb-cap .tags{display:flex;gap:8px;flex-wrap:wrap;font-size:12px}
+.lb-cap .tags i{font-style:normal;background:#eef1f8;color:#41506b;border-radius:20px;padding:4px 10px}
+.lb-cap .tags i.n{background:#e8f0ff;color:var(--blue);font-weight:700}
+.lb-close{position:absolute;top:12px;right:12px;width:42px;height:42px;border-radius:50%;border:none;background:rgba(255,255,255,.94);box-shadow:0 4px 14px rgba(20,30,80,.25);font-size:22px;line-height:1;cursor:pointer;color:var(--ink);transition:.15s;z-index:3}
+.lb-close:hover{background:var(--pink);color:#fff}
+.lb-nav{position:absolute;top:50%;transform:translateY(-50%);width:46px;height:46px;border-radius:50%;border:none;background:rgba(255,255,255,.94);box-shadow:0 4px 14px rgba(20,30,80,.25);font-size:24px;line-height:1;cursor:pointer;color:var(--ink);transition:.15s;z-index:3}
+.lb-nav:hover{background:var(--blue);color:#fff}
+.lb-prev{left:12px}.lb-next{right:12px}
+.item .ph img{cursor:zoom-in}
+@media(max-width:560px){.lb-nav{display:none}}
+
 /* CTA */
 .cta{background:linear-gradient(120deg,var(--blue),var(--pink));border-radius:var(--radius);color:#fff;padding:48px;text-align:center;margin:0 auto;max-width:1200px}
 .cta h2{color:#fff}.cta p{opacity:.92;font-size:17px;max-width:560px;margin:0 auto 26px}
@@ -133,7 +153,6 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
       <div><b>500+</b><span>реализованных партий</span></div>
       <div><b>10+</b><span>лет на рынке</span></div>
       <div><b>2 млн+</b><span>изделий выпущено</span></div>
-      <div><b>0%</b><span>брака до клиента</span></div>
     </div>
   </div>
 </div>
@@ -151,7 +170,7 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
     <div class="grid" id="gallery">
       <div class="item" data-cat="toys"><div class="ph"><img src="/prototype/images/works/maskot-pyaterochka-300000.jpg" alt="Маскот пятерочка — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>Маскот пятерочка</b><div class="tags"><i class="n">300 000 шт</i><i>2 месяца</i><i>маскот</i></div></div></div>
       <div class="item" data-cat="toys"><div class="ph"><img src="/prototype/images/works/personazh-soka-dobryy-100000.jpg" alt="Персонаж сока Добрый — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>Персонаж сока Добрый</b><div class="tags"><i class="n">100 000 шт</i><i>2 месяца</i><i>персонаж</i></div></div></div>
-      <div class="item" data-cat="toys"><div class="ph"><img src="/prototype/images/works/maskot-shkoly-50900.jpg" alt="Маскот школы — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>Маскот школы</b><div class="tags"><i class="n">50 900 шт</i><i>2 месяца</i><i>маскот</i></div></div></div>
+      <div class="item" data-cat="toys"><div class="ph"><img src="/prototype/images/works/maskot-shkoly-50900.jpg" alt="Маскот школы — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>Маскот школы</b><div class="tags"><i class="n">900 шт</i><i>2 месяца</i><i>маскот</i></div></div></div>
       <div class="item" data-cat="toys"><div class="ph"><img src="/prototype/images/works/novogodnyaya-elka-rf-30000.jpg" alt="Новогодняя елка РФ — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>Новогодняя елка РФ</b><div class="tags"><i class="n">30 000 шт</i><i>2 месяца</i><i>подарок</i></div></div></div>
       <div class="item" data-cat="toys"><div class="ph"><img src="/prototype/images/works/maskot-zeva-20000.jpg" alt="Маскот Зева — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>Маскот Зева</b><div class="tags"><i class="n">20 000 шт</i><i>2 месяца</i><i>маскот</i></div></div></div>
       <div class="item" data-cat="toys"><div class="ph"><img src="/prototype/images/works/maskot-dlya-bmw-10000.jpg" alt="Маскот для BMW — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>Маскот для BMW</b><div class="tags"><i class="n">10 000 шт</i><i>2 месяца</i><i>маскот</i></div></div></div>
@@ -207,6 +226,49 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
       <div class="item" data-cat="toys"><div class="ph"><img src="/prototype/images/works/maskot-transportnaya-kompaniya-100.jpg" alt="Маскот транспортная компания — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>Маскот транспортная компания</b><div class="tags"><i class="n">100 шт</i><i>28 дней</i><i>маскот</i></div></div></div>
       <div class="item" data-cat="toys"><div class="ph"><img src="/prototype/images/works/robot-dlya-it-kompanii-100.jpg" alt="Робот для IT-компании — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>Робот для IT-компании</b><div class="tags"><i class="n">100 шт</i><i>28 дней</i><i>робот</i></div></div></div>
       <div class="item" data-cat="toys"><div class="ph"><img src="/prototype/images/works/talisman-donskie-sokoly-100.jpg" alt="Талисман донские соколы — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>Талисман донские соколы</b><div class="tags"><i class="n">100 шт</i><i>28 дней</i><i>талисман</i></div></div></div>
+      <div class="item" data-cat="pvc"><div class="ph"><img src="/prototype/images/works/dzhibitsy-sport-200000.jpg" alt="Джибитсы на спорте — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>Джибитсы на спорте</b><div class="tags"><i class="n">200 000 шт</i><i>джибитсы</i></div></div></div>
+      <div class="item" data-cat="pvc"><div class="ph"><img src="/prototype/images/works/abs-figurka-dinamo-5000.jpg" alt="Фигурка из АБС-пластика для Динамо — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>Фигурка АБС для Динамо</b><div class="tags"><i class="n">5 000 шт</i><i>АБС-пластик</i></div></div></div>
+      <div class="item" data-cat="pvc"><div class="ph"><img src="/prototype/images/works/abs-figurka-rzhd-4000.jpg" alt="Фигурка из АБС-пластика РЖД — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>Фигурка АБС РЖД</b><div class="tags"><i class="n">4 000 шт</i><i>АБС-пластик</i></div></div></div>
+      <div class="item" data-cat="pvc"><div class="ph"><img src="/prototype/images/works/brelok-pvh-korgi-5000.jpg" alt="ПВХ брелок корги — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>ПВХ брелок «Корги»</b><div class="tags"><i class="n">5 000 шт</i><i>брелок</i></div></div></div>
+      <div class="item" data-cat="pvc"><div class="ph"><img src="/prototype/images/works/brelok-pvh-yandex-3000.jpg" alt="ПВХ брелок Яндекс — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>ПВХ брелок для Яндекс</b><div class="tags"><i class="n">3 000 шт</i><i>брелок</i></div></div></div>
+      <div class="item" data-cat="pvc"><div class="ph"><img src="/prototype/images/works/brelok-pvh-lis-3000.jpg" alt="ПВХ брелок лис — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>ПВХ брелок «Лис»</b><div class="tags"><i class="n">3 000 шт</i><i>брелок</i></div></div></div>
+      <div class="item" data-cat="pvc"><div class="ph"><img src="/prototype/images/works/brelok-pvh-ovechka-3000.jpg" alt="ПВХ брелок овечка — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>ПВХ брелок «Овечка»</b><div class="tags"><i class="n">3 000 шт</i><i>брелок</i></div></div></div>
+      <div class="item" data-cat="pvc"><div class="ph"><img src="/prototype/images/works/figurka-pvh-casino-1500.jpg" alt="ПВХ фигурка для казино — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>ПВХ фигурка для казино</b><div class="tags"><i class="n">1 500 шт</i><i>ПВХ 3D</i></div></div></div>
+      <div class="item" data-cat="pvc"><div class="ph"><img src="/prototype/images/works/figurka-pvh-botanik-1000.jpg" alt="ПВХ фигурка Ботаник — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>ПВХ фигурка «Ботаник»</b><div class="tags"><i class="n">1 000 шт</i><i>ПВХ 3D</i></div></div></div>
+      <div class="item" data-cat="pvc"><div class="ph"><img src="/prototype/images/works/figurka-pvh-kapibara-spokoy-1000.jpg" alt="ПВХ фигурка капибара спокойствие — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>Фигурка капибара «Спокойствие»</b><div class="tags"><i class="n">1 000 шт</i><i>ПВХ 3D</i></div></div></div>
+      <div class="item" data-cat="pvc"><div class="ph"><img src="/prototype/images/works/figurka-pvh-kapibara-sport-1000.jpg" alt="ПВХ фигурка капибара спорт — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>Фигурка капибара «Спорт»</b><div class="tags"><i class="n">1 000 шт</i><i>ПВХ 3D</i></div></div></div>
+      <div class="item" data-cat="pvc"><div class="ph"><img src="/prototype/images/works/figurka-pvh-kapibara-tancor-1000.jpg" alt="ПВХ фигурка капибара танцор — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>Фигурка капибара «Танцор»</b><div class="tags"><i class="n">1 000 шт</i><i>ПВХ 3D</i></div></div></div>
+      <div class="item" data-cat="pvc"><div class="ph"><img src="/prototype/images/works/figurka-pvh-protezy-500.jpg" alt="ПВХ фигурка Российские биологические протезы — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>Фигурка «Рос. биол. протезы»</b><div class="tags"><i class="n">500 шт</i><i>ПВХ 3D</i></div></div></div>
+      <div class="item" data-cat="pvc"><div class="ph"><img src="/prototype/images/works/fleshka-pvh-1xbet-800.jpg" alt="ПВХ флешка 1XBet — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>ПВХ флешка 1XBet</b><div class="tags"><i class="n">800 шт</i><i>ПВХ + USB</i></div></div></div>
+      <div class="item" data-cat="pvc"><div class="ph"><img src="/prototype/images/works/fleshka-pvh-lisa-moszoopark-300.jpg" alt="ПВХ флешка лиса Мосзоопарк — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>Флешка «Лиса», Мосзоопарк</b><div class="tags"><i class="n">300 шт</i><i>ПВХ + USB</i></div></div></div>
+      <div class="item" data-cat="pvc"><div class="ph"><img src="/prototype/images/works/fleshka-pvh-pingvin-okeanarium-500.jpg" alt="Флешка пингвин для Океанариум Москва — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>Флешка «Пингвин», Океанариум</b><div class="tags"><i class="n">500 шт</i><i>ПВХ + USB</i></div></div></div>
+      <div class="item" data-cat="pvc"><div class="ph"><img src="/prototype/images/works/dzhibitsy-dengi-1000.jpg" alt="Джибитсы деньги — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>Джибитсы «Деньги»</b><div class="tags"><i class="n">1 000 шт</i><i>джибитсы</i></div></div></div>
+      <div class="item" data-cat="pvc"><div class="ph"><img src="/prototype/images/works/abs-figurka-tinkoff-700.jpg" alt="Фигурка из АБС-пластика Тинькофф — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>Фигурка АБС для Тинькофф</b><div class="tags"><i class="n">700 шт</i><i>АБС-пластик</i></div></div></div>
+      <div class="item" data-cat="pvc"><div class="ph"><img src="/prototype/images/works/abs-figurka-mindray-6000.jpg" alt="Фигурка из АБС-пластика Mindray — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>Фигурка АБС Mindray</b><div class="tags"><i class="n">6 000 шт</i><i>АБС-пластик</i></div></div></div>
+      <div class="item" data-cat="pvc"><div class="ph"><img src="/prototype/images/works/abs-figurka-7s-1200.jpg" alt="Фигурка из АБС-пластика 7S — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>Фигурка АБС 7S</b><div class="tags"><i class="n">1 200 шт</i><i>АБС-пластик</i></div></div></div>
+      <div class="item" data-cat="pvc"><div class="ph"><img src="/prototype/images/works/abs-figurka-kiberprotekt-1000.jpg" alt="Фигурка из АБС-пластика Киберпротект — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>Фигурка АБС Киберпротект</b><div class="tags"><i class="n">1 000 шт</i><i>АБС-пластик</i></div></div></div>
+      <div class="item" data-cat="pvc"><div class="ph"><img src="/prototype/images/works/abs-figurka-kukolka-2500.jpg" alt="Фигурка-куколка из АБС-пластика — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>Фигурка-куколка АБС</b><div class="tags"><i class="n">2 500 шт</i><i>АБС-пластик</i></div></div></div>
+      <div class="item" data-cat="pvc"><div class="ph"><img src="/prototype/images/works/abs-figurka-medved-500.jpg" alt="Фигурка медведь из АБС-пластика — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>Фигурка АБС «Медведь»</b><div class="tags"><i class="n">500 шт</i><i>АБС-пластик</i></div></div></div>
+      <div class="item" data-cat="pvc"><div class="ph"><img src="/prototype/images/works/abs-figurka-ezhik-500.jpg" alt="Фигурка ежик из АБС-пластика — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>Фигурка АБС «Ёжик»</b><div class="tags"><i class="n">500 шт</i><i>АБС-пластик</i></div></div></div>
+      <div class="item" data-cat="pvc"><div class="ph"><img src="/prototype/images/works/abs-figurka-popugay-500.jpg" alt="Фигурка попугай из АБС-пластика — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>Фигурка АБС «Попугай»</b><div class="tags"><i class="n">500 шт</i><i>АБС-пластик</i></div></div></div>
+      <div class="item" data-cat="pvc"><div class="ph"><img src="/prototype/images/works/abs-figurka-kollekcionnaya-500.jpg" alt="Коллекционная фигурка из АБС-пластика — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>Коллекционная фигурка АБС</b><div class="tags"><i class="n">500 шт</i><i>АБС-пластик</i></div></div></div>
+      <div class="item" data-cat="pvc"><div class="ph"><img src="/prototype/images/works/figurka-pvh-it-kompaniya-1000.jpg" alt="ПВХ фигурка для IT-компании — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>ПВХ фигурка для IT-компании</b><div class="tags"><i class="n">1 000 шт</i><i>ПВХ 3D</i></div></div></div>
+      <div class="item" data-cat="pvc"><div class="ph"><img src="/prototype/images/works/figurka-pvh-vystavka-500.jpg" alt="ПВХ фигурка для выставки — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>ПВХ фигурка для выставки</b><div class="tags"><i class="n">500 шт</i><i>ПВХ 3D</i></div></div></div>
+      <div class="item" data-cat="pvc"><div class="ph"><img src="/prototype/images/works/figurka-pvh-online-prodazhi-500.jpg" alt="ПВХ фигурка для онлайн-продаж — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>ПВХ фигурка для онлайн-продаж</b><div class="tags"><i class="n">500 шт</i><i>ПВХ 3D</i></div></div></div>
+      <div class="item" data-cat="soft"><div class="ph"><img src="/prototype/images/works/ryukzak-kapibara-700.jpg" alt="Рюкзак капибара — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>Рюкзак «Капибара»</b><div class="tags"><i class="n">700 шт</i><i>рюкзак</i></div></div></div>
+      <div class="item" data-cat="soft"><div class="ph"><img src="/prototype/images/works/ryukzak-bozhya-korovka-sad-300.jpg" alt="Рюкзак божья коровка для детского сада — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>Рюкзак «Божья коровка», детсад</b><div class="tags"><i class="n">300 шт</i><i>рюкзак</i></div></div></div>
+      <div class="item" data-cat="soft"><div class="ph"><img src="/prototype/images/works/tapochki-rik-ogurchik-5000.jpg" alt="Тапочки Рик огурчик — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>Тапочки «Рик-огурчик»</b><div class="tags"><i class="n">5 000 шт</i><i>тапочки</i></div></div></div>
+      <div class="item" data-cat="soft"><div class="ph"><img src="/prototype/images/works/tapochki-kfs-500.jpg" alt="Тапочки КФС — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>Тапочки КФС</b><div class="tags"><i class="n">500 шт</i><i>тапочки</i></div></div></div>
+      <div class="item" data-cat="soft"><div class="ph"><img src="/prototype/images/works/tapochki-vystavka-800.jpg" alt="Тапочки для выставки — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>Тапочки для выставки</b><div class="tags"><i class="n">800 шт</i><i>тапочки</i></div></div></div>
+      <div class="item" data-cat="soft"><div class="ph"><img src="/prototype/images/works/tapochki-vystavka-500.jpg" alt="Тапочки для выставки — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>Тапочки для выставки</b><div class="tags"><i class="n">500 шт</i><i>тапочки</i></div></div></div>
+      <div class="item" data-cat="soft"><div class="ph"><img src="/prototype/images/works/tapochki-volk-suvenir-300.jpg" alt="Тапочки сувенирная продукция Волк — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>Тапочки «Волк», сувениры</b><div class="tags"><i class="n">300 шт</i><i>тапочки</i></div></div></div>
+      <div class="item" data-cat="soft"><div class="ph"><img src="/prototype/images/works/podushka-kot-marketpleysy-4000.jpg" alt="Подушка кот для маркетплейсов — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>Подушка «Кот», маркетплейсы</b><div class="tags"><i class="n">4 000 шт</i><i>подушка</i></div></div></div>
+      <div class="item" data-cat="soft"><div class="ph"><img src="/prototype/images/works/podushka-lisichka-800.jpg" alt="Подушка лисичка — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>Подушка «Лисичка»</b><div class="tags"><i class="n">800 шт</i><i>подушка</i></div></div></div>
+      <div class="item" data-cat="soft"><div class="ph"><img src="/prototype/images/works/podushka-akulenok-250.jpg" alt="Подушка акуленок — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>Подушка «Акулёнок»</b><div class="tags"><i class="n">250 шт</i><i>подушка</i></div></div></div>
+      <div class="item" data-cat="soft"><div class="ph"><img src="/prototype/images/works/podushka-klubnichka-bolnitsa-500.jpg" alt="Подушка клубничка для больницы — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>Подушка «Клубничка», больница</b><div class="tags"><i class="n">500 шт</i><i>подушка</i></div></div></div>
+      <div class="item" data-cat="soft"><div class="ph"><img src="/prototype/images/works/konfetnitsa-slon-1000.jpg" alt="Конфетница маленький слон — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>Конфетница «Слон»</b><div class="tags"><i class="n">1 000 шт</i><i>конфетница</i></div></div></div>
+      <div class="item" data-cat="soft"><div class="ph"><img src="/prototype/images/works/konfetnitsa-obezyanka-zoopark-1000.jpg" alt="Конфетница обезьянка для зоопарка — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>Конфетница «Обезьянка», зоопарк</b><div class="tags"><i class="n">1 000 шт</i><i>конфетница</i></div></div></div>
+      <div class="item" data-cat="soft"><div class="ph"><img src="/prototype/images/works/konfetnitsa-simvol-goda-2026-500.jpg" alt="Конфетница символ года 2026 — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>Конфетница «Символ 2026»</b><div class="tags"><i class="n">500 шт</i><i>конфетница</i></div></div></div>
     </div>
     <div class="empty" id="empty">В этой категории пока нет примеров — скоро добавим.</div>
   </div>
@@ -245,6 +307,17 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
   </div>
 </footer>
 
+<!-- ЛАЙТБОКС -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <div class="lb-box">
+    <button class="lb-close" type="button" aria-label="Закрыть">✕</button>
+    <button class="lb-nav lb-prev" type="button" aria-label="Предыдущее фото">‹</button>
+    <button class="lb-nav lb-next" type="button" aria-label="Следующее фото">›</button>
+    <div class="lb-img"><img id="lbImg" src="" alt=""></div>
+    <div class="lb-cap"><b id="lbTitle"></b><div class="tags" id="lbTags"></div></div>
+  </div>
+</div>
+
 <script>
   // Фильтрация галереи
   var filters=document.querySelectorAll('.filter');
@@ -270,6 +343,56 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
     m.style.position='absolute';m.style.top='74px';m.style.left='0';m.style.right='0';
     m.style.flexDirection='column';m.style.background='#fff';m.style.padding='18px 20px';
     m.style.borderBottom='1px solid #ececf2';m.style.gap='14px';
+  });
+
+  // ===== Лайтбокс: увеличенный просмотр фото работы =====
+  var lb=document.getElementById('lightbox'),
+      lbImg=document.getElementById('lbImg'),
+      lbTitle=document.getElementById('lbTitle'),
+      lbTags=document.getElementById('lbTags'),
+      cur=0;
+
+  // только видимые (не скрытые фильтром) карточки — для навигации
+  function visibleItems(){
+    return [].slice.call(items).filter(function(it){return it.style.display!=='none';});
+  }
+  function openLB(item){
+    var vis=visibleItems();
+    cur=vis.indexOf(item);
+    fill(item);
+    lb.classList.add('open');
+    document.body.style.overflow='hidden';
+  }
+  function fill(item){
+    var img=item.querySelector('.ph img');
+    lbImg.src=img?img.src:'';
+    lbImg.alt=img?img.alt:'';
+    lbTitle.textContent=item.querySelector('.cap b')?item.querySelector('.cap b').textContent:'';
+    lbTags.innerHTML=item.querySelector('.tags')?item.querySelector('.tags').innerHTML:'';
+  }
+  function step(d){
+    var vis=visibleItems();
+    if(!vis.length)return;
+    cur=(cur+d+vis.length)%vis.length;
+    fill(vis[cur]);
+  }
+  function closeLB(){
+    lb.classList.remove('open');
+    document.body.style.overflow='';
+  }
+
+  items.forEach(function(it){
+    it.addEventListener('click',function(){openLB(it);});
+  });
+  lb.querySelector('.lb-close').addEventListener('click',closeLB);
+  lb.querySelector('.lb-prev').addEventListener('click',function(e){e.stopPropagation();step(-1);});
+  lb.querySelector('.lb-next').addEventListener('click',function(e){e.stopPropagation();step(1);});
+  lb.addEventListener('click',function(e){if(e.target===lb)closeLB();});
+  document.addEventListener('keydown',function(e){
+    if(!lb.classList.contains('open'))return;
+    if(e.key==='Escape')closeLB();
+    if(e.key==='ArrowLeft')step(-1);
+    if(e.key==='ArrowRight')step(1);
   });
 </script>
 <script src="/prototype/js/site.js"></script>

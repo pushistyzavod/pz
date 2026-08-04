@@ -82,10 +82,11 @@ header.nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.95);bac
 /* Subcategory blocks */
 .subcat{display:grid;grid-template-columns:1fr 1fr;gap:34px;align-items:center;margin-bottom:26px}
 .subcat:nth-child(even) .subcat-img{order:2}
-.subcat-img{aspect-ratio:4/3;border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:96px;background:var(--bg-blue)}
-.subcat:nth-child(2) .subcat-img{background:var(--bg-peach)}
-.subcat:nth-child(3) .subcat-img{background:var(--bg-pink)}
-.subcat:nth-child(4) .subcat-img{background:#e6f7ee}
+.subcat-img{aspect-ratio:4/3;border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:96px;background:radial-gradient(58% 52% at 50% 42%,rgba(255,255,255,.65) 0%,rgba(255,255,255,0) 72%),var(--bg-blue)}
+.subcat-img img{width:100%;height:100%;object-fit:contain;display:block;padding:10px;filter:drop-shadow(0 22px 24px rgba(30,45,85,.22))}
+.subcat:nth-child(2) .subcat-img{background:radial-gradient(58% 52% at 50% 42%,rgba(255,255,255,.65) 0%,rgba(255,255,255,0) 72%),var(--bg-peach)}
+.subcat:nth-child(3) .subcat-img{background:radial-gradient(58% 52% at 50% 42%,rgba(255,255,255,.65) 0%,rgba(255,255,255,0) 72%),var(--bg-pink)}
+.subcat:nth-child(4) .subcat-img{background:radial-gradient(58% 52% at 50% 42%,rgba(255,255,255,.65) 0%,rgba(255,255,255,0) 72%),#e6f7ee}
 .subcat h3{font-size:26px;margin-bottom:10px}
 .subcat p{color:var(--muted);font-size:15px;margin-bottom:16px}
 .subcat ul{list-style:none;display:grid;gap:8px;margin-bottom:20px}
@@ -101,12 +102,18 @@ header.nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.95);bac
 .opt p{font-size:13px;color:var(--muted)}
 
 /* Steps */
-.steps{grid-template-columns:repeat(5,1fr)}
-.step{text-align:center}
-.step .num{width:54px;height:54px;border-radius:50%;background:var(--pink);color:#fff;font-weight:700;font-size:21px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px}
-.step:nth-child(even) .num{background:var(--blue)}
+.steps{grid-template-columns:repeat(5,1fr);gap:18px}
+.step{position:relative;text-align:center;background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px 14px 18px;transition:.2s}
+.step:hover{transform:translateY(-4px);box-shadow:var(--shadow);border-color:transparent}
+.step .ph{position:relative;aspect-ratio:4/3;border-radius:12px;background:var(--bg-blue);overflow:hidden;margin-bottom:12px}
+.step .ph img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s ease}
+.step:hover .ph img{transform:scale(1.05)}
+.step .num{position:absolute;top:8px;left:8px;z-index:2;width:30px;height:30px;border-radius:50%;background:var(--pink);color:#fff;font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 10px -3px rgba(255,96,153,.7)}
+.step:nth-child(even) .num{background:var(--blue);box-shadow:0 4px 10px -3px rgba(99,154,238,.7)}
+.step:not(:last-child)::after{content:"→";position:absolute;top:26%;right:-17px;font-size:19px;font-weight:700;color:var(--blue);z-index:3}
 .step h4{font-size:15px;margin-bottom:6px}
 .step p{font-size:13px;color:var(--muted)}
+@media(max-width:900px){.step:not(:last-child)::after{display:none}}
 
 /* Works */
 .works-grid{grid-template-columns:repeat(4,1fr)}
@@ -123,9 +130,21 @@ header.nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.95);bac
 /* Trust */
 .trust-grid{grid-template-columns:repeat(4,1fr)}
 .trust{background:#fff;border:1px solid var(--line);border-radius:18px;padding:24px;text-align:center}
-.trust .ic{font-size:34px;margin-bottom:10px}
+.trust .ic{width:64px;height:64px;margin:0 auto 12px;border-radius:18px;background:#f4f5fb;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.trust .ic img{width:100%;height:100%;object-fit:cover;display:block}
+.trust .ic img.contain{object-fit:contain;border-radius:0}
 .trust b{display:block;font-size:16px;margin-bottom:6px}
 .trust p{font-size:13px;color:var(--muted)}
+
+/* Clients logos (Нам доверяют) */
+.clients{background:#fafaff}
+.logos{display:flex;flex-wrap:nowrap;gap:14px;justify-content:center;align-items:stretch}
+.logos .lg{background:#fff;border:1px solid var(--line);border-radius:16px;height:110px;flex:1 1 0;min-width:0;display:flex;align-items:center;justify-content:center;padding:14px 16px;transition:.2s}
+.logos .lg:hover{transform:translateY(-3px);box-shadow:var(--shadow);border-color:transparent}
+.logos .lg img{max-width:100%;max-height:68px;width:auto;height:auto;object-fit:contain;opacity:.95;transition:.2s}
+.logos .lg:hover img{opacity:1}
+@media(max-width:900px){.logos{flex-wrap:wrap}.logos .lg{flex:1 1 28%;height:100px}}
+@media(max-width:560px){.logos .lg{flex:1 1 44%;height:92px}}
 
 /* Price table */
 .ptable{background:#fff;border:1px solid var(--line);border-radius:20px;overflow:hidden}
@@ -241,7 +260,7 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
           <div><b>−5%</b><span>к цене конкурента</span></div>
         </div>
       </div>
-      <div class="chero-visual">🎒</div>
+      <div class="chero-visual"><img src="/prototype/images/logo.png" alt="Пушистый Завод — мягкая продукция на заказ" style="max-width:220px;height:auto" fetchpriority="high" decoding="async"></div>
     </div>
   </div>
 </section>
@@ -250,9 +269,9 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
 <nav class="qnav">
   <div class="container">
     <a href="#bags">Рюкзаки и сумки</a>
-    <a href="#slippers">Тапочки</a>
-    <a href="#pillows">Подушки</a>
-    <a href="#accessories">Аксессуары</a>
+    <a href="#slippers">Плюшевые тапочки</a>
+    <a href="#pillows">Подушки для путешествий</a>
+    <a href="#konfetnitsy">Конфетницы</a>
   </div>
 </nav>
 
@@ -263,7 +282,7 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
     <p class="lead">Четыре направления мягкой и текстильной продукции под задачи бизнеса. Любое изделие изготавливаем по вашему дизайну, лекалу или образцу.</p>
 
     <div class="subcat" id="bags">
-      <div class="subcat-img">🎒</div>
+      <div class="subcat-img"><img src="/prototype/images/softgoods/bags.png" alt="Плюшевые рюкзаки на заказ — производство Пушистый Завод" loading="lazy" decoding="async"></div>
       <div>
         <h3>Рюкзаки и сумки</h3>
         <p>Промо-рюкзаки, детские и взрослые сумки, шопперы, мешки для сменной обуви — с вашим логотипом и в фирменных цветах. Прочная фурнитура и качественный пошив.</p>
@@ -277,44 +296,44 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
     </div>
 
     <div class="subcat" id="slippers">
-      <div class="subcat-img">🥿</div>
+      <div class="subcat-img"><img src="/prototype/images/softgoods/slippers.png" alt="Плюшевые тапочки на заказ — производство Пушистый Завод" loading="lazy" decoding="async"></div>
       <div>
-        <h3>Тапочки</h3>
-        <p>Домашние и гостиничные тапочки с брендингом: для сетей отелей, SPA, авиакомпаний и подарочных наборов. Комфортные, гигиеничные, в фирменном стиле.</p>
+        <h3>Плюшевые тапочки</h3>
+        <p>Объёмные домашние тапочки из мягкого плюша — тёплые, смешные и очень уютные. В форме лап, зверушек, фруктов или вашего персонажа, с логотипом бренда.</p>
         <ul>
-          <li>Открытые и закрытые модели, разные размеры</li>
-          <li>Логотип на подъёме, стельке или упаковке</li>
-          <li>Индивидуальная упаковка для номеров и наборов</li>
+          <li>Плотный плюш и мягкая стелька — приятно носить</li>
+          <li>Любая форма: лапы, звери, маскот, логотип</li>
+          <li>Вышивка или нашивка вашего бренда</li>
         </ul>
-        <div class="who">Кому подходит: отели, SPA, авиакомпании, велнес, корпоративные подарки.</div>
+        <div class="who">Кому подходит: мерч, корпоративные подарки, новогодние наборы, промо.</div>
       </div>
     </div>
 
     <div class="subcat" id="pillows">
-      <div class="subcat-img">🛋️</div>
+      <div class="subcat-img"><img src="/prototype/images/softgoods/pillows.png" alt="Подушки для путешествий на заказ — производство Пушистый Завод" loading="lazy" decoding="async"></div>
       <div>
-        <h3>Декоративные подушки</h3>
-        <p>Интерьерные и подарочные подушки любой формы: фигурные, дорожные, подушки-игрушки. Отличный мерч и приятный подарок клиентам и сотрудникам.</p>
+        <h3>Подушки для путешествий</h3>
+        <p>Плюшевые дорожные подушки-подковы, на которых удобно спать в самолёте, поезде и машине. Делаем в форме зверушек, персонажей и с логотипом вашего бренда.</p>
         <ul>
-          <li>Фигурный крой: логотип, продукт, персонаж</li>
-          <li>Полноцветная печать и вышивка</li>
-          <li>Гипоаллергенный наполнитель</li>
+          <li>Мягкий плюш и удобная поддержка шеи</li>
+          <li>Форма любого персонажа или логотипа</li>
+          <li>Компактная упаковка для подарочных наборов</li>
         </ul>
-        <div class="who">Кому подходит: мерч, HR-подарки, интерьер офисов и шоурумов, промо.</div>
+        <div class="who">Кому подходит: авиакомпании, турбизнес, мерч, подарки клиентам и сотрудникам.</div>
       </div>
     </div>
 
-    <div class="subcat" id="accessories">
-      <div class="subcat-img">🧣</div>
+    <div class="subcat" id="konfetnitsy">
+      <div class="subcat-img"><img src="/prototype/images/softgoods/konfetnitsy.png" alt="Мягкие конфетницы на заказ — производство Пушистый Завод" loading="lazy" decoding="async"></div>
       <div>
-        <h3>Аксессуары</h3>
-        <p>Мелкий текстиль и аксессуары под брендинг: косметички, чехлы, пеналы, шарфы, повязки, банданы. Добираем ассортимент к основному заказу.</p>
+        <h3>Конфетницы</h3>
+        <p>Мягкие конфетницы в форме плюшевых игрушек: открываете игрушку — а внутри конфеты. Отличный подарок на Новый год и праздники, с символикой вашего бренда.</p>
         <ul>
-          <li>Широкий выбор изделий и материалов</li>
-          <li>Единый фирменный стиль для всей линейки</li>
-          <li>Комплектация подарочных наборов</li>
+          <li>Плюшевая игрушка-упаковка для конфет</li>
+          <li>Символ года, маскот или ваш персонаж</li>
+          <li>Брендирование: вышивка, бирки, ленты</li>
         </ul>
-        <div class="who">Кому подходит: подарочные наборы, мерч-линейки, промо-комплекты.</div>
+        <div class="who">Кому подходит: новогодние подарки, корпоративные наборы, клиентам и партнёрам.</div>
       </div>
     </div>
   </div>
@@ -324,24 +343,10 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
 <section class="why" style="padding:48px 0">
   <div class="container">
     <div class="grid trust-grid">
-      <div class="trust"><div class="ic">🏭</div><b>Собственное производство</b><p>Полный цикл в России, без посредников — держим цену и сроки.</p></div>
-      <div class="trust"><div class="ic">📜</div><b>Сертификаты качества</b><p>Безопасные материалы, в том числе для детских товаров.</p></div>
-      <div class="trust"><div class="ic">🏷️</div><b>«Честный знак»</b><p>Маркируем продукцию по требованиям закона.</p></div>
-      <div class="trust"><div class="ic">✏️</div><b>Бесплатный макет</b><p>Нарисуем и покажем визуализацию до оплаты тиража.</p></div>
-    </div>
-  </div>
-</section>
-
-<!-- МАТЕРИАЛЫ И ОПЦИИ -->
-<section>
-  <div class="container">
-    <h2 class="center">Материалы и <span>опции</span></h2>
-    <p class="lead center">Подбираем под задачу, износостойкость и бюджет — от бюджетного промо до премиум-линейки.</p>
-    <div class="grid opts">
-      <div class="opt"><div class="ic">🧵</div><b>Ткани</b><p>Оксфорд, канвас, хлопок, флис, плюш, экокожа — под назначение изделия.</p></div>
-      <div class="opt"><div class="ic">🎨</div><b>Брендирование</b><p>Шелкография, вышивка, сублимация, нашивки и тканевые бирки.</p></div>
-      <div class="opt"><div class="ic">🔩</div><b>Фурнитура</b><p>Молнии, карабины, лямки, кнопки, светоотражатели — на выбор.</p></div>
-      <div class="opt"><div class="ic">📦</div><b>Упаковка</b><p>Индивидуальная и подарочная упаковка, комплектация наборов.</p></div>
+      <div class="trust"><div class="ic"><img src="/prototype/images/logo.png" alt="Пушистый Завод — собственное производство" style="object-fit:contain;padding:10px;background:#fff" loading="lazy" decoding="async"></div><b>Собственное производство</b><p>Полный цикл в России, без посредников — держим цену и сроки.</p></div>
+      <div class="trust"><div class="ic"><img src="/prototype/images/perks/perk-2.jpg" alt="Сертификаты качества" loading="lazy" decoding="async"></div><b>Сертификаты качества</b><p>Безопасные материалы, в том числе для детских товаров.</p></div>
+      <div class="trust"><div class="ic"><img src="/prototype/images/perks/perk-3.jpg" alt="Маркировка Честный знак" loading="lazy" decoding="async"></div><b>«Честный знак»</b><p>Маркируем продукцию по требованиям закона.</p></div>
+      <div class="trust"><div class="ic"><img src="/prototype/images/free-sample.png" alt="Бесплатный макет и образец перед тиражом" loading="lazy" decoding="async"></div><b>Бесплатный макет</b><p>Нарисуем и покажем визуализацию до оплаты тиража.</p></div>
     </div>
   </div>
 </section>
@@ -352,11 +357,11 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
     <h2 class="center">Как мы делаем ваш <span>заказ</span></h2>
     <p class="lead center">Прозрачный процесс — вы контролируете результат на каждом этапе</p>
     <div class="grid steps">
-      <div class="step"><div class="num">1</div><h4>Бриф</h4><p>Обсуждаем изделие, тираж, сроки и бюджет.</p></div>
-      <div class="step"><div class="num">2</div><h4>Макет и КП</h4><p>Рисуем дизайн и лекало, присылаем цену и договор.</p></div>
-      <div class="step"><div class="num">3</div><h4>Образец</h4><p>Шьём сигнальный образец (~10 раб. дней) и согласуем.</p></div>
-      <div class="step"><div class="num">4</div><h4>Тираж</h4><p>Запускаем партию на фабрике (3–6 недель).</p></div>
-      <div class="step"><div class="num">5</div><h4>Отгрузка</h4><p>Контроль качества, маркировка и доставка с документами.</p></div>
+      <div class="step"><div class="ph"><span class="num">1</span><img src="/prototype/images/steps/step-1.jpg" alt="Бриф — обсуждаем изделие, тираж и сроки" loading="lazy" decoding="async"></div><h4>Бриф</h4><p>Обсуждаем изделие, тираж, сроки и бюджет.</p></div>
+      <div class="step"><div class="ph"><span class="num">2</span><img src="/prototype/images/steps/step-2.jpg" alt="Макет и КП — дизайн и лекало изделия" loading="lazy" decoding="async"></div><h4>Макет и КП</h4><p>Рисуем дизайн и лекало, присылаем цену и договор.</p></div>
+      <div class="step"><div class="ph"><span class="num">3</span><img src="/prototype/images/steps/step-3.jpg" alt="Сигнальный образец изделия перед тиражом" loading="lazy" decoding="async"></div><h4>Образец</h4><p>Шьём сигнальный образец (~10 раб. дней) и согласуем.</p></div>
+      <div class="step"><div class="ph"><span class="num">4</span><img src="/prototype/images/steps/step-4.jpg" alt="Производство тиража на фабрике" loading="lazy" decoding="async"></div><h4>Тираж</h4><p>Запускаем партию на фабрике (3–6 недель).</p></div>
+      <div class="step"><div class="ph"><span class="num">5</span><img src="/prototype/images/steps/step-5.jpg" alt="Контроль качества и отгрузка готовой партии" loading="lazy" decoding="async"></div><h4>Отгрузка</h4><p>Контроль качества, маркировка и доставка с документами.</p></div>
     </div>
   </div>
 </section>
@@ -367,14 +372,31 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
     <h2>Примеры <span>работ</span></h2>
     <p class="lead">Реализованные партии мягкой продукции с фактами: для кого, тираж и срок. Эмодзи заменяются на реальные фото.</p>
     <div class="grid works-grid">
-      <div class="work"><div class="ph">🎒</div><div class="cap"><b>Промо-рюкзаки для банка</b><div class="meta"><i>1 500 шт</i><span>21 день</span></div></div></div>
-      <div class="work"><div class="ph">🥿</div><div class="cap"><b>Тапочки для сети отелей</b><div class="meta"><i>1 000 шт</i><span>16 дней</span></div></div></div>
-      <div class="work"><div class="ph">🛋️</div><div class="cap"><b>Фигурные подушки, мерч</b><div class="meta"><i>2 000 шт</i><span>24 дня</span></div></div></div>
-      <div class="work"><div class="ph">👜</div><div class="cap"><b>Шопперы для ритейла</b><div class="meta"><i>5 000 шт</i><span>26 дней</span></div></div></div>
-      <div class="work"><div class="ph">🎒</div><div class="cap"><b>Детские рюкзаки к акции</b><div class="meta"><i>3 000 шт</i><span>28 дней</span></div></div></div>
-      <div class="work"><div class="ph">🧣</div><div class="cap"><b>Аксессуары для наборов</b><div class="meta"><i>2 500 шт</i><span>20 дней</span></div></div></div>
-      <div class="work"><div class="ph">👝</div><div class="cap"><b>Косметички, подарки</b><div class="meta"><i>1 200 шт</i><span>18 дней</span></div></div></div>
-      <div class="work"><div class="ph">🎁</div><div class="cap"><b>Подарочный набор к НГ</b><div class="meta"><i>1 800 шт</i><span>27 дней</span></div></div></div>
+      <div class="work"><div class="ph"><img src="/prototype/images/works/ryukzak-kapibara-700.jpg" alt="Рюкзак капибара — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>Рюкзак «Капибара»</b><div class="meta"><i>700 шт</i><span>рюкзак</span></div></div></div>
+      <div class="work"><div class="ph"><img src="/prototype/images/works/ryukzak-bozhya-korovka-sad-300.jpg" alt="Рюкзак божья коровка для детского сада — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>Рюкзак «Божья коровка», детсад</b><div class="meta"><i>300 шт</i><span>рюкзак</span></div></div></div>
+      <div class="work"><div class="ph"><img src="/prototype/images/works/tapochki-rik-ogurchik-5000.jpg" alt="Тапочки Рик огурчик — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>Тапочки «Рик-огурчик»</b><div class="meta"><i>5 000 шт</i><span>тапочки</span></div></div></div>
+      <div class="work"><div class="ph"><img src="/prototype/images/works/tapochki-kfs-500.jpg" alt="Тапочки КФС — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>Тапочки КФС</b><div class="meta"><i>500 шт</i><span>тапочки</span></div></div></div>
+      <div class="work"><div class="ph"><img src="/prototype/images/works/podushka-kot-marketpleysy-4000.jpg" alt="Подушка кот для маркетплейсов — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>Подушка «Кот», маркетплейсы</b><div class="meta"><i>4 000 шт</i><span>подушка</span></div></div></div>
+      <div class="work"><div class="ph"><img src="/prototype/images/works/podushka-lisichka-800.jpg" alt="Подушка лисичка — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>Подушка «Лисичка»</b><div class="meta"><i>800 шт</i><span>подушка</span></div></div></div>
+      <div class="work"><div class="ph"><img src="/prototype/images/works/podushka-akulenok-250.jpg" alt="Подушка акуленок — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>Подушка «Акулёнок»</b><div class="meta"><i>250 шт</i><span>подушка</span></div></div></div>
+      <div class="work"><div class="ph"><img src="/prototype/images/works/konfetnitsa-slon-1000.jpg" alt="Конфетница маленький слон — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>Конфетница «Слон»</b><div class="meta"><i>1 000 шт</i><span>конфетница</span></div></div></div>
+    </div>
+    <div style="text-align:center;margin-top:38px"><a class="btn btn-ghost" href="/works.html">Смотреть все наши работы →</a></div>
+  </div>
+</section>
+
+<!-- НАМ ДОВЕРЯЮТ -->
+<section class="clients">
+  <div class="container">
+    <h2 class="center">Нам <span>доверяют</span></h2>
+    <p class="lead center">Более 500 компаний заказали фирменную продукцию на нашей фабрике</p>
+    <div class="logos">
+      <div class="lg"><img src="/prototype/images/clients/client-1.png" alt="Логотип клиента Пушистого Завода" loading="lazy" decoding="async"></div>
+      <div class="lg"><img src="/prototype/images/clients/client-2.png" alt="Логотип клиента Пушистого Завода" loading="lazy" decoding="async"></div>
+      <div class="lg"><img src="/prototype/images/clients/client-3.png" alt="Логотип клиента Пушистого Завода" loading="lazy" decoding="async"></div>
+      <div class="lg"><img src="/prototype/images/clients/client-4.png" alt="Логотип клиента Пушистого Завода" loading="lazy" decoding="async"></div>
+      <div class="lg"><img src="/prototype/images/clients/client-5.png" alt="Логотип клиента Пушистого Завода" loading="lazy" decoding="async"></div>
+      <div class="lg"><img src="/prototype/images/clients/client-6.png" alt="Логотип клиента Пушистого Завода" loading="lazy" decoding="async"></div>
     </div>
   </div>
 </section>
@@ -436,9 +458,9 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
         <option value="">Что нужно изготовить?</option>
 
         <option>Рюкзаки и сумки</option>
-        <option>Тапочки</option>
-        <option>Декоративные подушки</option>
-        <option>Аксессуары</option>
+        <option>Плюшевые тапочки</option>
+        <option>Подушки для путешествий</option>
+        <option>Конфетницы</option>
       </select>
       <button class="btn btn-primary" type="submit">Отправить заявку</button>
       <div class="agree">Нажимая кнопку, вы соглашаетесь с политикой конфиденциальности.</div>

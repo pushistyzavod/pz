@@ -133,6 +133,16 @@ section[id]{scroll-margin-top:110px}
 .trust b{display:block;font-size:16px;margin-bottom:6px}
 .trust p{font-size:13px;color:var(--muted)}
 
+/* Clients logos (Нам доверяют) */
+.clients{background:#fafaff}
+.logos{display:flex;flex-wrap:nowrap;gap:14px;justify-content:center;align-items:stretch}
+.logos .lg{background:#fff;border:1px solid var(--line);border-radius:16px;height:110px;flex:1 1 0;min-width:0;display:flex;align-items:center;justify-content:center;padding:14px 16px;transition:.2s}
+.logos .lg:hover{transform:translateY(-3px);box-shadow:var(--shadow);border-color:transparent}
+.logos .lg img{max-width:100%;max-height:68px;width:auto;height:auto;object-fit:contain;opacity:.95;transition:.2s}
+.logos .lg:hover img{opacity:1}
+@media(max-width:900px){.logos{flex-wrap:wrap}.logos .lg{flex:1 1 28%;height:100px}}
+@media(max-width:560px){.logos .lg{flex:1 1 44%;height:92px}}
+
 /* Price table */
 .ptable{background:#fff;border:1px solid var(--line);border-radius:20px;overflow:hidden}
 .ptable .row{display:grid;grid-template-columns:1fr 1fr 1fr;padding:16px 24px;border-bottom:1px solid var(--line);font-size:15px}
@@ -249,7 +259,7 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
           <div><b>3–6 нед.</b><span>тираж</span></div>
         </div>
       </div>
-      <div class="chero-visual"><img src="/prototype/images/toys/hero-business.png" alt="Мягкие игрушки на заказ для бизнеса — производство Пушистый Завод" fetchpriority="high" decoding="async"><span class="cv-shadow" aria-hidden="true"></span></div>
+      <div class="chero-visual"><img src="/prototype/images/hero-main.jpeg" alt="Мягкие игрушки на заказ для бизнеса — производство Пушистый Завод" fetchpriority="high" decoding="async"><span class="cv-shadow" aria-hidden="true"></span></div>
     </div>
   </div>
 </section>
@@ -322,7 +332,7 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
         <ul>
           <li>Вышивка или печать логотипа, фирменная одежда для игрушки</li>
           <li>Воплотим в плюше любого персонажа с сохранением узнаваемости</li>
-          <li>Короткие сроки за счёт готовых лекал и собственного производства</li>
+          <li>Короткие сроки за счёт собственного производства. Лекала разрабатываем индивидуально под каждую игрушку</li>
         </ul>
         <div class="who">Кому подходит: акции «подарок за покупку», лояльность, медиа, издательства и разработчики игр.</div>
       </div>
@@ -351,7 +361,7 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
       <div class="trust"><div class="ic"><img src="/prototype/images/logo.png" alt="Пушистый Завод — собственное производство" style="object-fit:contain;padding:10px;background:#fff" loading="lazy" decoding="async"></div><b>Собственное производство</b><p>Полный цикл в России, без посредников — держим цену и сроки.</p></div>
       <div class="trust"><div class="ic"><img src="/prototype/images/perks/perk-2.jpg" alt="Сертификаты качества" loading="lazy" decoding="async"></div><b>Сертификаты качества</b><p>Безопасно, в том числе для детских товаров.</p></div>
       <div class="trust"><div class="ic"><img src="/prototype/images/perks/perk-3.jpg" alt="Маркировка «Честный знак»" loading="lazy" decoding="async"></div><b>«Честный знак»</b><p>Маркируем продукцию по требованиям закона.</p></div>
-      <div class="trust"><div class="ic"><img src="/prototype/images/steps/step-3.jpg" alt="Сигнальный образец игрушки перед тиражом" loading="lazy" decoding="async"></div><b>Бесплатный сигнальный образец</b><p>При заказе тиража от 1 000 штук.</p></div>
+      <div class="trust"><div class="ic"><img src="/prototype/images/free-sample.png" alt="Бесплатный сигнальный образец игрушки перед тиражом" loading="lazy" decoding="async"></div><b>Бесплатный сигнальный образец</b><p>При заказе тиража от 1 000 штук.</p></div>
     </div>
   </div>
 </section>
@@ -385,6 +395,23 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
       <div class="work"><div class="ph"><img src="/prototype/images/works/promo-detskiy-mir-6000.jpg" alt="Промо детский мир — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>Промо детский мир</b><div class="meta"><i>6 000 шт</i><span>45 дней</span></div></div></div>
       <div class="work"><div class="ph"><img src="/prototype/images/works/personazh-dlya-otelya-radisson-350.jpg" alt="Персонаж для отеля radisson — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>Персонаж для отеля radisson</b><div class="meta"><i>350 шт</i><span>28 дней</span></div></div></div>
       <div class="work"><div class="ph"><img src="/prototype/images/works/personazh-dlya-roskosmosa-strelka-100.jpg" alt="Персонаж для Роскосмоса Стрелка — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>Персонаж для Роскосмоса Стрелка</b><div class="meta"><i>100 шт</i><span>28 дней</span></div></div></div>
+    </div>
+    <div style="text-align:center;margin-top:38px"><a class="btn btn-ghost" href="/works.html">Смотреть все наши работы →</a></div>
+  </div>
+</section>
+
+<!-- НАМ ДОВЕРЯЮТ -->
+<section class="clients">
+  <div class="container">
+    <h2 class="center">Нам <span>доверяют</span></h2>
+    <p class="lead center">Более 500 компаний заказали фирменную продукцию на нашей фабрике</p>
+    <div class="logos">
+      <div class="lg"><img src="/prototype/images/clients/client-1.png" alt="Логотип клиента Пушистого Завода" loading="lazy" decoding="async"></div>
+      <div class="lg"><img src="/prototype/images/clients/client-2.png" alt="Логотип клиента Пушистого Завода" loading="lazy" decoding="async"></div>
+      <div class="lg"><img src="/prototype/images/clients/client-3.png" alt="Логотип клиента Пушистого Завода" loading="lazy" decoding="async"></div>
+      <div class="lg"><img src="/prototype/images/clients/client-4.png" alt="Логотип клиента Пушистого Завода" loading="lazy" decoding="async"></div>
+      <div class="lg"><img src="/prototype/images/clients/client-5.png" alt="Логотип клиента Пушистого Завода" loading="lazy" decoding="async"></div>
+      <div class="lg"><img src="/prototype/images/clients/client-6.png" alt="Логотип клиента Пушистого Завода" loading="lazy" decoding="async"></div>
     </div>
   </div>
 </section>

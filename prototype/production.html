@@ -65,10 +65,21 @@ header.nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.95);bac
 .card h3{font-size:18px;margin-bottom:8px}
 .card p{color:var(--muted);font-size:14px}
 
+/* Skills — фото сверху над текстом (отличается от «Наши цеха») */
+.skills .card{padding:0;overflow:hidden;display:flex;flex-direction:column}
+.skills .sk-img{aspect-ratio:16/10;overflow:hidden;background:var(--bg-blue)}
+.skills .sk-img img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s ease}
+.skills .card:hover .sk-img img{transform:scale(1.05)}
+.skills .sk-body{padding:20px 24px 24px}
+.skills .sk-body h3{margin-bottom:8px}
+.skills .sk-body p{margin:0}
+
 /* Workshop tiles */
 .shops{grid-template-columns:repeat(3,1fr)}
 .shop{border-radius:20px;overflow:hidden;border:1px solid var(--line);background:#fff}
-.shop .ph{aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;font-size:70px;background:var(--bg-blue)}
+.shop .ph{aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;font-size:70px;background:var(--bg-blue);overflow:hidden}
+.shop .ph img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s}
+.shop:hover .ph img{transform:scale(1.04)}
 .shop:nth-child(3n) .ph{background:var(--bg-peach)}
 .shop:nth-child(3n+1) .ph{background:var(--bg-pink)}
 .shop .t{padding:18px 20px}
@@ -76,12 +87,18 @@ header.nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.95);bac
 .shop .t p{font-size:13px;color:var(--muted)}
 
 /* Steps timeline */
-.steps{grid-template-columns:repeat(6,1fr)}
-.step{text-align:center}
-.step .num{width:52px;height:52px;border-radius:50%;background:var(--pink);color:#fff;font-weight:700;font-size:20px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px}
-.step:nth-child(even) .num{background:var(--blue)}
-.step h4{font-size:15px;margin-bottom:5px}
-.step p{font-size:12px;color:var(--muted)}
+.steps{grid-template-columns:repeat(5,1fr);gap:18px}
+.step{position:relative;text-align:center;background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px 14px 18px;transition:.2s}
+.step:hover{transform:translateY(-4px);box-shadow:var(--shadow);border-color:transparent}
+.step .ph{position:relative;aspect-ratio:4/3;border-radius:12px;background:var(--bg-blue);overflow:hidden;margin-bottom:12px}
+.step .ph img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s ease}
+.step:hover .ph img{transform:scale(1.05)}
+.step .num{position:absolute;top:8px;left:8px;z-index:2;width:30px;height:30px;border-radius:50%;background:var(--pink);color:#fff;font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 10px -3px rgba(255,96,153,.7)}
+.step:nth-child(even) .num{background:var(--blue);box-shadow:0 4px 10px -3px rgba(99,154,238,.7)}
+.step:not(:last-child)::after{content:"→";position:absolute;top:26%;right:-17px;font-size:19px;font-weight:700;color:var(--blue);z-index:3}
+.step h4{font-size:15px;margin-bottom:6px}
+.step p{font-size:13px;color:var(--muted)}
+@media(max-width:900px){.step:not(:last-child)::after{display:none}}
 
 /* Capacity table */
 .captable{background:#fff;border:1px solid var(--line);border-radius:20px;overflow:hidden}
@@ -94,7 +111,8 @@ header.nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.95);bac
 /* Docs */
 .docs{grid-template-columns:repeat(4,1fr)}
 .doc{background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px;text-align:center}
-.doc .ic{font-size:34px;margin-bottom:10px}
+.doc .ic{width:64px;height:64px;margin:0 auto 12px;border-radius:16px;background:#f4f5fb;display:flex;align-items:center;justify-content:center;overflow:hidden;font-size:34px}
+.doc .ic img{width:100%;height:100%;object-fit:cover;display:block}
 .doc b{display:block;font-size:15px;margin-bottom:4px}
 .doc p{font-size:12px;color:var(--muted)}
 
@@ -195,7 +213,7 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
         <p>Собственное производство означает, что мы не зависим от подрядчиков: сами управляем сроками, качеством и себестоимостью. Поэтому можем гибко подстраиваться под дедлайны акций и снижать цену конкурента.</p>
         <a class="btn btn-primary" href="/#cta">Обсудить ваш проект</a>
       </div>
-      <div class="art">🏭</div>
+      <div class="art"><img src="/prototype/images/workshops/fabrika.jpg" alt="Вывеска Пушистый Завод — производство, фабрика полного цикла" style="width:100%;height:100%;object-fit:cover;border-radius:var(--radius)" loading="lazy" decoding="async"></div>
     </div>
   </div>
 </section>
@@ -205,13 +223,13 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
   <div class="container">
     <h2>Что мы умеем <span>на производстве</span></h2>
     <p class="lead">Полный технологический стек для мягких и пластиковых изделий.</p>
-    <div class="grid cards3">
-      <div class="card"><div class="ico">✏️</div><h3>Дизайн и конструирование</h3><p>Художники и конструкторы создают макет, лекала и 3D-визуализацию по вашему ТЗ, фото или образцу.</p></div>
-      <div class="card"><div class="ico">🧵</div><h3>Швейный цех</h3><p>Раскрой, пошив и набивка мягких игрушек, рюкзаков, тапочек и текстильных аксессуаров.</p></div>
-      <div class="card"><div class="ico">🧩</div><h3>Производство ПВХ</h3><p>Изготовление форм и отливка мягких и твёрдых изделий из ПВХ: фигурки, брелоки, флешки, джибитсы.</p></div>
-      <div class="card"><div class="ico">🎨</div><h3>Брендирование</h3><p>Вышивка, шелкография, термопечать, бирки и подвесы, индивидуальная упаковка с логотипом.</p></div>
-      <div class="card"><div class="ico">🧷</div><h3>Фурнитура и сборка</h3><p>Установка глазок, карабинов, колец, молний и другой сертифицированной фурнитуры.</p></div>
-      <div class="card"><div class="ico">📦</div><h3>Упаковка и логистика</h3><p>Индивидуальная и транспортная упаковка, маркировка, отгрузка по РФ и СНГ.</p></div>
+    <div class="grid cards3 skills">
+      <div class="card"><div class="sk-img"><img src="/prototype/images/skills/design.jpg" alt="Дизайн и конструирование — художники Пушистого Завода за работой" loading="lazy" decoding="async"></div><div class="sk-body"><h3>Дизайн и конструирование</h3><p>Художники и конструкторы создают макет, лекала и 3D-визуализацию по вашему ТЗ, фото или образцу.</p></div></div>
+      <div class="card"><div class="sk-img"><img src="/prototype/images/skills/shveiny.jpg" alt="Швейный цех Пушистого Завода — пошив мягких изделий" loading="lazy" decoding="async"></div><div class="sk-body"><h3>Швейный цех</h3><p>Раскрой, пошив и набивка мягких игрушек, рюкзаков, тапочек и текстильных аксессуаров.</p></div></div>
+      <div class="card"><div class="sk-img"><img src="/prototype/images/skills/plastic.jpg" alt="Пластиковое производство Пушистого Завода — отливка изделий" loading="lazy" decoding="async"></div><div class="sk-body"><h3>Пластиковое производство</h3><p>Изготовление форм и отливка изделий из мягкого и твёрдого пластика и ПВХ: фигурки, брелоки, флешки, джибитсы.</p></div></div>
+      <div class="card"><div class="sk-img"><img src="/prototype/images/skills/branding.jpg" alt="Брендирование изделий — вышивка и печать логотипов" loading="lazy" decoding="async"></div><div class="sk-body"><h3>Брендирование</h3><p>Вышивка, шелкография, термопечать, бирки и подвесы, индивидуальная упаковка с логотипом.</p></div></div>
+      <div class="card"><div class="sk-img"><img src="/prototype/images/skills/sborka.jpg" alt="Сборка и фурнитура — установка карабинов и глазок" loading="lazy" decoding="async"></div><div class="sk-body"><h3>Фурнитура и сборка</h3><p>Установка глазок, карабинов, колец, молний и другой сертифицированной фурнитуры.</p></div></div>
+      <div class="card"><div class="sk-img"><img src="/prototype/images/skills/upakovka.jpg" alt="Упаковка и логистика — отправка партий Пушистый Завод" loading="lazy" decoding="async"></div><div class="sk-body"><h3>Упаковка и логистика</h3><p>Сертифицированная упаковка всей продукции и отправка любой логистической компанией по РФ и СНГ.</p></div></div>
     </div>
   </div>
 </section>
@@ -220,14 +238,14 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
 <section>
   <div class="container">
     <h2>Наши <span>цеха</span></h2>
-    <p class="lead">Экскурсия по производству. Плашки с эмодзи заменяются на реальные фото цехов и оборудования.</p>
+    <p class="lead">Производство, склады и офис в Москве и Иваново.</p>
     <div class="grid shops">
-      <div class="shop"><div class="ph">✏️</div><div class="t"><b>Дизайн-бюро</b><p>Разработка макетов, лекал и 3D-моделей будущих изделий.</p></div></div>
-      <div class="shop"><div class="ph">✂️</div><div class="t"><b>Раскройный цех</b><p>Точный раскрой ткани и материалов по лекалам.</p></div></div>
-      <div class="shop"><div class="ph">🧵</div><div class="t"><b>Швейный цех</b><p>Пошив и набивка мягких изделий на промышленном оборудовании.</p></div></div>
-      <div class="shop"><div class="ph">🧩</div><div class="t"><b>Цех ПВХ</b><p>Изготовление форм и отливка пластиковых и мягких ПВХ-изделий.</p></div></div>
-      <div class="shop"><div class="ph">🎨</div><div class="t"><b>Участок брендирования</b><p>Вышивка, печать и нанесение логотипов.</p></div></div>
-      <div class="shop"><div class="ph">✅</div><div class="t"><b>ОТК и упаковка</b><p>Контроль качества, маркировка и упаковка партий.</p></div></div>
+      <div class="shop"><div class="ph"><img src="/prototype/images/workshops/design.jpg" alt="Дизайн-бюро Пушистого Завода — разработка макетов и 3D-моделей" loading="lazy" decoding="async"></div><div class="t"><b>Дизайн-бюро</b><p>Разработка макетов, лекал и 3D-моделей будущих изделий.</p></div></div>
+      <div class="shop"><div class="ph"><img src="/prototype/images/workshops/raskroy.jpg" alt="Раскройный цех Пушистого Завода — раскрой материалов по лекалам" loading="lazy" decoding="async"></div><div class="t"><b>Раскройный цех</b><p>Точный раскрой ткани и материалов по лекалам.</p></div></div>
+      <div class="shop"><div class="ph"><img src="/prototype/images/workshops/shveiny.jpg" alt="Швейный цех Пушистого Завода — пошив мягких изделий" loading="lazy" decoding="async"></div><div class="t"><b>Швейный цех</b><p>Пошив и набивка мягких изделий на промышленном оборудовании.</p></div></div>
+      <div class="shop"><div class="ph"><img src="/prototype/images/workshops/plastic.jpg" alt="Цех по пластику Пушистого Завода — отливка изделий из ПВХ и пластика" loading="lazy" decoding="async"></div><div class="t"><b>Цех по пластику (ПВХ)</b><p>Изготовление форм и отливка пластиковых и мягких ПВХ-изделий.</p></div></div>
+      <div class="shop"><div class="ph"><img src="/prototype/images/workshops/branding.jpg" alt="Участок брендирования Пушистого Завода — вышивка и печать логотипов" loading="lazy" decoding="async"></div><div class="t"><b>Участок брендирования</b><p>Вышивка, печать и нанесение логотипов.</p></div></div>
+      <div class="shop"><div class="ph"><img src="/prototype/images/workshops/pokraska-upakovka.jpg" alt="Цех покраски и упаковки Пушистого Завода" loading="lazy" decoding="async"></div><div class="t"><b>Цех покраски и упаковки</b><p>Покраска изделий, контроль качества, маркировка и упаковка партий.</p></div></div>
     </div>
   </div>
 </section>
@@ -238,12 +256,11 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
     <h2 class="center">Как устроен <span>производственный цикл</span></h2>
     <p class="lead center">Прозрачный путь заказа — вы видите и утверждаете каждый этап.</p>
     <div class="grid steps">
-      <div class="step"><div class="num">1</div><h4>Бриф</h4><p>ТЗ, тираж, сроки, бюджет.</p></div>
-      <div class="step"><div class="num">2</div><h4>Макет</h4><p>Эскиз и 3D, расчёт цены.</p></div>
-      <div class="step"><div class="num">3</div><h4>Образец</h4><p>Сигнальный образец на утверждение.</p></div>
-      <div class="step"><div class="num">4</div><h4>Тираж</h4><p>Запуск партии в цехах.</p></div>
-      <div class="step"><div class="num">5</div><h4>Контроль</h4><p>Проверка качества ОТК.</p></div>
-      <div class="step"><div class="num">6</div><h4>Отгрузка</h4><p>Упаковка и доставка с документами.</p></div>
+      <div class="step"><div class="ph"><span class="num">1</span><img src="/prototype/images/steps/step-1.jpg" alt="Бриф — обсуждаем изделие, тираж и сроки" loading="lazy" decoding="async"></div><h4>Бриф</h4><p>ТЗ, тираж, сроки, бюджет.</p></div>
+      <div class="step"><div class="ph"><span class="num">2</span><img src="/prototype/images/steps/step-2.jpg" alt="Макет — эскиз и 3D-визуализация изделия" loading="lazy" decoding="async"></div><h4>Макет</h4><p>Эскиз и 3D, расчёт цены.</p></div>
+      <div class="step"><div class="ph"><span class="num">3</span><img src="/prototype/images/steps/step-3.jpg" alt="Сигнальный образец изделия на утверждение" loading="lazy" decoding="async"></div><h4>Образец</h4><p>Сигнальный образец на утверждение.</p></div>
+      <div class="step"><div class="ph"><span class="num">4</span><img src="/prototype/images/steps/step-4.jpg" alt="Запуск тиража в цехах производства" loading="lazy" decoding="async"></div><h4>Тираж</h4><p>Запуск партии в цехах.</p></div>
+      <div class="step"><div class="ph"><span class="num">5</span><img src="/prototype/images/steps/step-5.jpg" alt="Контроль качества и отгрузка партии с документами" loading="lazy" decoding="async"></div><h4>Отгрузка</h4><p>Контроль ОТК, упаковка и доставка с документами.</p></div>
     </div>
   </div>
 </section>
@@ -272,10 +289,37 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
     <h2>Качество и <span>документы</span></h2>
     <p class="lead">Работаем официально и по стандартам — важно для закупок и госконтрактов.</p>
     <div class="grid docs">
-      <div class="doc"><div class="ic">📜</div><b>Сертификаты качества</b><p>Продукция сертифицирована и безопасна, в т.ч. детские товары.</p></div>
-      <div class="doc"><div class="ic">🏷️</div><b>«Честный знак»</b><p>Маркировка по требованиям законодательства РФ.</p></div>
-      <div class="doc"><div class="ic">📄</div><b>Работа с юрлицами</b><p>Договор, счёт, закрывающие документы, безнал, НДС.</p></div>
-      <div class="doc"><div class="ic">✅</div><b>Контроль ОТК</b><p>Проверка образца и каждой партии перед отгрузкой.</p></div>
+      <div class="doc"><div class="ic"><img src="/prototype/images/perks/perk-2.jpg" alt="Сертификаты качества Пушистого Завода" loading="lazy" decoding="async"></div><b>Сертификаты качества</b><p>Продукция сертифицирована и безопасна, в т.ч. детские товары.</p></div>
+      <div class="doc"><div class="ic"><img src="/prototype/images/perks/perk-3.jpg" alt="Маркировка Честный знак" loading="lazy" decoding="async"></div><b>«Честный знак»</b><p>Маркировка по требованиям законодательства РФ.</p></div>
+      <div class="doc"><div class="ic"><img src="/prototype/images/perks/perk-5.jpg" alt="Работа с юрлицами по договору" loading="lazy" decoding="async"></div><b>Работа с юрлицами</b><p>Договор, счёт, закрывающие документы, безнал, НДС.</p></div>
+      <div class="doc"><div class="ic"><img src="/prototype/images/perks/perk-1.jpg" alt="Контроль качества ОТК Пушистого Завода" loading="lazy" decoding="async"></div><b>Контроль ОТК</b><p>Проверка образца и каждой партии перед отгрузкой.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- КОНТАКТЫ И КАРТА -->
+<section id="contacts" class="why">
+  <div class="container">
+    <h2>Где мы <span>находимся</span></h2>
+    <p class="lead">Производство, склады и офис в Москве и Иваново.</p>
+    <div class="geo">
+      <div class="geo-map">
+        <iframe src="https://yandex.ru/map-widget/v1/?ll=37.650096%2C55.7002935&z=16&pt=37.650096,55.7002935,pm2rdl" loading="lazy" allowfullscreen title="Пушистый Завод на карте — Москва, ул. Автозаводская, 23Бк2"></iframe>
+      </div>
+      <div class="geo-info">
+        <h3>Контакты и адреса</h3>
+        <div class="geo-line"><span class="ic">📍</span><span><b>Производство и офис:</b><br>115280, г. Москва, ул. Автозаводская, д. 23Б, корп. 2</span></div>
+        <div class="geo-line"><span class="ic">📞</span><span><b><a href="tel:+79896051010">+7 (989) 605-10-10</a></b><br>Пн–Пт 9:00–18:00 (МСК)</span></div>
+        <div class="geo-line"><span class="ic">✉️</span><span><a href="mailto:pushistyzavod@mail.ru">pushistyzavod@mail.ru</a></span></div>
+        <div class="geo-req">
+          <b>Реквизиты:</b><br>
+          ИП Цыренов Тимур Борисович<br>
+          ИНН 031320564462 · ОГРНИП 323030000049231<br>
+          Юр. адрес: 670042, г. Улан-Удэ, ул. Мокрова, д. 31<br>
+          Банк: ООО «Банк Точка» · Р/с 40802810620000156262<br>
+          К/с 30101810745374525104 · БИК 044525104
+        </div>
+      </div>
     </div>
   </div>
 </section>
