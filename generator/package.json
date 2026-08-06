@@ -1,0 +1,13 @@
+{
+  "name": "pz-seo-generator",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Генератор SEO-посадочных страниц pushistyzavod.ru",
+  "scripts": {
+    "generate": "node generate.js",
+    "update-core": "node update-core.js",
+    "semantic": "node semantic.js",
+    "validate": "node validate.js",
+    "all": "node generate.js && node update-core.js && node semantic.js && node validate.js"
+  }
+}

@@ -1,0 +1,30 @@
+# robots.txt для pushistyzavod.ru
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /legacy
+Disallow: /old
+Disallow: /main
+Disallow: /slider
+Disallow: /header
+Disallow: /footer
+Disallow: /page*.html
+Disallow: /files/
+Disallow: /tilda/
+Disallow: *?*
+
+User-agent: Yandex
+Allow: /
+Disallow: /api/
+Disallow: /legacy
+Disallow: /old
+Disallow: /main
+Disallow: /slider
+Disallow: /header
+Disallow: /footer
+Disallow: /page*.html
+Disallow: /files/
+Disallow: /tilda/
+Disallow: *?*
+
+Sitemap: https://pushistyzavod.ru/sitemap.xml

@@ -1,0 +1,90 @@
+# Финальный технический SEO-аудит после переноса — pushistyzavod.ru
+
+Дата: 06.08.2026 · Метод: полный обход локально поднятого production-сервера краулером (409 URL: страницы, изображения, CSS/JS, файлы), проверка HTTP-статусов, мета-тегов, canonical, JSON-LD, перелинковки, форм, редиректов, robots.txt и sitemap.xml.
+
+## Итоговое состояние: ✅ технических ошибок не осталось
+
+| Проверка | Результат |
+|---|---|
+| Всего URL опрошено | 409 (215 HTML-страниц, 193 ассета, редиректы, служебные) |
+| Битые ссылки (404/500/таймаут) | **0** |
+| Редиректы внутри ссылок сайта | **0** (все ссылки ведут сразу на финальные URL) |
+| Дубли Title / Description / H1 | **0** (215 уникальных) |
+| Страницы без canonical / H1≠1 / без мета | **0** |
+| Ошибки JSON-LD | **0** (Organization, LocalBusiness, BreadcrumbList, FAQPage, Product, Service, Article, WebSite) |
+| URL из sitemap со статусом ≠200 | **0** из 214 |
+| Страницы-сироты (без входящих ссылок) | **0** |
+| Страницы со слабой перелинковкой (<3 ссылок) | **0** |
+| Изображения без alt | **0** из 3797 |
+| Страницы без формы заявки | **0** |
+| 404-страница | корректный HTTP 404 + noindex + навигация |
+| robots.txt | актуальный (Yandex + `*`, sitemap-указание), HTTP 200 |
+| Формы | POST /api/form → `{"status":"success"}` (Mongo + e-mail) |
+
+## Что было найдено и исправлено
+
+### Критично
+1. **Сервер отдавал СТАРЫЕ robots.txt и sitemap.xml** (12 устаревших URL Тильды, все — редиректы; ссылка на несуществующий sitemap-feeds.xml). Маршруты перенесены выше статики → отдаётся актуальная карта на 214 URL. Файлы в `public/` также синхронизированы.
+2. **74 гео-страницы (`/igrushki-*`) были недостижимы по ссылкам вообще** — на `/dostavka-po-rf/` добавлен блок «Города доставки» со ссылками на все 80 городов.
+3. **`/news` → 301 → `/news/` → 404** (цепочка в битую страницу из-за конфликта express.static с директорией `news/`). Маршруты страниц подняты выше статики; `/news`, `/news/` → 301 → `/news.html`.
+4. **Все 15 старых `page*.html` Тильды отдавали 200 с дублями контента** (некоторые >1 МБ) → теперь 301 на соответствующие новые страницы (вес и позиции сохраняются).
+5. **`/404.html` отдавал старую страницу Тильды с кодом 200** (soft-404) → теперь новая брендированная 404 с корректным статусом.
+
+### Дубли и каннибализация
+6. `/privacy` и `/privacy.html` давали идентичный контент с 200; `/works`, `/news` и т.п. — то же → варианты без `.html` теперь 301 на канонические `.html`-URL.
+7. `/index.html`, `/prototype/index.html`, `/prototype/<slug>/index.html` — дубли прототипа → 301 на канонические URL.
+8. Внутренние ссылки на `/blog` в 4 основных страницах (через 301) → заменены на прямые `/news.html` (update-core.js делает это автоматически).
+
+### Перелинковка
+9. Статьи блога имели 1–2 входящие ссылки → перекрёстная сетка «Читайте также» между 11 статьями + ссылки на статьи из 12 профильных посадочных → у всех ≥3 входящих.
+
+### Скорость
+10. **Нет gzip** → подключён `compression` (добавлен в package.json).
+11. **`Cache-Control: max-age=0` на всех ассетах** → статика (img/css/js/fonts) кэшируется 30 дней, HTML — ревалидация по ETag.
+12. **Изображения 49 МБ → 7 МБ**: 84 тяжёлых PNG/JPG конвертированы в WebP (q82), 1036 ссылок обновлено в HTML/JS/JSON-LD/генераторе. Hero-изображения — `fetchpriority="high"`, остальные — `loading="lazy"` (3581 из 3797).
+13. Пустой `src` у превью лайтбокса на /works.html (запрос на саму страницу + пустой alt) → заменён на data-URI плейсхолдер.
+
+### UX/конверсия
+14. На `/works.html` и `/production.html` не было форм → добавлен CTA-блок с формой заявки (уходит на /api/form, цель Метрики `form_success`).
+
+## Файлы изменений
+- `backend/server.js` — порядок маршрутов, SEO-маршруты до статики, 301-редиректы (legacy page*.html, дубли), gzip, кэш-заголовки.
+- `backend/package.json` — + `compression`.
+- `generator/template.js` — блок городов (citiesBlock).
+- `generator/update-core.js` — формы для works/production, фикс /blog-ссылок и lbImg.
+- `generator/data/*.js` — перелинковка статей и посадочных (news-* ссылки), showCities для dostavka-po-rf.
+- `prototype/` — перегенерированы все 215 страниц; WebP-изображения.
+- `public/robots.txt`, `public/sitemap.xml` — синхронизированы с актуальными.
+
+## Деплой на продакшен (выполнено 06.08.2026)
+
+Обнаружено, что продакшен (VPS 185.46.10.129, nginx + Node/systemd) отдавал только 11 статических файлов, а все чистые URL, редиректы, robots.txt и sitemap.xml возвращали **404** — nginx (`try_files $uri $uri/ =404`) не проксировал запросы в Node.
+
+Выполненные работы на сервере:
+1. **nginx** (`/etc/nginx/sites-enabled/pushistyzavod`, бэкап: `/root/nginx-pushistyzavod.bak`): всё, кроме статических ассетов, проксируется в Node (`location / { proxy_pass … }`); ассеты `/prototype/…` отдаёт сам nginx с кэшем 30 дней; `robots.txt`, `sitemap.xml`, `favicon.ico`, `/404.html`, `/api/*` — в Node; добавлен 301 с www на не-www.
+2. **systemd** (`pz-backend.service`): добавлены `PROTOTYPE_DIR=/var/www/pushistyzavod/prototype` и `STATIC_DIR=/var/www/pushistyzavod/public` (раньше Node смотрел в несуществующий `/opt/pz-backend/prototype`).
+3. Задеплоены `prototype/` (215 страниц, WebP) и `backend/` (новый server.js), `npm install` (compression), сервис перезапущен.
+4. **Полный обход продакшена краулером (409 URL): 0 ошибок** — см. таблицу выше.
+
+### Проверка запрошенных URL (все открываются без ошибок)
+| URL | Код | Куда ведёт | Финал |
+|---|---|---|---|
+| /korporativnye-myagkie-igrushki-s-logotipom | 301 | /igrushki-s-logotipom/ | **200** |
+| /proizvodstvo-plastikovyh-figurok | 301 | /plastic-figurki/ | **200** |
+| /korporativnye-podarki-na-novyj-god | 301 | /novogodnie-podarki/ | **200** |
+| /korporativnye-podarki-na-23-fevralya | 301 | /podarki-na-23-fevralya/ | **200** |
+| /podarki-sotrudnikam-na-den-rozhdeniya-kompanii | 301 | /den-rozhdeniya-kompanii/ | **200** |
+| /korporativnye-podarki-detyam | 301 | /podarki-detyam-sotrudnikov/ | **200** |
+
+301-редиректы здесь — правильное поведение: это старые URL Тильды, уже известные поисковикам; постоянный редирект переносит накопленный вес на новые посадочные и устраняет дубли. Целевые страницы — полноценные посадочные (Title/Description/H1, FAQ, калькулятор, форма).
+
+### Осталось сделать вручную
+1. Яндекс.Вебмастер / Google Search Console: переотправить sitemap.xml, запросить переобход главных страниц.
+2. Закоммитить и запушить изменения в git (деплой на сервере уже выполнен вручную).
+3. Внешние ссылки (vk.com, reviews.yandex.ru) доступны; t.me/wa.me не проверяются сетевыми запросами из РФ — в браузере открываются.
+
+
+## Проверка повторяема одной командой
+```
+node generator/generate.js && node generator/update-core.js && node generator/validate.js
+```

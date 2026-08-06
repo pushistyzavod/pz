@@ -330,32 +330,110 @@ const prototypeDir = resolveDir(process.env.PROTOTYPE_DIR, 'prototype', 'index.h
 console.log('📁 Serving static from:', staticDir);
 console.log('🆕 Serving new prototype from:', prototypeDir);
 
-const staticOptions = {
-  index: false, // let the "/" route serve the new prototype homepage
-  setHeaders: (res, filePath) => {
-    if (filePath.endsWith('.css')) res.setHeader('Content-Type', 'text/css');
-    if (filePath.endsWith('.js')) res.setHeader('Content-Type', 'application/javascript');
-    if (filePath.endsWith('.svg')) res.setHeader('Content-Type', 'image/svg+xml');
-  },
+// ---------------------------------------------------------------------------
+// Сжатие ответов (gzip/deflate) для HTML/CSS/JS — критично для PageSpeed.
+// ---------------------------------------------------------------------------
+try {
+  const compression = require('compression');
+  app.use(compression());
+  console.log('🗜  Gzip-сжатие включено');
+} catch (e) {
+  console.warn('⚠️  Пакет compression не установлен — ответы без gzip. Выполните: npm install');
+}
+
+// ---------------------------------------------------------------------------
+// SEO: приоритетные маршруты ДО раздачи статики.
+// В public/ (старый экспорт Тильды) лежат устаревшие robots.txt, sitemap.xml,
+// 404.html и page*.html. Если express.static отработает раньше, поисковики
+// получат старую карту сайта, старый robots и дубли страниц — поэтому все
+// такие URL обрабатываем явно и до статики.
+// ---------------------------------------------------------------------------
+
+// Актуальные robots.txt и sitemap.xml — только из prototype/ (их генерирует генератор)
+app.get('/robots.txt', (req, res) => {
+  res.type('text/plain').sendFile(path.join(prototypeDir, 'robots.txt'));
+});
+app.get('/sitemap.xml', (req, res) => {
+  res.type('application/xml').sendFile(path.join(prototypeDir, 'sitemap.xml'));
+});
+// Старый фид Тильды (фигурировал в старом robots.txt) — сводим на актуальную карту
+app.get('/sitemap-feeds.xml', (req, res) => res.redirect(301, '/sitemap.xml'));
+
+// /404.html — всегда новая брендированная страница и всегда со статусом 404
+app.get('/404.html', (req, res) => {
+  res.status(404).sendFile(path.join(prototypeDir, '404.html'));
+});
+
+// Дубли служебных URL прототипа → 301 на канонические адреса
+app.get('/index.html', (req, res) => res.redirect(301, '/'));
+app.get(/^\/prototype\/(.+\.html)$/, (req, res) => {
+  let clean = '/' + req.params[0];
+  if (clean.endsWith('/index.html')) clean = clean.slice(0, -'index.html'.length);
+  if (clean === '/index.html') clean = '/';
+  if (clean === '/404.html') {
+    return res.status(404).sendFile(path.join(prototypeDir, '404.html'));
+  }
+  res.redirect(301, clean);
+});
+
+// Старые page*.html из экспорта Тильды → 301 на соответствующие новые страницы.
+// Эти URL уже известны поисковикам (были в старом sitemap.xml) — переносим вес.
+const legacyFileRedirects = {
+  '/page40738358.html': '/',                          // старая главная
+  '/page40861203.html': '/privacy.html',              // политика конфиденциальности
+  '/page41124919.html': '/novogodnie-podarki/',       // happynewyear
+  '/page68079733.html': '/news.html',                 // блог
+  '/page69512967.html': '/igrushki-s-logotipom/',     // корпоративные мягкие игрушки с логотипом
+  '/page69877857.html': '/novogodnie-podarki/',       // подарки на Новый год
+  '/page69880855.html': '/podarki-na-8-marta/',       // подарки на 8 марта
+  '/page69883579.html': '/podarki-na-23-fevralya/',   // подарки на 23 февраля
+  '/page69886785.html': '/podarki-detyam-sotrudnikov/', // новогодние подарки детям
+  '/page70261533.html': '/den-rozhdeniya-kompanii/',  // подарки на день рождения компании
+  '/page70664017.html': '/plastic-igrushki/',         // производство пластиковых игрушек
+  '/page68731663.html': '/works.html',                // slider (наши работы)
+  '/page69516079.html': '/',                          // служебный header Тильды
+  '/page69516455.html': '/',                          // служебный footer Тильды
+  '/page71447431.html': '/',                          // служебная страница Тильды
 };
-
-// Tilda export (старый сайт) + общие файлы
-app.use(express.static(staticDir, staticOptions));
-
-// Ассеты прототипа: доступны и по /prototype/..., и по короткому пути
-// (/images/logo.png, /js/site.js) — раньше короткие пути отдавали 404.
-app.use('/prototype', express.static(prototypeDir, staticOptions));
-app.use(express.static(prototypeDir, staticOptions));
-
-// Favicon, чтобы браузер не получал 404
-app.get('/favicon.ico', (req, res) => {
-  const icon = path.join(prototypeDir, 'images', 'logo.png');
-  if (fs.existsSync(icon)) return res.type('png').sendFile(icon);
-  res.status(204).end();
+Object.entries(legacyFileRedirects).forEach(([from, to]) => {
+  app.get(from, (req, res) => res.redirect(301, to));
 });
 
 // ---------------------------------------------------------------------------
-// Страницы
+// SEO: 301-редиректы со старых «красивых» URL Тильды на новые посадочные.
+// Убирает дубли контента и переносит ссылочный вес на актуальные URL.
+// ---------------------------------------------------------------------------
+const legacyRedirects = {
+  '/korporativnye-myagkie-igrushki-s-logotipom': '/igrushki-s-logotipom/',
+  '/korporativnye-podarki-detyam': '/podarki-detyam-sotrudnikov/',
+  '/proizvodstvo-plastikovyh-figurok': '/plastic-figurki/',
+  '/korporativnye-podarki-na-novyj-god': '/novogodnie-podarki/',
+
+  '/korporativnye-podarki-na-8-marta': '/podarki-na-8-marta/',
+  '/korporativnye-podarki-na-23-fevralya': '/podarki-na-23-fevralya/',
+  '/korporativnye-novogodnie-podarki-detyam': '/podarki-detyam-sotrudnikov/',
+  '/podarki-sotrudnikam-na-den-rozhdeniya-kompanii': '/den-rozhdeniya-kompanii/',
+  '/proizvodstvo-plastikovyh-igrushek-na-zakaz': '/plastic-igrushki/',
+  '/happynewyear': '/novogodnie-podarki/',
+  '/blog': '/news.html',
+  '/slider': '/works.html',
+  '/main': '/',
+  '/old': '/',
+  '/legacy': '/',
+  '/header': '/',
+  '/footer': '/',
+};
+Object.entries(legacyRedirects).forEach(([from, to]) => {
+  app.get(from, (req, res) => res.redirect(301, to));
+  // вариант со слешем на конце — туда же, без двойных редиректов
+  app.get(from + '/', (req, res) => res.redirect(301, to));
+});
+
+// ---------------------------------------------------------------------------
+// Основные страницы сайта. Канонический URL — с .html.
+// Варианты без .html и со слешем → 301 на канонический (никаких дублей).
+// Маршруты объявлены ДО статики: иначе express.static перехватывает /news
+// (существует директория prototype/news/) и уводит в цепочку 301→404.
 // ---------------------------------------------------------------------------
 function sendPage(res, dir, file, next) {
   const full = path.join(dir, file);
@@ -383,40 +461,65 @@ const prototypePages = {
 };
 
 Object.entries(prototypePages).forEach(([route, file]) => {
-  app.get(route, (req, res, next) => sendPage(res, prototypeDir, file, next));
-  // дублируем маршрут без .html (/works, /production, ...)
-  if (route !== '/') {
-    app.get(route.replace(/\.html$/, ''), (req, res, next) => sendPage(res, prototypeDir, file, next));
+  if (route === '/') {
+    app.get('/', (req, res, next) => sendPage(res, prototypeDir, file, next));
+    return;
   }
+  app.get(route, (req, res, next) => sendPage(res, prototypeDir, file, next));
+  const bare = route.replace(/\.html$/, '');
+  app.get(bare, (req, res) => res.redirect(301, route));
+  app.get(bare + '/', (req, res) => res.redirect(301, route));
 });
 
-// Route mapping (from htaccess)
-const pageRoutes = {
-  '/legacy': 'index.html',
-  '/old': 'page40738358.html',
-  '/main': 'page40738358.html',
-  '/privacy': 'page40861203.html',
-  '/happynewyear': 'page41124919.html',
-  '/blog': 'page68079733.html',
-  '/korporativnye-myagkie-igrushki-s-logotipom': 'page69512967.html',
-  '/korporativnye-podarki-na-novyj-god': 'page69877857.html',
-  '/korporativnye-podarki-na-8-marta': 'page69880855.html',
-  '/korporativnye-podarki-na-23-fevralya': 'page69883579.html',
-  '/korporativnye-novogodnie-podarki-detyam': 'page69886785.html',
-  '/podarki-sotrudnikam-na-den-rozhdeniya-kompanii': 'page70261533.html',
-  '/proizvodstvo-plastikovyh-igrushek-na-zakaz': 'page70664017.html',
-  '/slider': 'page68731663.html',
+const staticOptions = {
+  index: false, // главная "/" обслуживается маршрутом выше
+  setHeaders: (res, filePath) => {
+    if (filePath.endsWith('.css')) res.setHeader('Content-Type', 'text/css');
+    if (filePath.endsWith('.js')) res.setHeader('Content-Type', 'application/javascript');
+    if (filePath.endsWith('.svg')) res.setHeader('Content-Type', 'image/svg+xml');
+    // Кэширование: статические ассеты — 30 дней, HTML — ревалидация по ETag
+    if (/\.(?:png|jpe?g|webp|gif|svg|ico|css|js|woff2?|ttf|mp4|webm|pdf)$/i.test(filePath)) {
+      res.setHeader('Cache-Control', 'public, max-age=2592000');
+    } else if (/\.html?$/i.test(filePath)) {
+      res.setHeader('Cache-Control', 'no-cache');
+    }
+  },
 };
 
-// Serve pages
-Object.entries(pageRoutes).forEach(([route, file]) => {
-  // /privacy уже занят страницей прототипа выше, поэтому пропускаем дубль
-  if (route === '/privacy') return;
-  app.get(route, (req, res, next) => sendPage(res, staticDir, file, next));
+// Tilda export (старый сайт) + общие файлы
+app.use(express.static(staticDir, staticOptions));
+
+// Ассеты прототипа: доступны и по /prototype/..., и по короткому пути
+// (/images/logo.png, /js/site.js) — раньше короткие пути отдавали 404.
+app.use('/prototype', express.static(prototypeDir, staticOptions));
+app.use(express.static(prototypeDir, staticOptions));
+
+
+// Favicon, чтобы браузер не получал 404
+app.get('/favicon.ico', (req, res) => {
+  const icon = path.join(prototypeDir, 'images', 'logo.png');
+  if (fs.existsSync(icon)) return res.type('png').sendFile(icon);
+  res.status(204).end();
+});
+
+// ---------------------------------------------------------------------------
+// SEO-посадочные страницы (генерируются generator/generate.js):
+
+// /mascots, /mascots/ → prototype/mascots/index.html (чистые URL без .html)
+// ---------------------------------------------------------------------------
+app.use((req, res, next) => {
+  if (req.method !== 'GET' && req.method !== 'HEAD') return next();
+  const clean = decodeURIComponent(req.path).replace(/\/+$/, '');
+  if (!clean || clean.includes('..') || path.extname(clean)) return next();
+  const file = path.join(prototypeDir, clean, 'index.html');
+  if (fs.existsSync(file)) return res.sendFile(file);
+  next();
 });
 
 // 404 handler
 app.use((req, res) => {
+  const notFoundProto = path.join(prototypeDir, '404.html');
+  if (fs.existsSync(notFoundProto)) return res.status(404).sendFile(notFoundProto);
   const notFound = path.join(staticDir, '404.html');
   if (fs.existsSync(notFound)) return res.status(404).sendFile(notFound);
   res.status(404).type('html').send('<h1>404 — страница не найдена</h1><p><a href="/">На главную</a></p>');
