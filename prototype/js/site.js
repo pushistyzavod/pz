@@ -85,6 +85,14 @@
     + '.wlbox .wl-close{position:absolute;top:16px;right:16px;width:44px;height:44px;border-radius:50%;border:none;background:rgba(255,255,255,.14);color:#fff;font-size:22px;cursor:pointer;line-height:1;transition:.15s}'
     + '.wlbox .wl-close:hover{background:var(--spink)}'
     + '@media(max-width:900px){.wlbox{display:none}}'
+    // cookie-баннер (согласие на использование cookie)
+    + '.ckbox{position:fixed;left:16px;right:16px;bottom:16px;z-index:500;max-width:520px;margin:0 auto;background:#fff;border:1px solid var(--sline);border-radius:18px;box-shadow:0 24px 60px -20px rgba(20,30,80,.35);padding:18px 20px;font-size:13.5px;color:#3a3d46;line-height:1.55;transform:translateY(24px);opacity:0;visibility:hidden;transition:.3s;font-family:inherit}'
+    + '.ckbox.show{transform:translateY(0);opacity:1;visibility:visible}'
+    + '.ckbox b{color:var(--sink);font-size:14.5px}'
+    + '.ckbox a{color:var(--sblue);text-decoration:underline}'
+    + '.ckbox .ck-row{display:flex;justify-content:flex-end;margin-top:12px}'
+    + '.ckbox .ck-ok{padding:11px 24px;border-radius:24px;border:none;background:var(--spink);color:#fff;font-weight:600;font-size:14px;cursor:pointer;font-family:inherit;transition:.15s}'
+    + '.ckbox .ck-ok:hover{background:var(--sblue)}'
 
 
     + '.site-footer .legal{border-top:1px solid #33353f;margin-top:40px;padding-top:22px;font-size:13px;opacity:.7;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;line-height:1.6}'
@@ -412,10 +420,32 @@
     });
   }
 
+  // ---------- Cookie-баннер (уведомление об использовании cookie) ----------
+  // Показывается один раз; согласие запоминается в localStorage.
+  function initCookie() {
+    try { if (localStorage.getItem('ckConsent') === '1') return; } catch (e) {}
+    var el = document.createElement('div');
+    el.className = 'ckbox';
+    el.setAttribute('role', 'dialog');
+    el.innerHTML =
+      '<div><b>🍪 Мы используем cookie</b><br>'
+      + 'Сайт использует файлы cookie и сервис Яндекс.Метрика, чтобы анализировать посещаемость и улучшать работу сайта. '
+      + 'Продолжая пользоваться сайтом, вы соглашаетесь с этим и с <a href="/privacy.html">Политикой конфиденциальности</a>.</div>'
+      + '<div class="ck-row"><button class="ck-ok" type="button">Хорошо, принимаю</button></div>';
+    document.body.appendChild(el);
+    setTimeout(function () { el.classList.add('show'); }, 900);
+    el.querySelector('.ck-ok').addEventListener('click', function () {
+      try { localStorage.setItem('ckConsent', '1'); } catch (e) {}
+      el.classList.remove('show');
+      setTimeout(function () { el.parentNode && el.parentNode.removeChild(el); }, 350);
+    });
+  }
+
   function start() {
     inject();
     initForms();
     initMetrika();
+    initCookie();
   }
 
   if (document.readyState === 'loading') {
