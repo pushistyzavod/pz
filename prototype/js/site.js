@@ -390,6 +390,8 @@
             if (d && d.status === 'success') {
               show(d.message || 'Спасибо! Заявка отправлена — свяжемся с вами.', true);
               form.reset();
+              // Цель Яндекс.Метрики: успешная отправка заявки (конверсия)
+              try { if (window.ym) window.ym(95445006, 'reachGoal', 'form_success'); } catch (e) {}
             } else {
               show('Не удалось отправить. Позвоните нам: ' + PHONE_HUMAN, false);
             }
