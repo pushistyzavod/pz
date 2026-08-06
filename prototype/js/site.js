@@ -17,8 +17,9 @@
     + '.site-topbar .wrap{max-width:none;width:100%;margin:0;padding:9px 32px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;box-sizing:border-box}'
     + '.site-topbar .tb-left{display:flex;align-items:center;gap:8px;opacity:.9}'
     + '.site-topbar a{color:#eceef3;opacity:.8;text-decoration:none;transition:.15s}.site-topbar a:hover{opacity:1;color:#fff}'
-    + '.site-topbar .tb-right{display:flex;gap:22px;align-items:center}'
+    + '.site-topbar .tb-right{display:flex;gap:22px;align-items:center;flex-wrap:nowrap}'
     + '.site-topbar .tb-right a{display:inline-flex;align-items:center;gap:6px}'
+    + '.site-topbar .tb-right span,.site-topbar .tb-right a{white-space:nowrap}'
     // header
     + '.site-header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.9);backdrop-filter:saturate(180%) blur(12px);border-bottom:1px solid var(--sline);font-family:inherit;transition:box-shadow .2s,background .2s}'
     + '.site-header.scrolled{box-shadow:0 8px 30px -18px rgba(20,30,80,.35);background:rgba(255,255,255,.97)}'
@@ -135,11 +136,15 @@
     + '  .site-footer .cols{grid-template-columns:1fr 1fr}'
     + '}'
     + '@media(max-width:560px){'
-    + '  .site-header .wrap{padding:0 16px}.site-topbar .wrap{padding:8px 16px}'
+    + '  .site-header .wrap{padding:0 16px}.site-topbar .wrap{padding:8px 12px}'
+    + '  .site-topbar .tb-right{gap:12px;font-size:12px}'
     + '  .site-cta .site-btn{padding:11px 16px;font-size:13px}'
     + '  .site-footer .cols{grid-template-columns:1fr}'
     + '  .site-logo{font-size:17px;gap:8px}.site-logo .logo-pic{height:32px}'
     + '  .site-mega .inner{padding:16px}'
+    + '}'
+    + '@media(max-width:380px){'
+    + '  .site-topbar .tb-right{gap:8px;font-size:11px}'
     + '}';
 
   // ---------- Разметка ----------
