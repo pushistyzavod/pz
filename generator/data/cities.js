@@ -85,16 +85,43 @@ const CITIES = [
   ['novocherkassk', 'Новочеркасск', 'Новочеркасске', '5–7 дней', 'казачья столица: энергетика, машиностроение и казачья культура'],
 ];
 
-function mkCity([slugSuffix, name, inCity, delivery, regionNote]) {
+// Федеральный округ города — для уникального регионального абзаца (анти-дубль гео-страниц)
+const DISTRICT = {
+  center: ['moskva', 'voronezh', 'ryazan', 'tula', 'kursk', 'belgorod', 'vladimir', 'ivanovo', 'kaluga', 'kostroma', 'smolensk', 'tambov', 'tver', 'yaroslavl', 'bryansk', 'lipetsk', 'orel'],
+  nw: ['spb', 'kaliningrad', 'arhangelsk', 'murmansk', 'pskov', 'vologda', 'petrozavodsk', 'velikiy-novgorod'],
+  volga: ['kazan', 'nn', 'samara', 'ufa', 'saratov', 'volgograd', 'perm', 'tolliatti', 'izhevsk', 'ulyanovsk', 'orenburg', 'penza', 'kirov', 'cheboksary', 'saransk', 'yoshkar-ola', 'chelny'],
+  ural: ['ekb', 'tiumen', 'surgut', 'magnitogorsk', 'nizhniy-tagil', 'kurgan', 'nizhnevartovsk'],
+  siberia: ['novosibirsk', 'krasnoyarsk', 'omsk', 'barnaul', 'irkutsk', 'kemerovo', 'novokuznetsk', 'tomsk', 'ulan-ude', 'chita', 'abakan'],
+  dv: ['khabarovsk', 'vladivostok', 'yakutsk', 'yuzhno-sahalinsk', 'petropavlovsk', 'blagoveshchensk', 'komsomolsk'],
+  south: ['krasnodar', 'rnd', 'sochi', 'astrakhan', 'novorossiysk', 'taganrog', 'novocherkassk'],
+  caucasus: ['mahachkala', 'grozny', 'nalchik', 'stavropol', 'simferopol', 'sevastopol'],
+};
+const DISTRICT_TEXT = {
+  center: 'Центральная Россия — наш крупнейший регион поставок: головные офисы заказывают тиражи сразу для всей сети филиалов. Отправки идут сборными грузами еженедельно, возможна мультиотгрузка по офисам и торговым точкам вашей сети.',
+  nw: 'Для Северо-Запада работаем через терминалы СДЭК и Деловых Линий. Учитываем влажный климат региона: по запросу добавляем влагозащитную упаковку паллет, чтобы плюш приехал в идеальном состоянии.',
+  volga: 'Поволжье обслуживаем регулярными маршрутами Деловых Линий и ПЭК. Здесь сильны промышленность и машиностроение, поэтому чаще всего производим талисманов предприятий, мерч для дилерских сетей и подарки к заводским юбилеям.',
+  ural: 'Урал — ближний для нас регион: партии едут напрямую без перегрузок. Для промышленных городов Урала чаще всего делаем талисманов предприятий, подарки к корпоративным датам и мерч для спортивных клубов.',
+  siberia: 'Сибирь — домашний регион фабрики: действуют пониженные тарифы логистики, а образец при желании можно посмотреть прямо на производстве в Улан-Удэ. Для сибирских городов работаем с предоплатой по счёту и полным пакетом документов.',
+  dv: 'Для Дальнего Востока главный вопрос — логистика: отправляем авиа и ж/д-контейнерами, график закладываем с запасом к вашей дате, груз страхуем на полную стоимость партии. Ближайшая фабрика полного цикла к вам — это мы.',
+  south: 'Юг России — курорты, агробизнес и портовые города: здесь популярны подарки для отелей и санаториев, сувениры к туристическому сезону и промо-игрушки для агрокомпаний. К сезону бронируйте тираж заранее — мощности разбирают быстро.',
+  caucasus: 'Для Северного Кавказа и Крыма учитываем региональную специфику: быстрый рост малого бизнеса, турбизм и нюансы дизайна персонажей — всё обсуждаем на брифе. Доставка — СДЭК и Деловые Линии с обязательной страховкой.',
+};
+function districtOf(slugSuffix) {
+  return Object.keys(DISTRICT).find((k) => DISTRICT[k].includes(slugSuffix)) || 'center';
+}
+
+function mkCity([slugSuffix, name, inCity, delivery, regionNote], idx) {
   const slug = `igrushki-${slugSuffix}`;
   const isHome = slugSuffix === 'ulan-ude';
   const intro = [
     `Компаниям ${inCity} не нужно искать производство мягких игрушек в своём городе: фабрика «Пушистый Завод» производит заказы для всей России, а клиенты ${inCity} получают те же цены производителя, что и в Москве. ${delivery.charAt(0).toUpperCase() + delivery.slice(1)} — срок доставки готовой партии до вашего склада; образец присылаем курьером или показываем по видео.`,
     `Работаем со всеми отраслями ${inCity.charAt(0).toUpperCase() + inCity.slice(1)}: ${regionNote}. Каждый проект ведёт персональный менеджер: бриф по телефону или в мессенджере, бесплатный макет за 2–4 дня, договор и счёт на вашу компанию, фотоотчёты с производства.`,
+    DISTRICT_TEXT[districtOf(slugSuffix)],
     isHome
       ? 'Фабрика находится в Улан-Удэ — приезжайте в гости: покажем раскройный и швейный цеха, вышивку, ОТК и склад. Образцы для местных клиентов отдаём лично, тиражи — самовывозом или по городу в день готовности.'
       : `Доставку в ${name} выполняют СДЭК, Деловые Линии, ПЭК и ЖелДорЭкспедиция: груз страхуем, упаковываем в жёсткую тару, трек-номер присылаем в день отгрузки. Для срочных проектов возможна авиадоставка.`,
   ];
+
   return {
     slug,
     cluster: 'cities',
@@ -108,22 +135,26 @@ function mkCity([slugSuffix, name, inCity, delivery, regionNote]) {
     introH2: `Игрушки и сувениры для бизнеса в ${inCity}`,
     intro,
     city: name,
+    cityPrep: inCity,
     delivery,
+
     crumbs: [{ url: '/', label: 'Главная' }, { url: C.PARENTS.cities.url, label: C.PARENTS.cities.label }, { label: name }],
     schemaType: 'Service',
     image: '/prototype/images/soft-toys-cutout.webp',
     imgAlt: `Производство мягких игрушек и сувениров в ${inCity} — Пушистый Завод`,
     priceKey: 'toy',
-    caseTags: ['toy', 'gift'],
+    caseTags: [['toy', 'gift'], ['maskot', 'toy'], ['pvc', 'toy'], ['ny', 'gift'], ['toy', 'promo']][idx % 5],
     reviewOffset: CITIES.indexOf(CITIES.find((c) => c[0] === slugSuffix)) % 4,
+
     faq: [
       { q: `Как заказать игрушки, находясь в ${inCity}?`, a: 'Всё дистанционно: бриф по телефону или мессенджерам, бесплатный макет за 2–4 дня, образец показываем по видео или присылаем курьером. Договор и счёт — на вашу компанию, оплата безналичная.' },
       { q: `Сколько идёт доставка до города ${name}?`, a: `Ориентировочно ${delivery} транспортной компанией (СДЭК, Деловые Линии, ПЭК). Груз страхуем, трек-номер присылаем в день отгрузки. Для срочных проектов — авиадоставка.` },
       { q: 'Цены для регионов отличаются от московских?', a: 'Нет: цены производства едины для всей России — вы платите за изделие, а не за географию. Разница только в стоимости логистики, и она считается по тарифам ТК без наценок.' },
-      ...C.FAQ_COMMON.slice(0, 4),
+      ...C.FAQ_COMMON.slice(idx % 4, idx % 4 + 4),
     ],
     relatedGroups: [
       { title: 'Продукция', pages: ['mascots', 'symbol-goda', 'pvc-brelki'] },
+
       { title: 'Полезное', pages: ['dostavka-po-rf', 'korporativnye-podarki', 'novogodnie-podarki'] },
     ],
     formName: `Заявка: ${name}`,

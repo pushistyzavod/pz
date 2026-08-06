@@ -243,19 +243,65 @@ function buildNewsCards() {
       </a>`).join('\n');
 }
 
+const NEWS_INTRO = `
+<!-- SEO: вводный текст блога (генерируется generator/update-core.js) -->
+<section style="padding:0 0 40px">
+  <div class="container">
+    <p style="max-width:860px;color:#4a4e58;line-height:1.7;font-size:16px">В блоге фабрики «Пушистый Завод» мы делимся практикой производства мягких игрушек, ПВХ-фигурок и корпоративных подарков: как выбрать тираж и способ брендирования, сколько реально занимает производство, как работает маркировка «Честный знак» и как посчитать отдачу от промо-раздач. Каждая статья — ответы на вопросы, которые мы слышим от клиентов каждую неделю.</p>
+    <p style="max-width:860px;color:#4a4e58;line-height:1.7;font-size:16px">Материалы пишут производственники, а не копирайтеры: внутри — конкретные цифры, чек-листы и ошибки, которых легко избежать. Не нашли ответ на свой вопрос — позвоните, расскажем по телефону.</p>
+  </div>
+</section>`;
+
 function patchNews(html) {
   // статическая лента вместо JS-загрузки из Mongo
   html = html.replace(
     /<div class="grid" id="feed">[\s\S]*?<\/div>\s*<\/div>\s*<\/section>/,
     `<div class="grid" id="feed">\n${buildNewsCards()}\n    </div>\n  </div>\n</section>`
   );
+  // вводный текст перед лентой (идемпотентно)
+  html = html.replace(/\n*<!-- SEO: вводный текст блога \(генерируется generator\/update-core\.js\) -->[\s\S]*?<\/section>/, '');
+  html = html.replace(/(<div class="grid" id="feed">)/, NEWS_INTRO + '\n$1');
+
   // удаляем JS-загрузчик ленты (больше не нужен)
   html = html.replace(/<script>\s*\(function\(\)\{\s*var feed=document\.getElementById\('feed'\);[\s\S]*?\}\)\(\);\s*<\/script>/, '');
   return html;
 }
 
+/* ---------- FAQ для основных страниц (production, works) ---------- */
+const CORE_FAQ = {
+  'production.html': [
+    { q: 'Где находится производство?', a: 'Фабрика полного цикла в Улан-Удэ: конструкторское бюро, раскрой, пошив, вышивка, набивка, ОТК и склад. Офис продаж — в Москве. Приезжайте на экскурсию или покажем цеха по видеозвонку.' },
+    { q: 'Какая максимальная мощность фабрики?', a: 'До 100 000 изделий в месяц без привлечения субподряда: собственные раскройные столы, швейные линии и вышивальные машины. Большие тиражи планируем слотами — бронируйте дату заранее.' },
+    { q: 'Можно ли посмотреть производство до заказа?', a: 'Да: организуем видео-трансляцию с цехов или приезжайте в Улан-Удэ лично. Также бесплатно делаем макет будущего изделия — вы видите результат до любых обязательств.' },
+    { q: 'Работаете ли с чужими лекалами и техкартами?', a: 'Да, принимаем готовые лекала и техзадания — шьём по ним без изменений или адаптируем под наши материалы. Контрактное производство с NDA — стандартная практика.' },
+    { q: 'Как контролируется качество партии?', a: 'Многоступенчатый ОТК: входной контроль ткани и фурнитуры, проверка швов и симметрии на участке, финальный осмотр каждого изделия перед упаковкой. К отгрузке прикладываем фотоотчёт.' },
+  ],
+  'works.html': [
+    { q: 'Покажете похожий проект под нашу задачу?', a: 'Да: за 9 лет произведено сотни проектов — от маскотов банков до коллекционных ПВХ-серий. Напишите, какая у вас задача, и мы пришлём примеры из портфолио с тиражами и сроками.' },
+    { q: 'Можно повторить игрушку из кейса с нашим логотипом?', a: 'Да, если это наш авторский образец: заменим цвета и брендирование. Чужие бренд-персонажи не копируем — но создадим похожего по духу героя специально для вас.' },
+    { q: 'Какие тиражи на примерах работ?', a: 'От 100 штук (малые серии и welcome-паки) до 300 000 (федеральные FMCG-акции). На карточках кейсов указаны реальные тиражи и сроки производства.' },
+    { q: 'Как попасть в раздел «Наши работы»?', a: 'Все интересные проекты публикуем с согласия клиента. Если хотите кейс с вашим брендом — скажите менеджеру: за публикацию даём бонус к следующему тиражу.' },
+  ],
+};
+
+function faqCoreBlock(items) {
+  const qa = items.map((f) => `<details style="background:#fff;border:1px solid #eceef3;border-radius:14px;padding:16px 20px"><summary style="font-weight:600;cursor:pointer;font-size:15.5px">${T.esc(f.q)}</summary><p style="margin:10px 0 0;color:#6b6b76;line-height:1.6;font-size:14.5px">${T.esc(f.a)}</p></details>`).join('\n      ');
+  return `
+
+<!-- SEO: FAQ (генерируется generator/update-core.js) -->
+<section style="padding:0 0 60px">
+  <div class="container">
+    <h2 style="margin:0 0 22px">Частые вопросы</h2>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      ${qa}
+    </div>
+  </div>
+</section>`;
+}
+
 /* ---------- прогон ---------- */
 let patched = 0;
+
 Object.entries(PAGES).forEach(([file, p]) => {
   const full = path.join(PROTO, file);
   if (!fs.existsSync(full)) { console.warn('⚠️  Нет файла:', file); return; }
@@ -300,7 +346,17 @@ Object.entries(PAGES).forEach(([file, p]) => {
     );
   }
 
+  // FAQ для production/works: удаляем старый, вставляем актуальный
+  html = html.replace(/\n*<!-- SEO: FAQ \(генерируется generator\/update-core\.js\) -->[\s\S]*?<\/section>\s*(?=<script src="\/prototype\/js\/site\.js")/, '\n');
+  if (CORE_FAQ[file]) {
+    const block = faqCoreBlock(CORE_FAQ[file]);
+    const scriptRe3 = /<script src="\/prototype\/js\/site\.js[^"]*"><\/script>/;
+    if (scriptRe3.test(html)) html = html.replace(scriptRe3, (m) => block + '\n' + m);
+    else html = html.replace('</body>', block + '\n</body>');
+  }
+
   if (file === 'news.html') html = patchNews(html);
+
 
 
   fs.writeFileSync(full, html, 'utf8');

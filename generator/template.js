@@ -175,11 +175,28 @@ function introBlock(p) {
 </div></section>`;
 }
 
+// Уникальный дополнительный блок страницы (extra): разводит похожие кластеры
+// по search intent и убирает шаблонность
+function extraBlock(p) {
+  if (!p.extra) return '';
+  const items = (p.extra.list || []).map((li) => `<li>${li}</li>`).join('');
+  return `<section style="padding-top:0"><div class="container">
+  <h2>${p.extra.h2}</h2>
+  <div class="prose">${(p.extra.paras || []).map((t) => `<p>${t}</p>`).join('')}${items ? `<ul>${items}</ul>` : ''}</div>
+</div></section>`;
+}
+
+
+
+const clOf = (p) => (C.H2.benefits[p.cluster] ? p.cluster : 'default');
+
 function benefitsBlock(p) {
   const items = p.benefits || C.BENEFITS;
+  const cl = clOf(p);
   return `<section class="soft"><div class="container">
-  <h2>Почему заказывают <span>у нас</span></h2>
-  <p class="lead">Работаем как производственный партнёр: берём на себя дизайн, лекала, образец, тираж, маркировку и логистику.</p>
+  <h2>${C.H2.benefits[cl]}</h2>
+  <p class="lead">${C.LEADS.benefits[cl]}</p>
+
   <div class="cards6">${items.map((b) => `<div class="card6"><div class="i">${b.i}</div><b>${b.b}</b><p>${b.p}</p></div>`).join('')}</div>
 </div></section>`;
 }
@@ -192,19 +209,31 @@ function statsBlock() {
 
 function stepsBlock(p) {
   const steps = p.steps || C.STEPS_SOFT;
+  const cl = clOf(p);
+  const h2 = C.H2.steps[cl] || C.H2.steps.default;
+  const lead = C.LEADS.steps[cl] || C.LEADS.steps.default;
   return `<section><div class="container">
-  <h2>Этапы производства</h2>
-  <p class="lead">Прозрачный процесс: вы контролируете результат на каждом шаге — от макета до отгрузки.</p>
+  <h2>${h2}</h2>
+  <p class="lead">${lead}</p>
+
   <div class="steps">${steps.map((s) => `<div class="step"><b>${s.b}</b><p>${s.p}</p><span class="t">${s.t}</span></div>`).join('')}</div>
 </div></section>`;
 }
 
+// Ротация кейсов: берём топ-12 релевантных и сдвигаем окно по индексу страницы,
+// чтобы разные страницы показывали разные подборки примеров (меньше дублей блоков).
 function pickCases(p, n) {
   const tags = p.caseTags || ['toy'];
   const scored = C.CASES.map((c) => ({ c, score: c.tags.filter((t) => tags.includes(t)).length }))
     .filter((x) => x.score > 0)
     .sort((a, b) => b.score - a.score);
-  const picked = scored.slice(0, n).map((x) => x.c);
+  const win = scored.slice(0, Math.max(n, 12));
+  if (win.length > n && p.caseOffset) {
+    const r = p.caseOffset % win.length;
+    win.push(...win.splice(0, r));
+  }
+  const picked = win.slice(0, n).map((x) => x.c);
+
   // добираем любыми, если по тегам не хватило
   if (picked.length < n) {
     for (const c of C.CASES) {
@@ -217,8 +246,10 @@ function pickCases(p, n) {
 
 function worksBlock(p) {
   const cases = pickCases(p, 8);
+  const cl = clOf(p);
   return `<section class="soft" id="works"><div class="container">
-  <h2>Примеры <span>работ</span></h2>
+  <h2>${C.H2.works[cl] || C.H2.works.default}</h2>
+
   <p class="lead">Реальные тиражи, произведённые на нашей фабрике. Больше кейсов — в разделе <a href="/works.html" style="color:var(--blue);font-weight:600">«Наши работы»</a>.</p>
   <div class="works-grid">${cases.map((c) => `<div class="work"><div class="ph"><img src="/prototype/images/works/${c.img}" alt="${esc(c.cap)} — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>${esc(c.cap)}</b><span>Тираж: ${c.qty}</span></div></div>`).join('')}</div>
 </div></section>`;
@@ -274,10 +305,12 @@ function calcBlock(p) {
 
 function deliveryBlock(p) {
   const cityText = p.city
-    ? `В ${p.city} партии отправляем транспортными компаниями СДЭК, Деловые Линии, ПЭК и ЖелДорЭкспедиция. Ориентировочный срок доставки — ${p.delivery}. Груз страхуем, трек-номер присылаем в день отгрузки.`
+    ? `В ${p.cityPrep || p.city} партии отправляем транспортными компаниями СДЭК, Деловые Линии, ПЭК и ЖелДорЭкспедиция. Ориентировочный срок доставки — ${p.delivery}. Груз страхуем, трек-номер присылаем в день отгрузки.`
     : 'Отправляем партии по всей России: СДЭК, Деловые Линии, ПЭК, ЖелДорЭкспедиция. Срок доставки — 1–7 дней в зависимости от города. Груз страхуем, трек-номер присылаем в день отгрузки.';
+  const cl = clOf(p);
   return `<section class="soft"><div class="container">
-  <h2>Оплата, сроки и <span>доставка</span></h2>
+  <h2>${C.H2.delivery[cl] || C.H2.delivery.default}</h2>
+
   <div class="cards6" style="grid-template-columns:repeat(3,1fr)">
     <div class="card6"><div class="i">💳</div><b>Оплата</b><p>Договор, счёт, безналичный расчёт, УПД. 70% предоплата, 30% перед отгрузкой. Постоянным клиентам — отсрочка платежа.</p></div>
     <div class="card6"><div class="i">⏱</div><b>Сроки</b><p>Макет — 2–4 дня, образец — ~10 дней, тираж — 2–5 недель. Дату отгрузки фиксируем в договоре и отвечаем за неё.</p></div>
@@ -289,8 +322,10 @@ function deliveryBlock(p) {
 function reviewsBlock(p) {
   const start = p.reviewOffset || 0;
   const items = [0, 1, 2].map((i) => C.REVIEWS[(start + i) % C.REVIEWS.length]);
+  const cl = clOf(p);
   return `<section><div class="container">
-  <h2>Отзывы <span>клиентов</span></h2>
+  <h2>${C.H2.reviews[cl] || C.H2.reviews.default}</h2>
+
   <p class="lead">Нас рекомендуют маркетологи, HR и event-агентства — читайте, что говорят о работе с фабрикой.</p>
   <div class="reviews-grid">${items.map((r) => `<div class="review"><div class="rh"><img src="/prototype/images/reviews/${r.ava}" alt="${esc(r.name)} — отзыв о Пушистом Заводе" loading="lazy" decoding="async"><div><b>${esc(r.name)}</b><span>${esc(r.role)}</span></div></div><div class="stars">★★★★★</div><p>${esc(r.text)}</p></div>`).join('')}</div>
 </div></section>`;
@@ -392,7 +427,9 @@ function renderLanding(p, all) {
     + breadcrumbs(p.crumbs)
     + hero(p)
     + introBlock(p)
+    + extraBlock(p)
     + benefitsBlock(p)
+
     + statsBlock()
     + stepsBlock(p)
     + worksBlock(p)
@@ -445,7 +482,8 @@ function renderArticle(a, all) {
     <div class="meta article" style="padding:0"><span class="cat">${esc(a.category)}</span><span>${a.dateHuman}</span><span>·</span><span>${a.readTime}</span></div>
   </div>
 </div></section>`
-    + `<section style="padding-top:26px"><div class="container"><div class="article">${a.body}</div></div></section>`
+    + `<section style="padding-top:26px"><div class="container"><div class="article">${a.body}${a.bodyExtra || ''}</div></div></section>`
+
     + (a.faq ? faqBlock(a) : '')
     + `<section><div class="container rel-wrap"><h2 style="margin-bottom:22px">Полезные <span>страницы</span></h2><div class="rel-grid">${related}</div></div></section>`
     + ctaBlock(a)
