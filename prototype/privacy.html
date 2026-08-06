@@ -30,6 +30,17 @@ a{color:var(--blue)}
 .content li{font-size:15px;color:#3a3d46;margin-bottom:6px}
 .req{background:#f7f9fd;border:1px solid var(--line);border-radius:16px;padding:22px 24px;margin:24px 0;font-size:15px;line-height:1.75}
 .req b{color:var(--ink)}
+/* чтобы длинные слова и строки не вылезали за край на телефоне */
+.pagehead h1,.content p,.content li,.req,.crumbs{overflow-wrap:break-word}
+@media(max-width:560px){
+  .pagehead{padding:30px 0}
+  .pagehead h1{font-size:26px;line-height:1.15}
+  .pagehead .upd{font-size:13px}
+  .content{padding:32px 0 26px}
+  .content h2{font-size:19px;margin:24px 0 10px}
+  .content p,.content li{font-size:14px}
+  .req{padding:16px 18px;font-size:13.5px;line-height:1.65;border-radius:14px}
+}
 </style>
 </head>
 <body>

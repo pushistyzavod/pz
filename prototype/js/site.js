@@ -297,7 +297,10 @@
       burger.addEventListener('click', function () { setMenu(!drawerEl.classList.contains('open')); });
       backdrop.addEventListener('click', function () { setMenu(false); });
       drawerEl.querySelector('.d-close').addEventListener('click', function () { setMenu(false); });
-      drawerEl.querySelectorAll('nav a[href]').forEach(function (a) {
+      // Закрываем меню по клику на ЛЮБУЮ ссылку дровера:
+      // раньше обработчик стоял только на nav a[], поэтому кнопка
+      // «Рассчитать заказ» (.d-btn в подвале дровера) меню не закрывала.
+      drawerEl.querySelectorAll('a[href]').forEach(function (a) {
         a.addEventListener('click', function () { setMenu(false); });
       });
     }
