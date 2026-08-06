@@ -394,9 +394,28 @@
     });
   }
 
+  // ---------- Яндекс.Метрика (счётчик 95445006) ----------
+  // tag.js подгружается асинхронно и не блокирует рендер страницы.
+  function initMetrika() {
+    var MID = 95445006;
+    (function (m, e, t, r, i, k, a) {
+      m[i] = m[i] || function () { (m[i].a = m[i].a || []).push(arguments); };
+      m[i].l = 1 * new Date();
+      k = e.createElement(t); a = e.getElementsByTagName(t)[0];
+      k.async = 1; k.src = r; a.parentNode.insertBefore(k, a);
+    })(window, document, 'script', 'https://mc.yandex.ru/metrika/tag.js?id=' + MID, 'ym');
+    window.ym(MID, 'init', {
+      clickmap: true,        // карта кликов
+      trackLinks: true,      // отслеживание переходов по ссылкам
+      accurateTrackBounce: true, // точный показатель отказов
+      webvisor: true         // вебвизор (запись действий посетителей)
+    });
+  }
+
   function start() {
     inject();
     initForms();
+    initMetrika();
   }
 
   if (document.readyState === 'loading') {
