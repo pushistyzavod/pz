@@ -85,14 +85,13 @@
     + '.wlbox .wl-close{position:absolute;top:16px;right:16px;width:44px;height:44px;border-radius:50%;border:none;background:rgba(255,255,255,.14);color:#fff;font-size:22px;cursor:pointer;line-height:1;transition:.15s}'
     + '.wlbox .wl-close:hover{background:var(--spink)}'
     + '@media(max-width:900px){.wlbox{display:none}}'
-    // cookie-баннер (согласие на использование cookie)
-    + '.ckbox{position:fixed;left:16px;right:16px;bottom:16px;z-index:500;max-width:520px;margin:0 auto;background:#fff;border:1px solid var(--sline);border-radius:18px;box-shadow:0 24px 60px -20px rgba(20,30,80,.35);padding:18px 20px;font-size:13.5px;color:#3a3d46;line-height:1.55;transform:translateY(24px);opacity:0;visibility:hidden;transition:.3s;font-family:inherit}'
+    // cookie-баннер (согласие на использование cookie) — тонкая плашка внизу
+    + '.ckbox{position:fixed;left:0;right:0;bottom:0;z-index:500;background:rgba(28,30,37,.97);color:#c4c7d2;padding:10px 18px;display:flex;align-items:center;justify-content:center;gap:8px 16px;flex-wrap:wrap;font-size:12.5px;line-height:1.45;text-align:center;transform:translateY(100%);opacity:0;visibility:hidden;transition:.3s;font-family:inherit}'
     + '.ckbox.show{transform:translateY(0);opacity:1;visibility:visible}'
-    + '.ckbox b{color:var(--sink);font-size:14.5px}'
-    + '.ckbox a{color:var(--sblue);text-decoration:underline}'
-    + '.ckbox .ck-row{display:flex;justify-content:flex-end;margin-top:12px}'
-    + '.ckbox .ck-ok{padding:11px 24px;border-radius:24px;border:none;background:var(--spink);color:#fff;font-weight:600;font-size:14px;cursor:pointer;font-family:inherit;transition:.15s}'
+    + '.ckbox a{color:#9ec2f5;text-decoration:underline;white-space:nowrap}'
+    + '.ckbox .ck-ok{padding:7px 20px;border-radius:20px;border:none;background:var(--spink);color:#fff;font-weight:600;font-size:12.5px;cursor:pointer;font-family:inherit;transition:.15s;white-space:nowrap}'
     + '.ckbox .ck-ok:hover{background:var(--sblue)}'
+    + '@media(max-width:560px){.ckbox{font-size:11.5px;padding:8px 12px;gap:6px 10px}.ckbox .ck-ok{padding:6px 16px;font-size:11.5px}}'
 
 
     + '.site-footer .legal{border-top:1px solid #33353f;margin-top:40px;padding-top:22px;font-size:13px;opacity:.7;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;line-height:1.6}'
@@ -428,10 +427,9 @@
     el.className = 'ckbox';
     el.setAttribute('role', 'dialog');
     el.innerHTML =
-      '<div><b>🍪 Мы используем cookie</b><br>'
-      + 'Сайт использует файлы cookie и сервис Яндекс.Метрика, чтобы анализировать посещаемость и улучшать работу сайта. '
-      + 'Продолжая пользоваться сайтом, вы соглашаетесь с этим и с <a href="/privacy.html">Политикой конфиденциальности</a>.</div>'
-      + '<div class="ck-row"><button class="ck-ok" type="button">Хорошо, принимаю</button></div>';
+      '<span>🍪 Мы используем cookie и Яндекс.Метрику для анализа посещаемости и улучшения сайта. '
+      + 'Продолжая пользоваться сайтом, вы соглашаетесь с <a href="/privacy.html">Политикой конфиденциальности</a>.</span>'
+      + '<button class="ck-ok" type="button">Принять</button>';
     document.body.appendChild(el);
     setTimeout(function () { el.classList.add('show'); }, 900);
     el.querySelector('.ck-ok').addEventListener('click', function () {
