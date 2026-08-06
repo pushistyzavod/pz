@@ -188,6 +188,7 @@
     + '  <div class="msgs">'
     + '    <a class="msg tg" href="https://t.me/pushistyzavod" target="_blank" rel="noopener" title="Написать в Telegram" aria-label="Telegram"><img src="/prototype/images/icons/telegram.png" alt="Telegram"></a>'
     + '    <a class="msg max" href="https://max.ru/pushistyzavod" target="_blank" rel="noopener" title="Написать в MAX" aria-label="MAX"><img src="/prototype/images/icons/max.png" alt="MAX"></a>'
+    + '    <a class="msg vk" href="https://vk.com/pushistyzavod" target="_blank" rel="noopener" title="Мы во ВКонтакте" aria-label="ВКонтакте"><img src="/prototype/images/icons/vk.png" alt="ВКонтакте"></a>'
     + '    <a class="msg mail" href="mailto:' + EMAIL + '" title="Написать на почту" aria-label="E-mail"><img src="/prototype/images/icons/mail.png" alt="E-mail"></a>'
     + '  </div>'
 
@@ -221,6 +222,7 @@
     + '    <div class="socials">'
     + '      <a href="https://t.me/pushistyzavod" target="_blank" rel="noopener" title="Telegram" aria-label="Telegram"><img src="/prototype/images/icons/telegram.png" alt="Telegram"></a>'
     + '      <a href="https://max.ru/pushistyzavod" target="_blank" rel="noopener" title="MAX" aria-label="MAX"><img src="/prototype/images/icons/max.png" alt="MAX"></a>'
+    + '      <a href="https://vk.com/pushistyzavod" target="_blank" rel="noopener" title="ВКонтакте" aria-label="ВКонтакте"><img src="/prototype/images/icons/vk.png" alt="ВКонтакте"></a>'
     + '      <a href="mailto:' + EMAIL + '" title="Написать на почту" aria-label="E-mail"><img src="/prototype/images/icons/mail.png" alt="E-mail"></a>'
     + '    </div>'
 
@@ -254,6 +256,7 @@
     + '<div class="d-msgs">'
     + '<a href="https://t.me/pushistyzavod" target="_blank" rel="noopener" aria-label="Telegram"><img src="/prototype/images/icons/telegram.png" alt="Telegram"></a>'
     + '<a href="https://max.ru/pushistyzavod" target="_blank" rel="noopener" aria-label="MAX"><img src="/prototype/images/icons/max.png" alt="MAX"></a>'
+    + '<a href="https://vk.com/pushistyzavod" target="_blank" rel="noopener" aria-label="ВКонтакте"><img src="/prototype/images/icons/vk.png" alt="ВКонтакте"></a>'
     + '<a href="mailto:' + EMAIL + '" aria-label="E-mail"><img src="/prototype/images/icons/mail.png" alt="E-mail"></a>'
     + '</div>'
     + '<a class="d-btn" href="/#cta">Рассчитать заказ</a>'
