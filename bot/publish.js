@@ -116,6 +116,11 @@ function publish({ article, photo, photoSize, updateId }) {
   const photoSrc = `/prototype/images/news/${slug}.jpg`;
   const alt = plain(article.imageAlt).slice(0, 160);
   const body = sanitizeBody(article.bodyHtml, allowedUrls);
+  // Горизонтальное фото — на всю ширину текста; вертикальное и квадратное — уже и по центру,
+  // иначе оно занимает весь экран и текст уезжает вниз
+  const photoStyle = photoSize.width > photoSize.height * 1.15
+    ? 'width:100%;height:auto;border-radius:20px'
+    : 'display:block;width:100%;max-width:460px;height:auto;margin:0 auto;border-radius:20px';
   const words = body.replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length;
 
   const post = {
@@ -132,7 +137,7 @@ function publish({ article, photo, photoSize, updateId }) {
     readTime: `${Math.max(1, Math.round(words / 180))} мин чтения`,
     image: photoSrc,
     photo: { src: photoSrc, alt, width: photoSize.width, height: photoSize.height },
-    body: `<p><img src="${photoSrc}" alt="${esc(alt)}" width="${photoSize.width}" height="${photoSize.height}" style="width:100%;height:auto;border-radius:20px" fetchpriority="high" decoding="async"></p>\n${body}`,
+    body: `<p><img src="${photoSrc}" alt="${esc(alt)}" width="${photoSize.width}" height="${photoSize.height}" style="${photoStyle}" fetchpriority="high" decoding="async"></p>\n${body}`,
     faq: (article.faq || []).slice(0, 5).map((f) => ({ q: plain(f.q), a: plain(f.a) })),
     // «Читайте также»: три последние новости и статьи
     related: [...posts.slice(0, 3).map((p) => `news-${p.slug}`), 'news-kak-zakazat-igrushki-s-logotipom', 'news-maskot-dlya-brenda', 'news-tirazh-igrushek-kakoy-vygoden'].slice(0, 3),
