@@ -1,9 +1,9 @@
 // Генерация текста новости через Gemini: фото + заметка владельца → готовая статья
 const C = require('../generator/data/config');
 
-// Модели по порядку: основная и запасная на случай перегрузки.
-// Flash, а не Pro: на бесплатном тарифе Gemini лимит для Pro нулевой.
-const MODELS = [process.env.GEMINI_MODEL || 'gemini-flash-latest', 'gemini-3.5-flash'];
+// Модели по порядку: основная (старшая Pro, нужен оплаченный счёт Gemini)
+// и запасные Flash — на случай перегрузки или закончившегося баланса.
+const MODELS = [process.env.GEMINI_MODEL || 'gemini-pro-latest', 'gemini-flash-latest', 'gemini-3.5-flash'];
 const endpoint = (model) => `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;
 
 const str = (description) => ({ type: 'STRING', description });
@@ -102,7 +102,7 @@ async function writeArticle({ note, photo, pages }) {
   let data;
   let lastError;
   attempts: for (const model of MODELS) {
-    for (let attempt = 1; attempt <= 3; attempt++) {
+    for (let attempt = 1; attempt <= 2; attempt++) {
       try {
         data = await request(model, body);
         break attempts;
