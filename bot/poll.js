@@ -87,7 +87,7 @@ async function main() {
     let reply;
     if (!allowed.has(userId)) {
       // Публиковать может только владелец. Свой ID он узнаёт из этого ответа.
-      reply = `Доступ закрыт. Ваш Telegram ID: ${userId}\n\nЕсли вы владелец сайта, добавьте этот ID в секрет TELEGRAM_ALLOWED_IDS в настройках репозитория на GitHub.`;
+      reply = `Доступ закрыт. Ваш Telegram ID: ${userId}\n\nЕсли вы владелец сайта, добавьте этот ID в TELEGRAM_ALLOWED_IDS в файле /opt/pz-bot/.env на сервере.`;
     } else {
       try {
         reply = await handle(message, update.update_id, state);

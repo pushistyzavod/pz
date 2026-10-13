@@ -1,9 +1,11 @@
 name: News bot
 
 # Telegram-бот @pushistyzavodBot: фото + подпись → новость на сайте.
-# Сервер сайта стоит в России, оттуда Telegram и Claude недоступны,
-# поэтому бот работает здесь: по расписанию забирает сообщения,
-# пишет текст, сохраняет новость в репозиторий и запускает деплой.
+# Сервер сайта стоит в России, оттуда Telegram недоступен, поэтому бот
+# работает здесь: по расписанию забирает сообщения, пишет текст через Gemini,
+# сохраняет новость в репозиторий и запускает деплой.
+# Настройки (токен бота, ключ Gemini, разрешённые ID) лежат не в git,
+# а на сервере в /opt/pz-bot/.env и читаются оттуда при каждом запуске.
 
 on:
   schedule:
@@ -24,17 +26,29 @@ jobs:
     outputs:
       changed: ${{ steps.poll.outputs.changed }}
       urls: ${{ steps.poll.outputs.urls }}
-    env:
-      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-      TELEGRAM_ALLOWED_IDS: ${{ secrets.TELEGRAM_ALLOWED_IDS }}
-      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
     steps:
+      - name: Load bot settings from server
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -o ConnectTimeout=20 \
+            ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} 'cat /opt/pz-bot/.env' > "$RUNNER_TEMP/bot.env"
+          rm -f ~/.ssh/deploy_key
+          # Каждое значение скрываем в логах и передаём следующим шагам
+          while IFS='=' read -r key value; do
+            case "$key" in ''|\#*) continue ;; esac
+            echo "::add-mask::$value"
+            echo "$key=$value" >> "$GITHUB_ENV"
+          done < "$RUNNER_TEMP/bot.env"
+          rm -f "$RUNNER_TEMP/bot.env"
+
       # Быстрая проверка: если новых сообщений нет, остальные шаги не выполняются
       - name: Check for new messages
         id: check
         run: |
           if [ -z "$TELEGRAM_BOT_TOKEN" ]; then
-            echo "Секрет TELEGRAM_BOT_TOKEN не задан — бот выключен"
+            echo "В /opt/pz-bot/.env на сервере нет TELEGRAM_BOT_TOKEN — бот выключен"
             echo "pending=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
@@ -53,11 +67,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-
-      - name: Install bot dependencies
-        if: steps.check.outputs.pending == 'true'
-        working-directory: bot
-        run: npm install --omit=dev --no-audit --no-fund --silent
 
       - name: Process messages
         id: poll

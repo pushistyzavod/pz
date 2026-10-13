@@ -6,9 +6,5 @@
   "scripts": {
     "poll": "node poll.js",
     "ack": "node ack.js"
-  },
-  "dependencies": {
-    "@anthropic-ai/sdk": "^0.133.0",
-    "zod": "^4.6.7"
   }
 }

@@ -1,19 +1,30 @@
-// Генерация текста новости через Claude: фото + заметка владельца → готовая статья
-const Anthropic = require('@anthropic-ai/sdk');
-const { z } = require('zod');
-const { betaZodOutputFormat } = require('@anthropic-ai/sdk/helpers/zod');
+// Генерация текста новости через Gemini: фото + заметка владельца → готовая статья
 const C = require('../generator/data/config');
 
-const ArticleSchema = z.object({
-  slug: z.string().describe('URL-адрес новости латиницей через дефис, 3–6 слов, транслит ключевой фразы'),
-  title: z.string().describe('SEO-заголовок для <title>, до 65 символов, с ключевой фразой в начале'),
-  description: z.string().describe('Meta description, 140–160 символов, с ключевой фразой и пользой для читателя'),
-  h1: z.string().describe('Заголовок страницы, до 80 символов, отличается от title'),
-  shortTitle: z.string().describe('Короткий заголовок для карточки в ленте и хлебных крошек, до 50 символов'),
-  bodyHtml: z.string().describe('Текст новости в HTML: только теги p, h2, h3, ul, ol, li, strong, a'),
-  imageAlt: z.string().describe('Описание фото для атрибута alt, до 120 символов'),
-  faq: z.array(z.object({ q: z.string(), a: z.string() })).describe('3 вопроса и ответа по теме новости'),
-});
+// Модели по порядку: основная и запасная на случай перегрузки.
+// Flash, а не Pro: на бесплатном тарифе Gemini лимит для Pro нулевой.
+const MODELS = [process.env.GEMINI_MODEL || 'gemini-flash-latest', 'gemini-3.5-flash'];
+const endpoint = (model) => `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;
+
+const str = (description) => ({ type: 'STRING', description });
+const ARTICLE_SCHEMA = {
+  type: 'OBJECT',
+  properties: {
+    slug: str('URL-адрес новости латиницей через дефис, 3–6 слов, транслит ключевой фразы'),
+    title: str('SEO-заголовок для <title>, до 65 символов, с ключевой фразой в начале'),
+    description: str('Meta description, 140–160 символов, с ключевой фразой и пользой для читателя'),
+    h1: str('Заголовок страницы, до 80 символов, отличается от title'),
+    shortTitle: str('Короткий заголовок для карточки в ленте и хлебных крошек, до 50 символов'),
+    bodyHtml: str('Текст новости в HTML: только теги p, h2, h3, ul, ol, li, strong, a'),
+    imageAlt: str('Описание фото для атрибута alt, до 120 символов'),
+    faq: {
+      type: 'ARRAY',
+      description: '3 вопроса и ответа по теме новости',
+      items: { type: 'OBJECT', properties: { q: str('Вопрос'), a: str('Ответ') }, required: ['q', 'a'] },
+    },
+  },
+  required: ['slug', 'title', 'description', 'h1', 'shortTitle', 'bodyHtml', 'imageAlt', 'faq'],
+};
 
 function systemPrompt(pages) {
   return `Ты пишешь новости для сайта фабрики «${C.COMPANY.name}» (pushistyzavod.ru).
@@ -40,47 +51,91 @@ function systemPrompt(pages) {
 ${pages.map((p) => `${p.url} — ${p.title}`).join('\n')}`;
 }
 
-async function writeArticle({ note, photo, pages }) {
-  const client = new Anthropic();
+// Ошибка с текстом, который можно показать владельцу в Telegram.
+// retryable — временный сбой: стоит повторить запрос или взять запасную модель.
+class WriterError extends Error {
+  constructor(message, retryable = false) {
+    super(message);
+    this.retryable = retryable;
+  }
+}
 
-  const response = await client.beta.messages.parse({
-    model: 'claude-opus-5-5',
-    max_tokens: 16000,
-    thinking: { type: 'adaptive' },
-    // При отказе модели запрос автоматически повторяется на резервной
-    betas: ['server-side-fallback-2026-07-01'],
-    fallbacks: 'default',
-    output_config: { effort: 'high', format: betaZodOutputFormat(ArticleSchema) },
-    system: systemPrompt(pages),
-    messages: [
+async function request(model, body) {
+  let res;
+  try {
+    res = await fetch(endpoint(model), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-goog-api-key': process.env.GEMINI_API_KEY || '' },
+      body: JSON.stringify(body),
+      signal: AbortSignal.timeout(180000),
+    });
+  } catch (err) {
+    throw new WriterError('нет связи с Gemini, попробуйте позже', true);
+  }
+  if (res.ok) return res.json();
+
+  const detail = await res.json().then((d) => d.error && d.error.message, () => '');
+  if (res.status === 400 && /API key/i.test(detail || '')) throw new WriterError('неверный ключ GEMINI_API_KEY');
+  // 403 у Gemini бывает и временным, поэтому тоже повторяем
+  if (res.status === 401 || res.status === 403) throw new WriterError('ключ GEMINI_API_KEY не принят или у него нет доступа к модели', true);
+  if (res.status === 429) throw new WriterError('исчерпан лимит запросов Gemini, попробуйте позже', true);
+  if (res.status >= 500) throw new WriterError('Gemini перегружен, попробуйте позже', true);
+  throw new WriterError(`Gemini отклонил запрос (${res.status}): ${detail || 'без пояснения'}`);
+}
+
+async function writeArticle({ note, photo, pages }) {
+  const body = {
+    system_instruction: { parts: [{ text: systemPrompt(pages) }] },
+    contents: [
       {
         role: 'user',
-        content: [
-          { type: 'image', source: { type: 'base64', media_type: 'image/jpeg', data: photo.toString('base64') } },
-          { type: 'text', text: `Заметка владельца о новости:\n\n${note}` },
+        parts: [
+          { inline_data: { mime_type: 'image/jpeg', data: photo.toString('base64') } },
+          { text: `Заметка владельца о новости:\n\n${note}` },
         ],
       },
     ],
-  });
+    generationConfig: { responseMimeType: 'application/json', responseSchema: ARTICLE_SCHEMA, maxOutputTokens: 16000 },
+  };
 
-  if (response.stop_reason === 'refusal') {
-    throw new Error('модель отказалась писать текст по этой теме');
+  // Временные сбои повторяем сразу: бот запускается раз в несколько минут, ждать следующего запуска долго
+  let data;
+  let lastError;
+  attempts: for (const model of MODELS) {
+    for (let attempt = 1; attempt <= 3; attempt++) {
+      try {
+        data = await request(model, body);
+        break attempts;
+      } catch (err) {
+        if (!err.retryable) throw err;
+        lastError = err;
+        await new Promise((r) => setTimeout(r, attempt * 4000));
+      }
+    }
   }
-  if (response.stop_reason === 'max_tokens' || !response.parsed_output) {
-    throw new Error('модель не вернула готовый текст, попробуйте ещё раз');
+  if (!data) throw lastError;
+
+  if (data.promptFeedback && data.promptFeedback.blockReason) {
+    throw new WriterError('Gemini отказался писать текст по этому фото или теме');
   }
-  return response.parsed_output;
+  const candidate = (data.candidates || [])[0];
+  const text = candidate && candidate.content && (candidate.content.parts || []).filter((p) => !p.thought).map((p) => p.text || '').join('');
+  if (!candidate || candidate.finishReason !== 'STOP' || !text) {
+    throw new WriterError('Gemini не вернул готовый текст, попробуйте ещё раз');
+  }
+
+  let article;
+  try {
+    article = JSON.parse(text);
+  } catch (err) {
+    throw new WriterError('Gemini вернул текст в неверном формате, попробуйте ещё раз');
+  }
+  const missing = ARTICLE_SCHEMA.required.filter((k) => k !== 'faq' && (typeof article[k] !== 'string' || !article[k].trim()));
+  if (missing.length) throw new WriterError('Gemini вернул неполный текст, попробуйте ещё раз');
+  if (!Array.isArray(article.faq)) article.faq = [];
+  return article;
 }
 
-// Понятное владельцу описание ошибки API
-function explainError(err) {
-  if (err instanceof Anthropic.AuthenticationError) return 'неверный ключ ANTHROPIC_API_KEY в секретах GitHub';
-  if (err instanceof Anthropic.PermissionDeniedError) return 'у ключа ANTHROPIC_API_KEY нет доступа к модели';
-  if (err instanceof Anthropic.RateLimitError) return 'превышен лимит запросов к Claude, попробуйте позже';
-  if (err instanceof Anthropic.BadRequestError) return `Claude отклонил запрос: ${err.message}`;
-  if (err instanceof Anthropic.APIConnectionError) return 'нет связи с Claude, попробуйте позже';
-  if (err instanceof Anthropic.APIError) return `ошибка Claude (${err.status}), попробуйте позже`;
-  return err.message;
-}
+const explainError = (err) => (err instanceof WriterError ? err.message : `внутренняя ошибка (${err.message})`);
 
 module.exports = { writeArticle, explainError };
