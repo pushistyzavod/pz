@@ -402,7 +402,7 @@ function renderLanding(p, all) {
     + relatedBlock(p, all)
     + (p.showCities ? citiesBlock(all) : '')
     + ctaBlock(p)
-    + `<script src="/prototype/js/site.js?v=20261013" defer></script>\n</body>\n</html>\n`;
+    + `<script src="/prototype/js/site.js?v=20261014" defer></script>\n</body>\n</html>\n`;
 }
 
 /* ---------- Хаб-страница ---------- */
@@ -423,7 +423,7 @@ function renderHub(p, all) {
     + groups
     + faqBlock(p)
     + ctaBlock(p)
-    + `<script src="/prototype/js/site.js?v=20261013" defer></script>\n</body>\n</html>\n`;
+    + `<script src="/prototype/js/site.js?v=20261014" defer></script>\n</body>\n</html>\n`;
 }
 
 /* ---------- Статья блога ---------- */
@@ -446,7 +446,7 @@ function renderArticle(a, all) {
 
     + (a.faq ? faqBlock(a) : '')
     + ctaBlock(a)
-    + `<script src="/prototype/js/site.js?v=20261013" defer></script>\n</body>\n</html>\n`;
+    + `<script src="/prototype/js/site.js?v=20261014" defer></script>\n</body>\n</html>\n`;
 }
 
 module.exports = { renderLanding, renderHub, renderArticle, jsonldOrganization, jsonldLocalBusiness, esc };

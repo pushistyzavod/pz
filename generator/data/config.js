@@ -7,7 +7,7 @@ const COMPANY = {
   email: 'info@pushistyzavod.ru',
   tg: 'https://t.me/pushistyzavod',
   vk: 'https://vk.com/pushistyzavod',
-  max: 'https://max.ru/pushistyzavod',
+  max: 'https://max.ru/u/f9LHodD0cOLjuWOR1SsDIN794rJlGLqPMl0gt5SKbQteDHtw8cpKC07Blno',
   legal: 'ИП Цыренов Тимур Борисович',
   inn: '031320564462',
   ogrnip: '323030000049231',

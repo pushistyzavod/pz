@@ -1,6 +1,6 @@
 /*
  * Единый хедер и футер для всего сайта «Пушистый Завод».
- * Подключается на каждой странице: <script src="/prototype/js/site.js?v=20260810"></script>
+ * Подключается на каждой странице: <script src="/prototype/js/site.js?v=20261014"></script>
  * Скрипт удаляет старые .topbar / header.nav / footer и вставляет одинаковые для всех страниц.
  */
 (function () {
@@ -211,7 +211,7 @@
     + '  <a class="site-phone" href="tel:' + PHONE_TEL + '">' + PHONE_HUMAN + '</a>'
     + '  <div class="msgs">'
     + '    <a class="msg tg" href="https://t.me/pushistyzavod" target="_blank" rel="noopener" title="Написать в Telegram" aria-label="Telegram"><img src="/prototype/images/icons/telegram.webp" alt="Telegram"></a>'
-    + '    <a class="msg max" href="https://max.ru/pushistyzavod" target="_blank" rel="noopener" title="Написать в MAX" aria-label="MAX"><img src="/prototype/images/icons/max.webp" alt="MAX"></a>'
+    + '    <a class="msg max" href="https://max.ru/u/f9LHodD0cOLjuWOR1SsDIN794rJlGLqPMl0gt5SKbQteDHtw8cpKC07Blno" target="_blank" rel="noopener" title="Написать в MAX" aria-label="MAX"><img src="/prototype/images/icons/max.webp" alt="MAX"></a>'
     + '    <a class="msg vk" href="https://vk.com/pushistyzavod" target="_blank" rel="noopener" title="Мы во ВКонтакте" aria-label="ВКонтакте"><img src="/prototype/images/icons/vk.webp" alt="ВКонтакте"></a>'
     + '    <a class="msg mail" href="mailto:' + EMAIL + '" title="Написать на почту" aria-label="E-mail"><img src="/prototype/images/icons/mail.webp" alt="E-mail"></a>'
     + '  </div>'
@@ -245,7 +245,7 @@
     + '    <div class="sochead">Мы в мессенджерах и соцсетях:</div>'
     + '    <div class="socials">'
     + '      <a href="https://t.me/pushistyzavod" target="_blank" rel="noopener" title="Telegram" aria-label="Telegram"><img src="/prototype/images/icons/telegram.webp" alt="Telegram"></a>'
-    + '      <a href="https://max.ru/pushistyzavod" target="_blank" rel="noopener" title="MAX" aria-label="MAX"><img src="/prototype/images/icons/max.webp" alt="MAX"></a>'
+    + '      <a href="https://max.ru/u/f9LHodD0cOLjuWOR1SsDIN794rJlGLqPMl0gt5SKbQteDHtw8cpKC07Blno" target="_blank" rel="noopener" title="MAX" aria-label="MAX"><img src="/prototype/images/icons/max.webp" alt="MAX"></a>'
     + '      <a href="https://vk.com/pushistyzavod" target="_blank" rel="noopener" title="ВКонтакте" aria-label="ВКонтакте"><img src="/prototype/images/icons/vk.webp" alt="ВКонтакте"></a>'
     + '      <a href="mailto:' + EMAIL + '" title="Написать на почту" aria-label="E-mail"><img src="/prototype/images/icons/mail.webp" alt="E-mail"></a>'
     + '    </div>'
@@ -279,7 +279,7 @@
     + '<a class="d-phone" href="tel:' + PHONE_TEL + '">' + PHONE_HUMAN + '</a>'
     + '<div class="d-msgs">'
     + '<a href="https://t.me/pushistyzavod" target="_blank" rel="noopener" aria-label="Telegram"><img src="/prototype/images/icons/telegram.webp" alt="Telegram"></a>'
-    + '<a href="https://max.ru/pushistyzavod" target="_blank" rel="noopener" aria-label="MAX"><img src="/prototype/images/icons/max.webp" alt="MAX"></a>'
+    + '<a href="https://max.ru/u/f9LHodD0cOLjuWOR1SsDIN794rJlGLqPMl0gt5SKbQteDHtw8cpKC07Blno" target="_blank" rel="noopener" aria-label="MAX"><img src="/prototype/images/icons/max.webp" alt="MAX"></a>'
     + '<a href="https://vk.com/pushistyzavod" target="_blank" rel="noopener" aria-label="ВКонтакте"><img src="/prototype/images/icons/vk.webp" alt="ВКонтакте"></a>'
     + '<a href="mailto:' + EMAIL + '" aria-label="E-mail"><img src="/prototype/images/icons/mail.webp" alt="E-mail"></a>'
     + '</div>'
