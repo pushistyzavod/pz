@@ -513,4 +513,7 @@ const pages = [
   }),
 ];
 
-module.exports = pages;
+// Новости, опубликованные через Telegram-бота (bot/publish.js), — новые первыми
+const botPosts = require('./news-posts.json').map((p) => mk(p));
+
+module.exports = [...botPosts, ...pages];

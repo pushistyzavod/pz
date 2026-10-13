@@ -1,0 +1,103 @@
+name: News bot
+
+# Telegram-бот @pushistyzavodBot: фото + подпись → новость на сайте.
+# Сервер сайта стоит в России, оттуда Telegram и Claude недоступны,
+# поэтому бот работает здесь: по расписанию забирает сообщения,
+# пишет текст, сохраняет новость в репозиторий и запускает деплой.
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: news-bot
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  bot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    outputs:
+      changed: ${{ steps.poll.outputs.changed }}
+      urls: ${{ steps.poll.outputs.urls }}
+    env:
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_ALLOWED_IDS: ${{ secrets.TELEGRAM_ALLOWED_IDS }}
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+    steps:
+      # Быстрая проверка: если новых сообщений нет, остальные шаги не выполняются
+      - name: Check for new messages
+        id: check
+        run: |
+          if [ -z "$TELEGRAM_BOT_TOKEN" ]; then
+            echo "Секрет TELEGRAM_BOT_TOKEN не задан — бот выключен"
+            echo "pending=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          count=$(curl -s -m 20 "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getUpdates?limit=1&timeout=0" | jq '.result | length')
+          echo "Новых сообщений: ${count:-0}"
+          if [ "${count:-0}" -gt 0 ]; then echo "pending=true" >> "$GITHUB_OUTPUT"; else echo "pending=false" >> "$GITHUB_OUTPUT"; fi
+
+      - name: Checkout repository
+        if: steps.check.outputs.pending == 'true'
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Setup Node.js
+        if: steps.check.outputs.pending == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install bot dependencies
+        if: steps.check.outputs.pending == 'true'
+        working-directory: bot
+        run: npm install --omit=dev --no-audit --no-fund --silent
+
+      - name: Process messages
+        id: poll
+        if: steps.check.outputs.pending == 'true'
+        run: node bot/poll.js
+
+      - name: Save changes to repository
+        if: steps.poll.outputs.changed == 'true'
+        run: |
+          git config user.name "pushistyzavod-bot"
+          git config user.email "bot@pushistyzavod.ru"
+          git add generator/data/news-posts.json prototype/news prototype/news.html prototype/sitemap.xml prototype/images/news
+          git commit -m "Новости: обновление через Telegram-бота"
+          git push origin HEAD:main
+
+      # Ответы и подтверждение сообщений — только после того, как изменения сохранены
+      - name: Reply in Telegram
+        if: steps.check.outputs.pending == 'true'
+        run: node bot/ack.js
+
+  deploy:
+    needs: bot
+    if: needs.bot.outputs.changed == 'true'
+    uses: ./.github/workflows/deploy.yml
+    secrets: inherit
+
+  # Сообщаем Яндексу и Bing о новых страницах (IndexNow), чтобы их быстрее проиндексировали
+  indexnow:
+    needs: [bot, deploy]
+    if: needs.bot.outputs.urls != ''
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping search engines
+        env:
+          URLS: ${{ needs.bot.outputs.urls }}
+          KEY: 115ea3389c92ea8a429ccfa13bb6b845
+        run: |
+          for url in $URLS https://pushistyzavod.ru/news.html; do
+            for engine in yandex.com www.bing.com; do
+              code=$(curl -s -o /dev/null -m 20 -w '%{http_code}' -G "https://${engine}/indexnow" --data-urlencode "url=${url}" --data-urlencode "key=${KEY}" || true)
+              echo "${engine} ${url} -> ${code}"
+            done
+          done

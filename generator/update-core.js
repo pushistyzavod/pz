@@ -235,7 +235,9 @@ function patchHead(html, p) {
 function buildNewsCards() {
   const emoji = ['📋', '💰', '⏱', '🧩', '🧵', '🛒', '📈', '🎭', '🔥', '🏷', '🧸'];
   return articles.map((a, i) => `      <a class="post" href="${a.url}">
-        <div class="ph">${emoji[i % emoji.length]}</div>
+        ${a.photo
+    ? `<div class="ph" style="background-image:url('${a.photo.src}')" role="img" aria-label="${T.esc(a.photo.alt)}"></div>`
+    : `<div class="ph">${emoji[i % emoji.length]}</div>`}
         <div class="body">
           <div class="tagline"><span class="cat">${T.esc(a.category)}</span><span>${a.dateHuman}</span></div>
           <h3>${T.esc(a.h1plain)}</h3>
