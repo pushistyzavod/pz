@@ -138,15 +138,21 @@ const contactSchema = new mongoose.Schema({
 const Contact = mongoose.model('Contact', contactSchema);
 
 // ---------------------------------------------------------------------------
-// Отправка заявок на почту через SMTP REG.RU (ящик noreply@pushistyzavod.ru).
+// Отправка заявок на почту через SMTP Mail.ru для бизнеса (корпоративная почта).
 // Настройки берутся из .env: SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, MAIL_TO.
+// SMTP_USER — корпоративный ящик (отправитель), SMTP_PASS — пароль приложения
+// (задаётся в настройках почты Mail.ru: Пароль и безопасность → Пароли приложений).
 // Если почта не настроена или отправка упала — заявка всё равно сохраняется,
 // а клиент получает успешный ответ.
 // ---------------------------------------------------------------------------
 const mailTransporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST || 'sm42.hosting.reg.ru',
+  host: process.env.SMTP_HOST || 'smtp.mail.ru',
   port: Number(process.env.SMTP_PORT) || 465,
   secure: Number(process.env.SMTP_PORT || 465) === 465,
+  // Таймауты, чтобы при недоступном SMTP ответ клиенту не зависал
+  connectionTimeout: 10000,
+  greetingTimeout: 10000,
+  socketTimeout: 15000,
   auth: {
     user: process.env.SMTP_USER,
     pass: process.env.SMTP_PASS,
@@ -155,7 +161,7 @@ const mailTransporter = nodemailer.createTransport({
 
 function escapeHtml(s) {
   return String(s).replace(/[&<>"']/g, (c) => ({
-    '&': '&', '<': '<', '>': '>', '"': '"', "'": '&#39;',
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
   }[c]));
 }
 
@@ -213,9 +219,80 @@ const blogArticleSchema = new mongoose.Schema({
 
 const BlogArticle = mongoose.model('BlogArticle', blogArticleSchema);
 
+// ---------------------------------------------------------------------------
+// Антиспам и валидация заявок.
+// - honeypot: скрытое поле `website` заполняют только боты → отсекаем молча;
+// - time-trap: форма отправлена быстрее 2 сек после показа → бот;
+// - rate-limit: не более 8 заявок с одного IP за 10 минут;
+// - валидация: телефон обязателен и в правильном формате, почта — если указана.
+// ---------------------------------------------------------------------------
+const formHits = {};
+function formRateOk(ip) {
+  const now = Date.now();
+  formHits[ip] = (formHits[ip] || []).filter((t) => now - t < 10 * 60 * 1000);
+  if (formHits[ip].length >= 8) return false;
+  formHits[ip].push(now);
+  return true;
+}
+const validPhone = (p) => /^[+\d][\d\s()\-]{6,20}$/.test(String(p || '').trim());
+const validEmail = (e) => { e = String(e || '').trim(); return !e || /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(e); };
+// IP клиента: X-Real-IP выставляет nginx ($remote_addr), подделать его нельзя.
+// Первый элемент X-Forwarded-For присылает сам клиент, поэтому берём последний.
+const clientIp = (req) =>
+  String(req.headers['x-real-ip'] || '').trim() ||
+  String(req.headers['x-forwarded-for'] || '').split(',').pop().trim() ||
+  req.ip || 'unknown';
+
+// Чистим счётчики rate-limit, чтобы объект не рос бесконечно
+setInterval(() => {
+  const now = Date.now();
+  Object.keys(formHits).forEach((ip) => {
+    formHits[ip] = formHits[ip].filter((t) => now - t < 10 * 60 * 1000);
+    if (!formHits[ip].length) delete formHits[ip];
+  });
+}, 10 * 60 * 1000).unref();
+
+// Общая проверка заявки для /api/form и /api/contact.
+// Возвращает true, если ответ клиенту уже отправлен (спам или ошибка в данных).
+function rejectSubmission(req, res, successMessage) {
+  const body = req.body || {};
+
+  // Honeypot: поле заполнено → бот. Отвечаем success, но ничего не сохраняем.
+  if (body.website) {
+    console.warn('🚫 Спам отсеян (honeypot), IP:', clientIp(req));
+    res.json({ status: 'success', message: successMessage });
+    return true;
+  }
+  // Time-trap: отправка быстрее 2 сек после показа формы → бот
+  const t0 = Number(body._t0);
+  if (t0 && Date.now() - t0 < 2000) {
+    console.warn('🚫 Спам отсеян (слишком быстрая отправка), IP:', clientIp(req));
+    res.json({ status: 'success', message: successMessage });
+    return true;
+  }
+  // Rate-limit по IP
+  if (!formRateOk(clientIp(req))) {
+    res.json({ status: 'error', message: 'Слишком много заявок подряд. Попробуйте позже или позвоните нам.' });
+    return true;
+  }
+  // Валидация телефона и почты
+  if (!validPhone(body.phone || body.Phone)) {
+    res.json({ status: 'error', message: 'Проверьте номер телефона — похоже, он указан с ошибкой.' });
+    return true;
+  }
+  if (!validEmail(body.email || body.Email)) {
+    res.json({ status: 'error', message: 'Проверьте адрес электронной почты.' });
+    return true;
+  }
+  return false;
+}
+
 // API Routes - Handle Tilda form submissions
 app.post('/api/form', async (req, res) => {
-  const { formName, formPage, name, email, phone, message, comment, ...customFields } = req.body || {};
+  if (rejectSubmission(req, res, 'Спасибо! Ваша заявка принята.')) return;
+
+  // website и _t0 — служебные антиспам-поля, в заявку и письмо не попадают
+  const { formName, formPage, name, email, phone, message, comment, website, _t0, ...customFields } = req.body || {};
 
   const data = {
     formName: formName || req.body.formname || 'unnamed',
@@ -255,6 +332,8 @@ app.post('/api/form', async (req, res) => {
 
 // Alternative form endpoint for Tilda compatibility
 app.post('/api/contact', async (req, res) => {
+  if (rejectSubmission(req, res, 'Спасибо! Мы свяжемся с вами.')) return;
+
   const data = {
     name: req.body.Name || req.body.name,
     email: req.body.Email || req.body.email,
@@ -527,8 +606,12 @@ app.use((req, res) => {
 
 // Общий обработчик ошибок, чтобы сервер не падал
 app.use((err, req, res, next) => {
-  console.error('Необработанная ошибка:', err.message);
   if (res.headersSent) return;
+  // Битый JSON или слишком большое тело запроса — ошибка клиента, а не сервера
+  if (err.status >= 400 && err.status < 500) {
+    return res.status(err.status).json({ status: 'error', message: 'Некорректный запрос.' });
+  }
+  console.error('Необработанная ошибка:', err.message);
   res.status(500).type('html').send('<h1>500 — ошибка сервера</h1>');
 });
 
@@ -536,7 +619,11 @@ process.on('unhandledRejection', (err) => {
   console.warn('⚠️  Unhandled rejection:', err && err.message ? err.message : err);
 });
 
-const server = app.listen(PORT, '0.0.0.0', () => {
+// Вне Docker слушаем только localhost: снаружи сайт доступен через nginx,
+// а прямой доступ к порту бэкенда из интернета не нужен.
+const HOST = process.env.HOST || (IN_DOCKER ? '0.0.0.0' : '127.0.0.1');
+
+const server = app.listen(PORT, HOST, () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`);
 });
 
