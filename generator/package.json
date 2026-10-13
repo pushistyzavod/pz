@@ -8,6 +8,7 @@
     "update-core": "node update-core.js",
     "semantic": "node semantic.js",
     "validate": "node validate.js",
-    "all": "node generate.js && node update-core.js && node semantic.js && node validate.js"
+    "contacts": "node contacts.js",
+    "all": "node generate.js && node contacts.js && node update-core.js && node semantic.js && node validate.js"
   }
 }

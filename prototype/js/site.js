@@ -204,7 +204,7 @@
     + '<a href="/works.html" data-m="works">Наши работы</a>'
     + '<a href="/production.html" data-m="production">Производство</a>'
     + '<a href="/news.html" data-m="news">Новости</a>'
-    + '<a href="/#cta" data-m="contacts">Контакты</a>'
+    + '<a href="/kontakty/" data-m="contacts">Контакты</a>'
     + '</nav>'
     + '<div class="site-cta">'
     + '<div class="site-contact">'
@@ -273,7 +273,7 @@
     + '<a href="/works.html">Наши работы</a>'
     + '<a href="/production.html">Производство</a>'
     + '<a href="/news.html">Новости</a>'
-    + '<a href="/#cta">Контакты</a>'
+    + '<a href="/kontakty/">Контакты</a>'
     + '</nav>'
     + '<div class="d-foot">'
     + '<a class="d-phone" href="tel:' + PHONE_TEL + '">' + PHONE_HUMAN + '</a>'
@@ -517,7 +517,7 @@
   function initNewWorks() {
     // показываем на всех страницах, где есть hero-блок (главная, категории, посадочные и т.д.),
     // кроме статей и новостей: там карусель вставала между заголовком и текстом
-    if (/^\/news\//.test(location.pathname)) return;
+    if (/^\/(news|kontakty)\//.test(location.pathname)) return;
     var anchor = document.querySelector('.hero, .chero');
     if (!anchor) return;
     var base = '/prototype/images/works/carousel/';
@@ -529,9 +529,26 @@
     anchor.insertAdjacentHTML('afterend', html);
   }
 
+  // ---------- Цели Метрики: клики по телефону, почте и мессенджерам ----------
+  // Чтобы цели появились в отчётах, создайте в Метрике цели типа «JavaScript-событие»
+  // с идентификаторами phone_click, email_click, messenger_click.
+  function initClickGoals() {
+    document.addEventListener('click', function (e) {
+      var a = e.target && e.target.closest ? e.target.closest('a[href]') : null;
+      if (!a) return;
+      var href = a.getAttribute('href') || '';
+      var goal = /^tel:/.test(href) ? 'phone_click'
+        : /^mailto:/.test(href) ? 'email_click'
+        : /(t\.me|wa\.me|max\.ru|vk\.com)\//.test(href) ? 'messenger_click' : '';
+      if (!goal) return;
+      try { if (window.ym) window.ym(95445006, 'reachGoal', goal); } catch (err) {}
+    });
+  }
+
   function start() {
     inject();
     initForms();
+    initClickGoals();
     initMetrika();
     initCookie();
     initNewWorks();

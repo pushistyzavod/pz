@@ -80,6 +80,11 @@ const hubDlyaBiznesa = {
 
 /* ---------- Индекс по slug ---------- */
 const landings = [...catalog, ...gifts, ...holidays, ...industriesAll, ...services, ...plastic, ...cities];
+
+// Страницы, закрытые от индексации (noindex, follow) и убранные из sitemap:
+// города-шаблоны без переходов из поиска. Список — data/noindex.json.
+const NOINDEX = new Set(require('./data/noindex.json'));
+landings.forEach((p) => { if (NOINDEX.has(p.url)) p.noindex = true; });
 // Ротация отзывов и кейсов: разные страницы показывают разные подборки (анти-дубли контента)
 landings.forEach((p, i) => {
   if (!p.reviewOffset) p.reviewOffset = i % 5;
@@ -209,7 +214,7 @@ const html404 = `<!DOCTYPE html>
     <a class="btn btn-ghost" href="/works.html">Наши работы</a>
   </div>
 </div></section>
-<script src="/prototype/js/site.js?v=20261015" defer></script>
+<script src="/prototype/js/site.js?v=20261016" defer></script>
 </body>
 </html>
 `;
@@ -267,7 +272,8 @@ function urlEntry(loc, priority, changefreq, lastmod) {
 }
 const smUrls = [];
 CORE.filter((c) => !c.noindexSitemap).forEach((c) => smUrls.push(urlEntry(c.url, c.priority, 'weekly')));
-landings.forEach((p) => smUrls.push(urlEntry(p.url, p.cluster === 'cities' ? '0.6' : '0.8', 'monthly')));
+landings.filter((p) => !p.noindex).forEach((p) => smUrls.push(urlEntry(p.url, p.cluster === 'cities' ? '0.6' : '0.8', 'monthly')));
+smUrls.push(urlEntry('/kontakty/', '0.8', 'monthly')); // страницу собирает contacts.js
 smUrls.push(urlEntry(hubDlyaBiznesa.url, '0.8', 'monthly'));
 articles.forEach((a) => smUrls.push(urlEntry(a.url, '0.6', 'monthly', a.date)));
 

@@ -500,6 +500,8 @@ const legacyRedirects = {
   '/proizvodstvo-plastikovyh-igrushek-na-zakaz': '/plastic-igrushki/',
   '/happynewyear': '/novogodnie-podarki/',
   '/blog': '/news.html',
+  '/contacts': '/kontakty/',
+  '/kontakty.html': '/kontakty/',
   '/slider': '/works.html',
   '/main': '/',
   '/old': '/',
@@ -512,6 +514,9 @@ Object.entries(legacyRedirects).forEach(([from, to]) => {
   // вариант со слешем на конце — туда же, без двойных редиректов
   app.get(from + '/', (req, res) => res.redirect(301, to));
 });
+
+// Старые статьи блога Тильды (/tpost/<id>-<slug>) — поисковики до сих пор за ними приходят
+app.get(/^\/tpost\//, (req, res) => res.redirect(301, '/news.html'));
 
 // ---------------------------------------------------------------------------
 // Основные страницы сайта. Канонический URL — с .html.

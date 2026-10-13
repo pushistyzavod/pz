@@ -112,7 +112,7 @@ function head(p, schemas) {
 <title>${esc(p.title)}</title>
 <meta name="description" content="${esc(p.desc)}">
 <link rel="canonical" href="${C.SITE}${p.url}">
-<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="robots" content="${p.noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large'}">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Пушистый Завод">
 <meta property="og:locale" content="ru_RU">
@@ -402,7 +402,7 @@ function renderLanding(p, all) {
     + relatedBlock(p, all)
     + (p.showCities ? citiesBlock(all) : '')
     + ctaBlock(p)
-    + `<script src="/prototype/js/site.js?v=20261015" defer></script>\n</body>\n</html>\n`;
+    + `<script src="/prototype/js/site.js?v=${ASSET_VERSION}" defer></script>\n</body>\n</html>\n`;
 }
 
 /* ---------- Хаб-страница ---------- */
@@ -423,7 +423,7 @@ function renderHub(p, all) {
     + groups
     + faqBlock(p)
     + ctaBlock(p)
-    + `<script src="/prototype/js/site.js?v=20261015" defer></script>\n</body>\n</html>\n`;
+    + `<script src="/prototype/js/site.js?v=${ASSET_VERSION}" defer></script>\n</body>\n</html>\n`;
 }
 
 /* ---------- Статья блога ---------- */
@@ -446,7 +446,10 @@ function renderArticle(a, all) {
 
     + (a.faq ? faqBlock(a) : '')
     + ctaBlock(a)
-    + `<script src="/prototype/js/site.js?v=20261015" defer></script>\n</body>\n</html>\n`;
+    + `<script src="/prototype/js/site.js?v=${ASSET_VERSION}" defer></script>\n</body>\n</html>\n`;
 }
 
-module.exports = { renderLanding, renderHub, renderArticle, jsonldOrganization, jsonldLocalBusiness, esc };
+// Версия css/js в адресах (?v=…) — меняется при каждом изменении site.js, чтобы обновился кэш
+const ASSET_VERSION = '20261016';
+
+module.exports = { renderLanding, renderHub, renderArticle, jsonldOrganization, jsonldLocalBusiness, jsonldBreadcrumb, head, breadcrumbs, ctaBlock, esc, ASSET_VERSION };

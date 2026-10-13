@@ -31,7 +31,8 @@ function today() {
 // Страницы сайта, на которые можно ссылаться из новости: адрес + <title>
 function sitePages() {
   const manifest = JSON.parse(fs.readFileSync(path.join(ROOT, 'generator', 'pages-manifest.json'), 'utf8'));
-  return (manifest.landings || []).map((url) => {
+  const hidden = new Set(JSON.parse(fs.readFileSync(path.join(ROOT, 'generator', 'data', 'noindex.json'), 'utf8')));
+  return (manifest.landings || []).filter((url) => !hidden.has(url)).map((url) => {
     const file = path.join(PROTO, url, 'index.html');
     if (!fs.existsSync(file)) return null;
     const title = (fs.readFileSync(file, 'utf8').match(/<title>([^<]*)<\/title>/) || [])[1];
