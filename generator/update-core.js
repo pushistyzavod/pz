@@ -195,7 +195,6 @@ function formBlock(p) {
         <div style="display:flex;flex-wrap:wrap;gap:14px;font-size:15px;font-weight:600">
           <a href="tel:${C.COMPANY.phoneTel}" style="color:#22242b;text-decoration:none">📞 ${C.COMPANY.phone}</a>
           <a href="${C.COMPANY.tg}" target="_blank" rel="noopener" style="color:#639aee;text-decoration:none">Telegram</a>
-          <a href="${C.COMPANY.wa}" target="_blank" rel="noopener" style="color:#639aee;text-decoration:none">WhatsApp</a>
           <a href="mailto:${C.COMPANY.email}" style="color:#22242b;text-decoration:none">✉️ ${C.COMPANY.email}</a>
         </div>
       </div>
@@ -220,10 +219,13 @@ function patchHead(html, p) {
   out = out.replace(/<title>[\s\S]*?<\/title>/, `<title>${T.esc(p.title)}</title>`);
   // description
   out = out.replace(/<meta name="description" content="[^"]*"\s*\/?>/, `<meta name="description" content="${T.esc(p.desc)}">`);
-  // удаляем старые canonical/og, если были
+  // удаляем старые canonical/og/twitter/robots, если были
   out = out.replace(/\s*<link rel="canonical"[^>]*>/g, '');
   out = out.replace(/\s*<meta property="og:[^"]*"[^>]*>/g, '');
   out = out.replace(/\s*<meta name="twitter:[^"]*"[^>]*>/g, '');
+  out = out.replace(/\s*<meta name="robots"[^>]*>/g, '');
+  // удаляем ранее вставленные наши JSON-LD (иначе при каждом прогоне они копятся дублями)
+  out = out.replace(/\s*<script type="application\/ld\+json">\{"@context":"https:\/\/schema\.org","@type":"(Organization|LocalBusiness|BreadcrumbList|WebSite)"[\s\S]*?<\/script>/g, '');
   // вставляем блок перед </head>
   out = out.replace('</head>', metaBlock(p) + '</head>');
   return out;
@@ -282,6 +284,12 @@ const CORE_FAQ = {
     { q: 'Какие тиражи на примерах работ?', a: 'От 100 штук (малые серии и welcome-паки) до 300 000 (федеральные FMCG-акции). На карточках кейсов указаны реальные тиражи и сроки производства.' },
     { q: 'Как попасть в раздел «Наши работы»?', a: 'Все интересные проекты публикуем с согласия клиента. Если хотите кейс с вашим брендом — скажите менеджеру: за публикацию даём бонус к следующему тиражу.' },
   ],
+  'news.html': [
+    { q: 'О чём статьи в блоге?', a: 'О производстве сувениров на заказ: как выбрать тираж и не переплатить, сколько реально занимает производство, как работает маркировка «Честный знак», как посчитать отдачу от промо-раздач и какой мерч сейчас в тренде.' },
+    { q: 'Кто пишет статьи?', a: 'Материалы готовят производственники фабрики «Пушистый Завод», а не копирайтеры: внутри — реальные цифры из проектов, чек-листы и разборы ошибок, которых легко избежать.' },
+    { q: 'Как заказать партию после статьи?', a: 'Оставьте заявку в форме на сайте или позвоните +7 (989) 605-10-10: менеджер уточнит задачу, бесплатно нарисует макет и пришлёт смету со сроками за 1 рабочий день.' },
+    { q: 'Как часто выходят новые статьи?', a: 'Пополняем блог по мере накопления практики: раз в 2–3 недели выходят разборы, гиды и ответы на частые вопросы клиентов. Сезонные материалы (Новый год, 23 Февраля, 8 Марта) — заранее, чтобы вы успели к дате.' },
+  ],
 };
 
 function faqCoreBlock(items) {
@@ -313,17 +321,10 @@ Object.entries(PAGES).forEach(([file, p]) => {
   // идемпотентность: если canonical уже есть — пропускаем мета (кроме повторного прогона)
   html = patchHead(html, p);
 
-  // блок перелинковки: удаляем старый (если был) и вставляем новый перед site.js
-  html = html.replace(/\n*<!-- SEO: внутренняя перелинковка \(генерируется generator\/update-core\.js\) -->[\s\S]*?<\/section>\s*(?=<script src="\/prototype\/js\/site\.js")/, '\n');
-  if (p.linksGroups) {
-    const block = linksBlock(p);
-    const scriptRe = /<script src="\/prototype\/js\/site\.js[^"]*"><\/script>/;
-    if (scriptRe.test(html)) {
-      html = html.replace(scriptRe, (m) => block + '\n' + m);
-    } else {
-      html = html.replace('</body>', block + '\n</body>');
-    }
-  }
+  // блок перелинковки на основных страницах отключён (по решению заказчика):
+  // SEO-рубрики не показываем на основных страницах, сами посадочные страницы работают.
+  // Старый блок, если был вставлен ранее, — удаляем.
+  html = html.replace(/\n*<!-- SEO: внутренняя перелинковка \(генерируется generator\/update-core\.js\) -->[\s\S]*?<\/section>/, '\n');
 
   // CTA + форма (если странице нужна): удаляем старый блок и вставляем новый
   html = html.replace(/\n*<!-- SEO: CTA \+ форма заявки \(генерируется generator\/update-core\.js\) -->[\s\S]*?<\/section>\s*(?=<script src="\/prototype\/js\/site\.js")/, '\n');

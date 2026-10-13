@@ -567,7 +567,7 @@ const pages = [
     ],
     relatedGroups: [
       { title: 'Города', pages: ['igrushki-moskva', 'igrushki-spb', 'igrushki-novosibirsk'] },
-      { title: 'Производство', pages: ['proizvodstvo-igrushek', 'kontrol-kachestva', 'individualnaya-upakovka'] },
+      { title: 'Производство', pages: ['proizvodstvo-igrushek', 'kontrol-kachestva', 'individualnaya-upakovka', 'news-sroki-proizvodstva-igrushek'] },
     ],
     formName: 'Заявка: доставка',
     formHint: 'мультиотгрузка по 20 офисам, 2000 шт',

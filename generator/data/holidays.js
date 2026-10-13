@@ -37,7 +37,7 @@ const pages = [
       ...C.FAQ_COMMON.slice(0, 4),
     ],
     relatedGroups: [
-      { title: 'Новогодние форматы', pages: ['symbol-goda', 'konfetnitsy', 'podarochnye-nabory'] },
+      { title: 'Новогодние форматы', pages: ['symbol-goda', 'konfetnitsy', 'podarochnye-nabory', 'news-sroki-proizvodstva-igrushek'] },
       { title: 'Кому дарить', pages: ['podarki-detyam-sotrudnikov', 'podarki-klientam', 'podarki-sotrudnikam'] },
     ],
     formName: 'Заявка: новогодние подарки',

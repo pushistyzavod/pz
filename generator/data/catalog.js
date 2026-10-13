@@ -463,7 +463,7 @@ const pages = [
       ...C.FAQ_COMMON.slice(0, 4),
     ],
     relatedGroups: [
-      { title: 'Другие игрушки', pages: ['plyushevye-igrushki', 'igrushka-kapibara', 'symbol-goda'] },
+      { title: 'Другие игрушки', pages: ['plyushevye-igrushki', 'igrushka-kapibara', 'igrushki-koty', 'symbol-goda'] },
       { title: 'Кому подходит', pages: ['podarki-na-14-fevralya', 'podarki-detyam-sotrudnikov', 'dlya-neftyanyh-kompaniy'] },
     ],
     formName: 'Заявка: плюшевые медведи',
@@ -495,7 +495,7 @@ const pages = [
       ...C.FAQ_COMMON.slice(0, 4),
     ],
     relatedGroups: [
-      { title: 'Другие персонажи', pages: ['plyushevyj-medved', 'igrushki-po-personazhu', 'figurki-po-personazhu'] },
+      { title: 'Другие персонажи', pages: ['plyushevyj-medved', 'igrushki-koty', 'igrushki-po-personazhu', 'figurki-po-personazhu'] },
       { title: 'Кому подходит', pages: ['dlya-marketpleysov', 'dlya-it-kompaniy', 'merch-na-zakaz'] },
     ],
     formName: 'Заявка: капибары',

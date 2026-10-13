@@ -69,6 +69,14 @@ header.nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.95);bac
 .chero h1 span{background:linear-gradient(100deg,var(--blue) 0%,#8d7ff0 60%,var(--pink) 115%);-webkit-background-clip:text;background-clip:text;color:transparent}
 .chero .sub{font-size:19px;color:#51607a;margin-bottom:30px;max-width:580px}
 .chero-actions{display:flex;gap:14px;flex-wrap:wrap}
+/* Компактная форма в первом экране: Имя + Телефон */
+.hero-form{display:flex;gap:10px;flex-wrap:wrap;margin:24px 0 4px;max-width:600px}
+.hero-form input{flex:1 1 150px;min-width:0;padding:14px 20px;border:1px solid #d7d7e0;border-radius:32px;font-family:inherit;font-size:15px;background:#fff}
+.hero-form input:focus{outline:none;border-color:var(--blue)}
+.hero-form .btn{flex:0 0 auto}
+.hero-alt{font-size:13.5px;color:var(--muted);margin:10px 0 0}
+.hero-alt a{color:var(--blue);font-weight:600;text-decoration:none}
+@media(max-width:560px){.hero-form{flex-direction:column}.hero-form .btn{width:100%}}
 .chero-stats{display:flex;margin-top:38px;flex-wrap:wrap;gap:18px 0}
 .chero-stats div{padding:0 26px;border-left:2px solid #dfe5f0}
 .chero-stats div:first-child{padding-left:0;border-left:none}
@@ -96,6 +104,11 @@ section[id]{scroll-margin-top:110px}
 #mascots .subcat-img{align-items:center}
 #mascots .subcat-img img{height:82%}
 #mascots .subcat-img::after{bottom:7%}
+/* Цветные подложки подкатегорий (как на ПВХ и «Мягкой продукции»); брелоки — белые */
+#mascots .subcat-img{background:radial-gradient(58% 52% at 50% 42%,rgba(255,255,255,.72) 0%,rgba(255,255,255,0) 72%),#dcebff;border-radius:18px}
+#newyear .subcat-img{background:radial-gradient(58% 52% at 50% 42%,rgba(255,255,255,.72) 0%,rgba(255,255,255,0) 72%),#ffe0f0;border-radius:18px}
+#branded .subcat-img{background:radial-gradient(58% 52% at 50% 42%,rgba(255,255,255,.72) 0%,rgba(255,255,255,0) 72%),#ffe4d4;border-radius:18px}
+#combo .subcat-img{background:radial-gradient(58% 52% at 50% 42%,rgba(255,255,255,.72) 0%,rgba(255,255,255,0) 72%),#d9f5e5;border-radius:18px}
 /* фото без вырезки — на всю область, слив с белой карточкой */
 .subcat-img--photo::after{display:none}
 .subcat-img--photo img{width:100%;height:100%;max-width:100%;object-fit:cover;filter:none}
@@ -201,7 +214,7 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
   .chero-inner{grid-template-columns:1fr;padding:32px 0 40px}
   .chero h1{font-size:32px}
   .chero-visual{order:-1}
-  .chero-visual img{width:min(320px,100%);transform:translateX(5%) scale(1.12);transform-origin:50% 100%}
+  .chero-visual img{width:min(320px,100%);margin:0 auto;transform:scale(1.12);transform-origin:50% 100%}
 
   .subcat{grid-template-columns:1fr;gap:20px}
   .subcat:nth-child(even) .subcat-img{order:0}
@@ -227,26 +240,6 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
   .works-grid{grid-template-columns:1fr 1fr}
 }
 </style>
-<meta name="robots" content="index, follow, max-image-preview:large">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","@id":"https://pushistyzavod.ru/#org","name":"Пушистый Завод — фабрика мягких игрушек и сувениров на заказ","url":"https://pushistyzavod.ru/","logo":"https://pushistyzavod.ru/prototype/images/logo.png","email":"pushistyzavod@mail.ru","telephone":"+79896051010","foundingDate":"2016","address":[{"@type":"PostalAddress","addressLocality":"Улан-Удэ","addressRegion":"Республика Бурятия","addressCountry":"RU","description":"Производство"},{"@type":"PostalAddress","addressLocality":"Москва","addressCountry":"RU","description":"Офис продаж"}],"sameAs":["https://t.me/pushistyzavod","https://vk.com/pushistyzavod","https://max.ru/pushistyzavod"],"aggregateRating":{"@type":"AggregateRating","ratingValue":4.9,"reviewCount":57,"bestRating":5}}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"LocalBusiness","@id":"https://pushistyzavod.ru/#local","name":"Фабрика «Пушистый Завод»","image":"https://pushistyzavod.ru/prototype/images/hero-main.webp","url":"https://pushistyzavod.ru/","telephone":"+79896051010","email":"pushistyzavod@mail.ru","priceRange":"₽₽","address":{"@type":"PostalAddress","addressLocality":"Улан-Удэ","addressRegion":"Республика Бурятия","addressCountry":"RU"},"openingHoursSpecification":{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"09:00","closes":"18:00"}}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Главная","item":"https://pushistyzavod.ru/"},{"@type":"ListItem","position":2,"name":"Мягкие игрушки"}]}</script>
-<meta name="robots" content="index, follow, max-image-preview:large">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","@id":"https://pushistyzavod.ru/#org","name":"Пушистый Завод — фабрика мягких игрушек и сувениров на заказ","url":"https://pushistyzavod.ru/","logo":"https://pushistyzavod.ru/prototype/images/logo.png","email":"pushistyzavod@mail.ru","telephone":"+79896051010","foundingDate":"2016","address":[{"@type":"PostalAddress","addressLocality":"Улан-Удэ","addressRegion":"Республика Бурятия","addressCountry":"RU","description":"Производство"},{"@type":"PostalAddress","addressLocality":"Москва","addressCountry":"RU","description":"Офис продаж"}],"sameAs":["https://t.me/pushistyzavod","https://vk.com/pushistyzavod","https://max.ru/pushistyzavod"],"aggregateRating":{"@type":"AggregateRating","ratingValue":4.9,"reviewCount":57,"bestRating":5}}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"LocalBusiness","@id":"https://pushistyzavod.ru/#local","name":"Фабрика «Пушистый Завод»","image":"https://pushistyzavod.ru/prototype/images/hero-main.webp","url":"https://pushistyzavod.ru/","telephone":"+79896051010","email":"pushistyzavod@mail.ru","priceRange":"₽₽","address":{"@type":"PostalAddress","addressLocality":"Улан-Удэ","addressRegion":"Республика Бурятия","addressCountry":"RU"},"openingHoursSpecification":{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"09:00","closes":"18:00"}}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Главная","item":"https://pushistyzavod.ru/"},{"@type":"ListItem","position":2,"name":"Мягкие игрушки"}]}</script>
-<meta name="robots" content="index, follow, max-image-preview:large">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","@id":"https://pushistyzavod.ru/#org","name":"Пушистый Завод — фабрика мягких игрушек и сувениров на заказ","url":"https://pushistyzavod.ru/","logo":"https://pushistyzavod.ru/prototype/images/logo.png","email":"pushistyzavod@mail.ru","telephone":"+79896051010","foundingDate":"2016","address":[{"@type":"PostalAddress","addressLocality":"Улан-Удэ","addressRegion":"Республика Бурятия","addressCountry":"RU","description":"Производство"},{"@type":"PostalAddress","addressLocality":"Москва","addressCountry":"RU","description":"Офис продаж"}],"sameAs":["https://t.me/pushistyzavod","https://vk.com/pushistyzavod","https://max.ru/pushistyzavod"],"aggregateRating":{"@type":"AggregateRating","ratingValue":4.9,"reviewCount":57,"bestRating":5}}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"LocalBusiness","@id":"https://pushistyzavod.ru/#local","name":"Фабрика «Пушистый Завод»","image":"https://pushistyzavod.ru/prototype/images/hero-main.webp","url":"https://pushistyzavod.ru/","telephone":"+79896051010","email":"pushistyzavod@mail.ru","priceRange":"₽₽","address":{"@type":"PostalAddress","addressLocality":"Улан-Удэ","addressRegion":"Республика Бурятия","addressCountry":"RU"},"openingHoursSpecification":{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"09:00","closes":"18:00"}}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Главная","item":"https://pushistyzavod.ru/"},{"@type":"ListItem","position":2,"name":"Мягкие игрушки"}]}</script>
-<meta name="robots" content="index, follow, max-image-preview:large">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","@id":"https://pushistyzavod.ru/#org","name":"Пушистый Завод — фабрика мягких игрушек и сувениров на заказ","url":"https://pushistyzavod.ru/","logo":"https://pushistyzavod.ru/prototype/images/logo.png","email":"pushistyzavod@mail.ru","telephone":"+79896051010","foundingDate":"2016","address":[{"@type":"PostalAddress","addressLocality":"Улан-Удэ","addressRegion":"Республика Бурятия","addressCountry":"RU","description":"Производство"},{"@type":"PostalAddress","addressLocality":"Москва","addressCountry":"RU","description":"Офис продаж"}],"sameAs":["https://t.me/pushistyzavod","https://vk.com/pushistyzavod","https://max.ru/pushistyzavod"],"aggregateRating":{"@type":"AggregateRating","ratingValue":4.9,"reviewCount":57,"bestRating":5}}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"LocalBusiness","@id":"https://pushistyzavod.ru/#local","name":"Фабрика «Пушистый Завод»","image":"https://pushistyzavod.ru/prototype/images/hero-main.webp","url":"https://pushistyzavod.ru/","telephone":"+79896051010","email":"pushistyzavod@mail.ru","priceRange":"₽₽","address":{"@type":"PostalAddress","addressLocality":"Улан-Удэ","addressRegion":"Республика Бурятия","addressCountry":"RU"},"openingHoursSpecification":{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"09:00","closes":"18:00"}}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Главная","item":"https://pushistyzavod.ru/"},{"@type":"ListItem","position":2,"name":"Мягкие игрушки"}]}</script>
-<meta name="robots" content="index, follow, max-image-preview:large">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","@id":"https://pushistyzavod.ru/#org","name":"Пушистый Завод — фабрика мягких игрушек и сувениров на заказ","url":"https://pushistyzavod.ru/","logo":"https://pushistyzavod.ru/prototype/images/logo.png","email":"pushistyzavod@mail.ru","telephone":"+79896051010","foundingDate":"2016","address":[{"@type":"PostalAddress","addressLocality":"Улан-Удэ","addressRegion":"Республика Бурятия","addressCountry":"RU","description":"Производство"},{"@type":"PostalAddress","addressLocality":"Москва","addressCountry":"RU","description":"Офис продаж"}],"sameAs":["https://t.me/pushistyzavod","https://vk.com/pushistyzavod","https://max.ru/pushistyzavod"],"aggregateRating":{"@type":"AggregateRating","ratingValue":4.9,"reviewCount":57,"bestRating":5}}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"LocalBusiness","@id":"https://pushistyzavod.ru/#local","name":"Фабрика «Пушистый Завод»","image":"https://pushistyzavod.ru/prototype/images/hero-main.webp","url":"https://pushistyzavod.ru/","telephone":"+79896051010","email":"pushistyzavod@mail.ru","priceRange":"₽₽","address":{"@type":"PostalAddress","addressLocality":"Улан-Удэ","addressRegion":"Республика Бурятия","addressCountry":"RU"},"openingHoursSpecification":{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"09:00","closes":"18:00"}}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Главная","item":"https://pushistyzavod.ru/"},{"@type":"ListItem","position":2,"name":"Мягкие игрушки"}]}</script>
 <link rel="canonical" href="https://pushistyzavod.ru/soft-toys.html">
 <meta name="robots" content="index, follow, max-image-preview:large">
 <meta property="og:type" content="website">
@@ -260,8 +253,8 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
 <meta name="twitter:title" content="Мягкие игрушки на заказ с логотипом оптом от 100 шт — «Пушистый Завод»">
 <meta name="twitter:description" content="Производство мягких игрушек на заказ для бизнеса: маскоты, символ года, брелоки, персонажи. Бесплатный макет, образец ~10 дней, тираж от 100 штук.">
 <meta name="twitter:image" content="https://pushistyzavod.ru/prototype/images/hero-main.webp">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","@id":"https://pushistyzavod.ru/#org","name":"Пушистый Завод — фабрика мягких игрушек и сувениров на заказ","url":"https://pushistyzavod.ru/","logo":"https://pushistyzavod.ru/prototype/images/logo.png","email":"pushistyzavod@mail.ru","telephone":"+79896051010","foundingDate":"2016","address":[{"@type":"PostalAddress","addressLocality":"Улан-Удэ","addressRegion":"Республика Бурятия","addressCountry":"RU","description":"Производство"},{"@type":"PostalAddress","addressLocality":"Москва","addressCountry":"RU","description":"Офис продаж"}],"sameAs":["https://t.me/pushistyzavod","https://vk.com/pushistyzavod","https://max.ru/pushistyzavod"],"aggregateRating":{"@type":"AggregateRating","ratingValue":4.9,"reviewCount":57,"bestRating":5}}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"LocalBusiness","@id":"https://pushistyzavod.ru/#local","name":"Фабрика «Пушистый Завод»","image":"https://pushistyzavod.ru/prototype/images/hero-main.webp","url":"https://pushistyzavod.ru/","telephone":"+79896051010","email":"pushistyzavod@mail.ru","priceRange":"₽₽","address":{"@type":"PostalAddress","addressLocality":"Улан-Удэ","addressRegion":"Республика Бурятия","addressCountry":"RU"},"openingHoursSpecification":{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"09:00","closes":"18:00"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","@id":"https://pushistyzavod.ru/#org","name":"Пушистый Завод — фабрика мягких игрушек и сувениров на заказ","url":"https://pushistyzavod.ru/","logo":"https://pushistyzavod.ru/prototype/images/logo.png","email":"info@pushistyzavod.ru","telephone":"+79896051010","foundingDate":"2016","address":[{"@type":"PostalAddress","addressLocality":"Улан-Удэ","addressRegion":"Республика Бурятия","addressCountry":"RU","description":"Производство"},{"@type":"PostalAddress","addressLocality":"Москва","addressCountry":"RU","description":"Офис продаж"}],"sameAs":["https://t.me/pushistyzavod","https://vk.com/pushistyzavod","https://max.ru/pushistyzavod"],"aggregateRating":{"@type":"AggregateRating","ratingValue":4.9,"reviewCount":57,"bestRating":5}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LocalBusiness","@id":"https://pushistyzavod.ru/#local","name":"Фабрика «Пушистый Завод»","image":"https://pushistyzavod.ru/prototype/images/hero-main.webp","url":"https://pushistyzavod.ru/","telephone":"+79896051010","email":"info@pushistyzavod.ru","priceRange":"₽₽","address":{"@type":"PostalAddress","addressLocality":"Улан-Удэ","addressRegion":"Республика Бурятия","addressCountry":"RU"},"openingHoursSpecification":{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"09:00","closes":"18:00"}}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Главная","item":"https://pushistyzavod.ru/"},{"@type":"ListItem","position":2,"name":"Мягкие игрушки"}]}</script>
 </head>
 <body>
@@ -271,7 +264,7 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
   <div class="container">
     <div class="tb-left">Собственное производство в РФ · Работаем с юрлицами по договору</div>
     <div class="tb-right">
-      <a href="mailto:pushistyzavod@mail.ru">pushistyzavod@mail.ru</a>
+      <a href="mailto:info@pushistyzavod.ru">info@pushistyzavod.ru</a>
       <a href="https://t.me/pushistyzavod" target="_blank">Telegram</a>
       <a href="https://vk.com/pushistyzavod" target="_blank">VK</a>
     </div>
@@ -307,10 +300,13 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
         <span class="eyebrow"><img src="/prototype/images/logo.png" alt="Пушистый Завод" class="eb-logo">Мягкие игрушки · опт от 100 штук</span>
         <h1>Мягкие игрушки <span>на заказ для бизнеса</span></h1>
         <p class="sub">Разрабатываем и производим плюшевые изделия с символикой вашего бренда: корпоративные маскоты, игрушки «символ года», мягкие брелоки и персонажей по фото или эскизу. Полный цикл — от рисунка до отгрузки партии.</p>
-        <div class="chero-actions">
-          <a class="btn btn-blue" href="#cta">Получить расчёт за 1 день</a>
-          <a class="btn btn-ghost" href="#works">Смотреть примеры</a>
-        </div>
+        <form class="hero-form" data-api-form data-form-name="Мягкие игрушки — быстрая заявка (первый экран)">
+          <input type="text" name="name" placeholder="Ваше имя" required>
+          <input type="tel" name="phone" placeholder="Телефон" required>
+      <input type="email" name="email" placeholder="E-mail (необязательно)">
+          <button class="btn btn-blue" type="submit">Получить расчёт за 1 день</button>
+        </form>
+        <p class="hero-alt">или <a href="#works">посмотрите примеры работ</a> ↓</p>
         <div class="chero-stats">
           <div><b>от 100</b><span>штук в партии</span></div>
           <div><b>~10 дн.</b><span>образец</span></div>
@@ -534,23 +530,14 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
     <div>
       <h2>Рассчитаем вашу партию <span>игрушек</span></h2>
       <p>Оставьте заявку — менеджер свяжется, поможет с дизайном и пришлёт коммерческое предложение с ценой и сроками. Консультация бесплатна.</p>
-      <p style="margin-top:18px">📞 <a href="tel:+79896051010"><b>+7 (989) 605-10-10</b></a><br>✉️ <a href="mailto:pushistyzavod@mail.ru">pushistyzavod@mail.ru</a></p>
+      <p style="margin-top:18px">📞 <a href="tel:+79896051010"><b>+7 (989) 605-10-10</b></a><br>✉️ <a href="mailto:info@pushistyzavod.ru">info@pushistyzavod.ru</a></p>
     </div>
     <form class="form" data-api-form data-form-name="Мягкие игрушки — расчёт заказа">
       <h3>Получить расчёт</h3>
       <small>Ответим в течение рабочего дня</small>
       <input type="text" name="name" placeholder="Компания / Имя" required>
       <input type="tel" name="phone" placeholder="Телефон" required>
-      <input type="email" name="email" placeholder="E-mail">
-      <select name="product">
-        <option value="">Что нужно изготовить?</option>
-
-        <option>Корпоративный маскот</option>
-        <option>Символ года</option>
-        <option>Мягкие брелоки</option>
-        <option>Брендированные игрушки / персонаж по фото</option>
-        <option>Комбинированная игрушка (плюш + винил)</option>
-      </select>
+      <input type="email" name="email" placeholder="E-mail (необязательно)">
       <button class="btn btn-primary" type="submit">Отправить заявку</button>
       <div class="agree">Нажимая кнопку, вы соглашаетесь с политикой конфиденциальности.</div>
     </form>
@@ -584,7 +571,7 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
       <div>
         <h4>Контакты</h4>
         <a href="tel:+79896051010">+7 (989) 605-10-10</a>
-        <a href="mailto:pushistyzavod@mail.ru">pushistyzavod@mail.ru</a>
+        <a href="mailto:info@pushistyzavod.ru">info@pushistyzavod.ru</a>
         <a href="https://t.me/pushistyzavod" target="_blank">Telegram</a>
         <a href="https://vk.com/pushistyzavod" target="_blank">ВКонтакте</a>
         <a href="#cta" class="btn btn-primary" style="margin-top:12px">Оставить заявку</a>
@@ -607,15 +594,7 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
   });
 </script>
 
-
-<!-- SEO: внутренняя перелинковка (генерируется generator/update-core.js) -->
-<section style="padding:0 0 60px">
-  <div class="container" style="display:flex;flex-direction:column;gap:26px">
-    <h2 style="margin:0">Каталог мягких игрушек</h2>
-    <div><h3 style="font-size:16px;margin:0 0 12px;color:#6b6b76">По типу</h3><div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px"><a href="/mascots/" style="display:block;background:#fff;border:1px solid #eceef3;border-radius:14px;padding:14px 18px;font-size:14px;font-weight:600;color:#22242b;transition:.15s" onmouseover="this.style.borderColor='#639aee'" onmouseout="this.style.borderColor='#eceef3'">Корпоративные маскоты на заказ →</a><a href="/rostovye-maskoty/" style="display:block;background:#fff;border:1px solid #eceef3;border-radius:14px;padding:14px 18px;font-size:14px;font-weight:600;color:#22242b;transition:.15s" onmouseover="this.style.borderColor='#639aee'" onmouseout="this.style.borderColor='#eceef3'">Ростовые маскоты на заказ →</a><a href="/symbol-goda/" style="display:block;background:#fff;border:1px solid #eceef3;border-radius:14px;padding:14px 18px;font-size:14px;font-weight:600;color:#22242b;transition:.15s" onmouseover="this.style.borderColor='#639aee'" onmouseout="this.style.borderColor='#eceef3'">Игрушки «Символ года» на заказ →</a><a href="/plyushevye-igrushki/" style="display:block;background:#fff;border:1px solid #eceef3;border-radius:14px;padding:14px 18px;font-size:14px;font-weight:600;color:#22242b;transition:.15s" onmouseover="this.style.borderColor='#639aee'" onmouseout="this.style.borderColor='#eceef3'">Плюшевые игрушки на заказ →</a><a href="/plyushevye-brelki/" style="display:block;background:#fff;border:1px solid #eceef3;border-radius:14px;padding:14px 18px;font-size:14px;font-weight:600;color:#22242b;transition:.15s" onmouseover="this.style.borderColor='#639aee'" onmouseout="this.style.borderColor='#eceef3'">Плюшевые брелоки на заказ →</a><a href="/bolshie-igrushki/" style="display:block;background:#fff;border:1px solid #eceef3;border-radius:14px;padding:14px 18px;font-size:14px;font-weight:600;color:#22242b;transition:.15s" onmouseover="this.style.borderColor='#639aee'" onmouseout="this.style.borderColor='#eceef3'">Большие мягкие игрушки на заказ →</a><a href="/malenkiye-igrushki/" style="display:block;background:#fff;border:1px solid #eceef3;border-radius:14px;padding:14px 18px;font-size:14px;font-weight:600;color:#22242b;transition:.15s" onmouseover="this.style.borderColor='#639aee'" onmouseout="this.style.borderColor='#eceef3'">Маленькие мягкие игрушки на заказ →</a><a href="/konfetnitsy/" style="display:block;background:#fff;border:1px solid #eceef3;border-radius:14px;padding:14px 18px;font-size:14px;font-weight:600;color:#22242b;transition:.15s" onmouseover="this.style.borderColor='#639aee'" onmouseout="this.style.borderColor='#eceef3'">Конфетницы-игрушки на заказ →</a></div></div><div><h3 style="font-size:16px;margin:0 0 12px;color:#6b6b76">По исходникам</h3><div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px"><a href="/igrushki-po-personazhu/" style="display:block;background:#fff;border:1px solid #eceef3;border-radius:14px;padding:14px 18px;font-size:14px;font-weight:600;color:#22242b;transition:.15s" onmouseover="this.style.borderColor='#639aee'" onmouseout="this.style.borderColor='#eceef3'">Игрушки по персонажу на заказ →</a><a href="/igrushki-po-foto/" style="display:block;background:#fff;border:1px solid #eceef3;border-radius:14px;padding:14px 18px;font-size:14px;font-weight:600;color:#22242b;transition:.15s" onmouseover="this.style.borderColor='#639aee'" onmouseout="this.style.borderColor='#eceef3'">Игрушки по фотографии на заказ →</a><a href="/igrushki-po-eszkizu/" style="display:block;background:#fff;border:1px solid #eceef3;border-radius:14px;padding:14px 18px;font-size:14px;font-weight:600;color:#22242b;transition:.15s" onmouseover="this.style.borderColor='#639aee'" onmouseout="this.style.borderColor='#eceef3'">Игрушки по эскизу на заказ →</a><a href="/plyushevyj-medved/" style="display:block;background:#fff;border:1px solid #eceef3;border-radius:14px;padding:14px 18px;font-size:14px;font-weight:600;color:#22242b;transition:.15s" onmouseover="this.style.borderColor='#639aee'" onmouseout="this.style.borderColor='#eceef3'">Плюшевые медведи на заказ →</a><a href="/igrushka-kapibara/" style="display:block;background:#fff;border:1px solid #eceef3;border-radius:14px;padding:14px 18px;font-size:14px;font-weight:600;color:#22242b;transition:.15s" onmouseover="this.style.borderColor='#639aee'" onmouseout="this.style.borderColor='#eceef3'">Игрушки капибара на заказ →</a><a href="/igrushki-koty/" style="display:block;background:#fff;border:1px solid #eceef3;border-radius:14px;padding:14px 18px;font-size:14px;font-weight:600;color:#22242b;transition:.15s" onmouseover="this.style.borderColor='#639aee'" onmouseout="this.style.borderColor='#eceef3'">Плюшевые коты на заказ →</a></div></div><div><h3 style="font-size:16px;margin:0 0 12px;color:#6b6b76">По задаче</h3><div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px"><a href="/igrushki-s-logotipom/" style="display:block;background:#fff;border:1px solid #eceef3;border-radius:14px;padding:14px 18px;font-size:14px;font-weight:600;color:#22242b;transition:.15s" onmouseover="this.style.borderColor='#639aee'" onmouseout="this.style.borderColor='#eceef3'">Игрушки с логотипом на заказ →</a><a href="/igrushki-optom/" style="display:block;background:#fff;border:1px solid #eceef3;border-radius:14px;padding:14px 18px;font-size:14px;font-weight:600;color:#22242b;transition:.15s" onmouseover="this.style.borderColor='#639aee'" onmouseout="this.style.borderColor='#eceef3'">Мягкие игрушки оптом от производителя →</a><a href="/igrushki-na-zakaz/" style="display:block;background:#fff;border:1px solid #eceef3;border-radius:14px;padding:14px 18px;font-size:14px;font-weight:600;color:#22242b;transition:.15s" onmouseover="this.style.borderColor='#639aee'" onmouseout="this.style.borderColor='#eceef3'">Игрушки на заказ →</a><a href="/promo-igrushki/" style="display:block;background:#fff;border:1px solid #eceef3;border-radius:14px;padding:14px 18px;font-size:14px;font-weight:600;color:#22242b;transition:.15s" onmouseover="this.style.borderColor='#639aee'" onmouseout="this.style.borderColor='#eceef3'">Промо-игрушки на заказ →</a><a href="/reklamnye-igrushki/" style="display:block;background:#fff;border:1px solid #eceef3;border-radius:14px;padding:14px 18px;font-size:14px;font-weight:600;color:#22242b;transition:.15s" onmouseover="this.style.borderColor='#639aee'" onmouseout="this.style.borderColor='#eceef3'">Рекламные игрушки на заказ →</a><a href="/brendirovannye-igrushki/" style="display:block;background:#fff;border:1px solid #eceef3;border-radius:14px;padding:14px 18px;font-size:14px;font-weight:600;color:#22242b;transition:.15s" onmouseover="this.style.borderColor='#639aee'" onmouseout="this.style.borderColor='#eceef3'">Брендированные игрушки на заказ →</a></div></div>
-  </div>
-</section>
-<script src="/prototype/js/site.js"></script>
+<script src="/prototype/js/site.js?v=20260840"></script>
 </body>
 </html>
 

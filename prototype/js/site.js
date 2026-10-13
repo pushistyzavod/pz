@@ -1,12 +1,12 @@
 /*
  * Единый хедер и футер для всего сайта «Пушистый Завод».
- * Подключается на каждой странице: <script src="/prototype/js/site.js"></script>
+ * Подключается на каждой странице: <script src="/prototype/js/site.js?v=20260810"></script>
  * Скрипт удаляет старые .topbar / header.nav / footer и вставляет одинаковые для всех страниц.
  */
 (function () {
   var PHONE_TEL = '+79896051010';
   var PHONE_HUMAN = '+7 (989) 605-10-10';
-  var EMAIL = 'pushistyzavod@mail.ru';
+  var EMAIL = 'info@pushistyzavod.ru';
 
   // ---------- Общие стили хедера и футера ----------
   var css = ''
@@ -75,16 +75,19 @@
     + '.site-footer .socials a{width:42px;height:42px;padding:0;border-radius:50%;overflow:hidden;display:inline-flex;align-items:center;justify-content:center;opacity:.92;transition:.15s;box-shadow:0 3px 9px -2px rgba(0,0,0,.4)}'
     + '.site-footer .socials a img{width:100%;height:100%;object-fit:cover;display:block;border-radius:50%}'
     + '.site-footer .socials a:hover{opacity:1;transform:translateY(-2px)}'
-    // лайтбокс приближения фото в «Примеры работ» (только десктоп)
+    // лайтбокс приближения фото в «Примеры работ» (все устройства, свайп на мобильных)
     + '.wlbox{position:fixed;inset:0;z-index:400;background:rgba(15,18,30,.9);display:flex;align-items:center;justify-content:center;padding:34px;opacity:0;visibility:hidden;transition:.22s}'
     + '.wlbox.open{opacity:1;visibility:visible}'
     + '.wlbox .wl-in{max-width:min(860px,100%);max-height:100%;display:flex;flex-direction:column;align-items:center;gap:14px;transform:scale(.94);transition:transform .22s}'
     + '.wlbox.open .wl-in{transform:scale(1)}'
     + '.wlbox img{max-width:100%;max-height:78vh;object-fit:contain;border-radius:16px;background:#fff;box-shadow:0 30px 70px -20px rgba(0,0,0,.55)}'
     + '.wlbox .wl-cap{color:#fff;font-size:15px;font-weight:600;text-align:center;opacity:.95}'
-    + '.wlbox .wl-close{position:absolute;top:16px;right:16px;width:44px;height:44px;border-radius:50%;border:none;background:rgba(255,255,255,.14);color:#fff;font-size:22px;cursor:pointer;line-height:1;transition:.15s}'
+    + '.wlbox .wl-close{position:absolute;top:16px;right:16px;width:44px;height:44px;border-radius:50%;border:none;background:rgba(255,255,255,.14);color:#fff;font-size:22px;cursor:pointer;line-height:1;transition:.15s;z-index:2}'
     + '.wlbox .wl-close:hover{background:var(--spink)}'
-    + '@media(max-width:900px){.wlbox{display:none}}'
+    + '.wlbox .wl-nav{position:absolute;top:50%;transform:translateY(-50%);width:46px;height:46px;border-radius:50%;border:none;background:rgba(255,255,255,.14);color:#fff;font-size:24px;line-height:1;cursor:pointer;z-index:2;transition:.15s}'
+    + '.wlbox .wl-nav:hover{background:var(--sblue)}'
+    + '.wlbox .wl-prev{left:16px}.wlbox .wl-next{right:16px}'
+    + '@media(max-width:900px){.wlbox{padding:16px}.wlbox img{max-height:70vh;border-radius:12px}.wlbox .wl-nav{width:40px;height:40px;font-size:20px}.wlbox .wl-prev{left:8px}.wlbox .wl-next{right:8px}.wlbox .wl-close{top:10px;right:10px;width:40px;height:40px}}'
     // cookie-баннер (согласие на использование cookie) — тонкая плашка внизу
     + '.ckbox{position:fixed;left:0;right:0;bottom:0;z-index:500;background:rgba(28,30,37,.97);color:#c4c7d2;padding:10px 18px;display:flex;align-items:center;justify-content:center;gap:8px 16px;flex-wrap:wrap;font-size:12.5px;line-height:1.45;text-align:center;transform:translateY(100%);opacity:0;visibility:hidden;transition:.3s;font-family:inherit}'
     + '.ckbox.show{transform:translateY(0);opacity:1;visibility:visible}'
@@ -132,12 +135,14 @@
     + '.site-drawer .d-msgs a{width:38px;height:38px;border-radius:50%;overflow:hidden;box-shadow:0 2px 7px -1px rgba(20,30,80,.25);display:block}'
     + '.site-drawer .d-msgs img{width:100%;height:100%;object-fit:cover;display:block}'
     + '.site-drawer .d-btn{display:inline-flex;align-items:center;justify-content:center;padding:14px;border-radius:28px;background:var(--spink);color:#fff;font-weight:600;font-size:15px;text-decoration:none;box-shadow:0 10px 22px -12px rgba(255,96,153,.8)}'
+    // На мобильных hero-форму скрываем (по просьбе заказчика — чистый первый экран)
+    + '@media(max-width:900px){.hero-form,.hero-alt{display:none}}'
     + '@media(max-width:1040px){'
     + '  .site-header .wrap{height:70px;gap:14px}'
     + '  .site-logo .logo-pic{height:38px}'
     + '  .site-menu{display:none}'
     + '  .site-cta{margin-left:auto;gap:10px}.site-contact{display:none}'
-    + '  .site-cta .site-btn{display:none}'
+    + '  .site-cta .site-btn{display:inline-flex;padding:11px 16px;font-size:13px}'
     + '  .site-burger{display:inline-flex;align-items:center;justify-content:center}'
     + '  .site-topbar .tb-left{display:none}'
     + '  .site-footer .cols{grid-template-columns:1fr 1fr}'
@@ -145,14 +150,33 @@
     + '@media(max-width:560px){'
     + '  .site-header .wrap{padding:0 16px}.site-topbar .wrap{padding:8px 12px}'
     + '  .site-topbar .tb-right{gap:12px;font-size:12px}'
-    + '  .site-cta .site-btn{padding:11px 16px;font-size:13px}'
+    + '  .site-cta{gap:7px}'
+    + '  .site-cta .site-btn{padding:9px 12px;font-size:12px}'
+    + '  .site-burger{width:40px;height:40px;font-size:20px}'
     + '  .site-footer .cols{grid-template-columns:1fr}'
-    + '  .site-logo{font-size:17px;gap:8px}.site-logo .logo-pic{height:32px}'
+    + '  .site-logo{font-size:14px;gap:6px}.site-logo .logo-pic{height:30px}'
     + '  .site-mega .inner{padding:16px}'
     + '}'
     + '@media(max-width:380px){'
     + '  .site-topbar .tb-right{gap:8px;font-size:11px}'
-    + '}';
+    + '  .site-logo{font-size:0}'
+    + '  .site-logo .logo-pic{height:28px}'
+    + '}'
+    // ==== Карусель «Наши новые работы» (бесконечная бегущая строка круглых фото) ====
+    + '.nworks{margin:0;background:#fff}'
+    + '.nworks-bar{background:linear-gradient(90deg,#ff5f9e,#ff83bd);color:#fff;text-align:center;font-weight:700;font-size:clamp(20px,3vw,30px);padding:16px 20px;letter-spacing:.01em}'
+    + '.nworks-view{overflow:hidden;padding:26px 0;background:#fff}'
+    // margin-right вместо gap: обе половины ленты одинаковой ширины → стык бесшовный, без рывка
+    + '.nworks-track{display:flex;width:max-content;will-change:transform;animation:nw 60s linear infinite}'
+    // Вырезанные PNG прямо на белом фоне — без круглой рамки, уши/детали не обрезаются
+    + '.nworks-track img{width:150px;height:150px;object-fit:contain;flex:0 0 auto;margin-right:26px}'
+    + '@keyframes nw{to{transform:translateX(-50%)}}'
+    + '@media(max-width:560px){.nworks-track img{width:112px;height:112px;margin-right:16px}.nworks-view{padding:18px 0}}'
+    // «Нам доверяют» — мягкий фирменный фон (розовый→голубой) вместо серого
+    + '.clients{background:linear-gradient(120deg,#fdeef6 0%,#e9f1ff 100%)!important}'
+    // Ghost-кнопки («Смотреть наши работы» и т.п.) — яркие, как основная розовая
+    + '.btn-ghost{background:linear-gradient(120deg,#639aee,#8db8f5)!important;color:#fff!important;border:none;box-shadow:0 12px 26px -10px rgba(99,154,238,.6)}'
+    + '.btn-ghost:hover{background:linear-gradient(120deg,#ff6099,#ff8ab8)!important;color:#fff!important}';
 
   // ---------- Разметка ----------
   var topbar =
@@ -281,7 +305,7 @@
     document.body.insertAdjacentHTML('beforeend', footer);
     document.body.insertAdjacentHTML('beforeend', drawer);
     document.body.insertAdjacentHTML('beforeend',
-      '<div class="wlbox" id="wlbox"><button class="wl-close" aria-label="Закрыть">✕</button><div class="wl-in"><img id="wlImg" src="" alt=""><div class="wl-cap" id="wlCap"></div></div></div>');
+      '<div class="wlbox" id="wlbox"><button class="wl-close" aria-label="Закрыть">✕</button><button class="wl-nav wl-prev" aria-label="Предыдущее фото">‹</button><button class="wl-nav wl-next" aria-label="Следующее фото">›</button><div class="wl-in"><img id="wlImg" src="" alt=""><div class="wl-cap" id="wlCap"></div></div></div>');
 
     // 4) активный пункт меню
     var path = location.pathname;
@@ -320,27 +344,48 @@
       });
     }
 
-    // 7) приближение фото в блоках «Примеры работ» (десктоп)
+    // 7) приближение фото в блоках «Примеры работ» / «Наши работы» — все устройства, свайп на мобильных
     var wl = document.getElementById('wlbox');
     var wlImg = document.getElementById('wlImg');
     var wlCap = document.getElementById('wlCap');
+    var wlItems = [].slice.call(document.querySelectorAll('.works-grid .work'));
+    var wlIdx = 0;
+    function wlOpen(n) {
+      if (!wlItems.length) return;
+      wlIdx = (n + wlItems.length) % wlItems.length;
+      var w = wlItems[wlIdx];
+      var img = w.querySelector('.ph img');
+      if (!img) return;
+      wlImg.src = img.currentSrc || img.src;
+      wlImg.alt = img.alt || '';
+      var t = w.querySelector('.cap b');
+      wlCap.textContent = (t ? t.textContent : '') + (wlItems.length > 1 ? '  ·  ' + (wlIdx + 1) + ' / ' + wlItems.length : '');
+      wl.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
     function wlClose() { wl.classList.remove('open'); document.body.style.overflow = ''; }
-    document.querySelectorAll('.works-grid .work').forEach(function (w) {
+    wlItems.forEach(function (w, n) {
       w.style.cursor = 'zoom-in';
-      w.addEventListener('click', function () {
-        if (window.innerWidth <= 900) return;
-        var img = w.querySelector('.ph img');
-        if (!img) return;
-        wlImg.src = img.src; wlImg.alt = img.alt || '';
-        var t = w.querySelector('.cap b');
-        wlCap.textContent = t ? t.textContent : '';
-        wl.classList.add('open');
-        document.body.style.overflow = 'hidden';
-      });
+      w.addEventListener('click', function () { wlOpen(n); });
     });
     wl.querySelector('.wl-close').addEventListener('click', wlClose);
     wl.addEventListener('click', function (e) { if (e.target === wl) wlClose(); });
-    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && wl.classList.contains('open')) wlClose(); });
+    wl.querySelector('.wl-prev').addEventListener('click', function (e) { e.stopPropagation(); wlOpen(wlIdx - 1); });
+    wl.querySelector('.wl-next').addEventListener('click', function (e) { e.stopPropagation(); wlOpen(wlIdx + 1); });
+    document.addEventListener('keydown', function (e) {
+      if (!wl.classList.contains('open')) return;
+      if (e.key === 'Escape') wlClose();
+      if (e.key === 'ArrowLeft') wlOpen(wlIdx - 1);
+      if (e.key === 'ArrowRight') wlOpen(wlIdx + 1);
+    });
+    var wlX = null;
+    wl.addEventListener('touchstart', function (e) { wlX = e.touches[0].clientX; }, { passive: true });
+    wl.addEventListener('touchend', function (e) {
+      if (wlX === null) return;
+      var dx = e.changedTouches[0].clientX - wlX;
+      if (Math.abs(dx) > 40) wlOpen(dx < 0 ? wlIdx + 1 : wlIdx - 1);
+      wlX = null;
+    }, { passive: true });
   }
 
   // ---------- Отправка форм на бэкенд ----------
@@ -350,6 +395,17 @@
     Array.prototype.forEach.call(forms, function (form) {
       if (form.dataset.bound === '1') return;
       form.dataset.bound = '1';
+
+      // Honeypot-поле против ботов (невидимо для людей) + метка времени (time-trap)
+      var hp = document.createElement('input');
+      hp.type = 'text';
+      hp.name = 'website';
+      hp.tabIndex = -1;
+      hp.setAttribute('autocomplete', 'off');
+      hp.setAttribute('aria-hidden', 'true');
+      hp.style.cssText = 'position:absolute;left:-9999px;top:-9999px;height:1px;width:1px;opacity:0';
+      form.appendChild(hp);
+      var formT0 = Date.now();
 
       var status = document.createElement('div');
       status.style.cssText = 'margin-top:12px;font-size:13.5px;line-height:1.4;display:none';
@@ -379,6 +435,19 @@
         if (payload.product) {
           payload.message = 'Интересует: ' + payload.product;
         }
+        payload._t0 = formT0;
+
+        // Клиентская валидация телефона и почты (не даём отправить с ошибкой)
+        if (!/^[+\d][\d\s()\-]{6,20}$/.test(String(payload.phone || '').trim())) {
+          show('Проверьте номер телефона — похоже, он указан с ошибкой.', false);
+          if (btn) { btn.disabled = false; btn.innerHTML = oldText; }
+          return;
+        }
+        if (payload.email && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(String(payload.email).trim())) {
+          show('Проверьте адрес электронной почты.', false);
+          if (btn) { btn.disabled = false; btn.innerHTML = oldText; }
+          return;
+        }
 
         fetch('/api/form', {
           method: 'POST',
@@ -393,7 +462,7 @@
               // Цель Яндекс.Метрики: успешная отправка заявки (конверсия)
               try { if (window.ym) window.ym(95445006, 'reachGoal', 'form_success'); } catch (e) {}
             } else {
-              show('Не удалось отправить. Позвоните нам: ' + PHONE_HUMAN, false);
+              show((d && d.message) || ('Не удалось отправить. Позвоните нам: ' + PHONE_HUMAN), false);
             }
           })
           .catch(function () {
@@ -444,11 +513,26 @@
     });
   }
 
+  // ---------- Карусель «Наши новые работы» (бегущая строка круглых фото) ----------
+  function initNewWorks() {
+    // показываем на всех страницах, где есть hero-блок (главная, категории, посадочные и т.д.)
+    var anchor = document.querySelector('.hero, .chero');
+    if (!anchor) return;
+    var base = '/prototype/images/works/carousel/';
+    var imgs = [];
+    for (var i = 1; i <= 21; i++) { imgs.push('toy-' + (i < 10 ? '0' + i : i) + '.png'); }
+    var items = imgs.map(function (f) { return '<img src="' + base + f + '?v=20260834" alt="Пример работы фабрики «Пушистый Завод»" loading="lazy" decoding="async">'; }).join('');
+    var html = '<section class="nworks" aria-label="Наши новые работы"><div class="nworks-bar">Наши новые работы</div>'
+      + '<div class="nworks-view"><div class="nworks-track">' + items + items + '</div></div></section>';
+    anchor.insertAdjacentHTML('afterend', html);
+  }
+
   function start() {
     inject();
     initForms();
     initMetrika();
     initCookie();
+    initNewWorks();
   }
 
   if (document.readyState === 'loading') {

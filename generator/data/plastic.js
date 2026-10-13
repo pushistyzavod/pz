@@ -99,7 +99,7 @@ const pages = [
       ...C.FAQ_COMMON.slice(0, 4),
     ],
     relatedGroups: [
-      { title: 'ПВХ-изделия', pages: ['news-pvh-ili-plush-chto-vybrat', 'magnity-pvc', 'dzhibitsy', 'pvc-fleshki'] },
+      { title: 'ПВХ-изделия', pages: ['news-pvh-ili-plush-chto-vybrat', 'magnity-pvc', 'dzhibitsy', 'pvc-znachki', 'pvc-fleshki'] },
       { title: 'Похожее', pages: ['plyushevye-brelki', 'promo-suveniry', 'malenkiye-igrushki'] },
     ],
     formName: 'Заявка: ПВХ-брелоки',
@@ -160,7 +160,7 @@ const pages = [
       ...C.FAQ_COMMON.slice(0, 4),
     ],
     relatedGroups: [
-      { title: 'ПВХ-изделия', pages: ['pvc-brelki', 'magnity-pvc', 'plastic-suveniry'] },
+      { title: 'ПВХ-изделия', pages: ['pvc-brelki', 'magnity-pvc', 'pvc-znachki', 'plastic-suveniry'] },
       { title: 'Кому подходит', pages: ['dlya-sportivnyh-komand', 'dlya-festivaley', 'dlya-akvaparkov'] },
     ],
     formName: 'Заявка: джибитсы',

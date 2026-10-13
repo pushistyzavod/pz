@@ -193,6 +193,14 @@ header.nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.95);bac
 .hero h1 span{background:linear-gradient(100deg,var(--blue) 0%,#8d7ff0 60%,var(--pink) 115%);-webkit-background-clip:text;background-clip:text;color:transparent}
 .hero p{font-size:19px;color:#41506b;margin-bottom:28px;max-width:520px}
 .hero-actions{display:flex;gap:14px;flex-wrap:wrap}
+/* Компактная форма в первом экране (как на Тильде): Имя + Телефон */
+.hero-form{display:flex;gap:10px;flex-wrap:wrap;margin:26px 0 6px;max-width:620px}
+.hero-form input{flex:1 1 150px;min-width:0;padding:14px 20px;border:1px solid #d7d7e0;border-radius:32px;font-family:inherit;font-size:15px;background:#fff}
+.hero-form input:focus{outline:none;border-color:var(--blue)}
+.hero-form .btn{flex:0 0 auto}
+.hero-alt{font-size:13.5px;color:var(--muted);margin:10px 0 0}
+.hero-alt a{color:var(--blue);font-weight:600;text-decoration:none}
+@media(max-width:560px){.hero-form{flex-direction:column}.hero-form .btn{width:100%}}
 .hero-badges{display:flex;gap:26px;margin-top:32px;flex-wrap:wrap}
 .hero-badges b{display:block;font-size:26px;color:var(--blue)}
 .hero-badges span{font-size:13px;color:#5b6a86}
@@ -384,8 +392,8 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
 <meta name="twitter:title" content="Производство мягких игрушек и сувениров на заказ оптом — фабрика «Пушистый Завод»">
 <meta name="twitter:description" content="Фабрика полного цикла: мягкие игрушки, рюкзаки, тапочки, ПВХ-фигурки, мягкие и пластиковые брелоки с вашим логотипом. Опт от 100 штук, работа с юрлицами, договор, отсрочка.">
 <meta name="twitter:image" content="https://pushistyzavod.ru/prototype/images/hero-main.webp">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","@id":"https://pushistyzavod.ru/#org","name":"Пушистый Завод — фабрика мягких игрушек и сувениров на заказ","url":"https://pushistyzavod.ru/","logo":"https://pushistyzavod.ru/prototype/images/logo.png","email":"pushistyzavod@mail.ru","telephone":"+79896051010","foundingDate":"2016","address":[{"@type":"PostalAddress","addressLocality":"Улан-Удэ","addressRegion":"Республика Бурятия","addressCountry":"RU","description":"Производство"},{"@type":"PostalAddress","addressLocality":"Москва","addressCountry":"RU","description":"Офис продаж"}],"sameAs":["https://t.me/pushistyzavod","https://vk.com/pushistyzavod","https://max.ru/pushistyzavod"],"aggregateRating":{"@type":"AggregateRating","ratingValue":4.9,"reviewCount":57,"bestRating":5}}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"LocalBusiness","@id":"https://pushistyzavod.ru/#local","name":"Фабрика «Пушистый Завод»","image":"https://pushistyzavod.ru/prototype/images/hero-main.webp","url":"https://pushistyzavod.ru/","telephone":"+79896051010","email":"pushistyzavod@mail.ru","priceRange":"₽₽","address":{"@type":"PostalAddress","addressLocality":"Улан-Удэ","addressRegion":"Республика Бурятия","addressCountry":"RU"},"openingHoursSpecification":{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"09:00","closes":"18:00"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","@id":"https://pushistyzavod.ru/#org","name":"Пушистый Завод — фабрика мягких игрушек и сувениров на заказ","url":"https://pushistyzavod.ru/","logo":"https://pushistyzavod.ru/prototype/images/logo.png","email":"info@pushistyzavod.ru","telephone":"+79896051010","foundingDate":"2016","address":[{"@type":"PostalAddress","addressLocality":"Улан-Удэ","addressRegion":"Республика Бурятия","addressCountry":"RU","description":"Производство"},{"@type":"PostalAddress","addressLocality":"Москва","addressCountry":"RU","description":"Офис продаж"}],"sameAs":["https://t.me/pushistyzavod","https://vk.com/pushistyzavod","https://max.ru/pushistyzavod"],"aggregateRating":{"@type":"AggregateRating","ratingValue":4.9,"reviewCount":57,"bestRating":5}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LocalBusiness","@id":"https://pushistyzavod.ru/#local","name":"Фабрика «Пушистый Завод»","image":"https://pushistyzavod.ru/prototype/images/hero-main.webp","url":"https://pushistyzavod.ru/","telephone":"+79896051010","email":"info@pushistyzavod.ru","priceRange":"₽₽","address":{"@type":"PostalAddress","addressLocality":"Улан-Удэ","addressRegion":"Республика Бурятия","addressCountry":"RU"},"openingHoursSpecification":{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"09:00","closes":"18:00"}}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Главная"}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","url":"https://pushistyzavod.ru/","name":"Пушистый Завод","publisher":{"@id":"https://pushistyzavod.ru/#org"}}</script>
 </head>
@@ -396,7 +404,7 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
   <div class="container">
     <div class="tb-left">Собственное производство в РФ · Работаем с юрлицами по договору</div>
     <div class="tb-right">
-      <a href="mailto:pushistyzavod@mail.ru">pushistyzavod@mail.ru</a>
+      <a href="mailto:info@pushistyzavod.ru">info@pushistyzavod.ru</a>
       <a href="https://t.me/pushistyzavod" target="_blank">Telegram</a>
       <a href="https://vk.com/pushistyzavod" target="_blank">VK</a>
     </div>
@@ -459,11 +467,13 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
       <span class="tag">B2B · Опт от 100 штук · Изделия с вашим логотипом</span>
       <h1>Фабрика мягких и пластиковых изделий <span>на заказ для бизнеса</span></h1>
       <p>Производим мягкие игрушки, рюкзаки, тапочки, ПВХ-фигурки и брелоки с символикой вашего бренда. Полный цикл: от эскиза до отгрузки партии.</p>
-      <div class="hero-actions">
-        <a class="btn btn-blue" href="#cta">Получить расчёт за 1 день</a>
-        <a class="btn btn-ghost" href="#works">Смотреть наши работы</a>
-
-      </div>
+      <form class="hero-form" data-api-form data-form-name="Главная — быстрая заявка (первый экран)">
+        <input type="text" name="name" placeholder="Ваше имя" required>
+        <input type="tel" name="phone" placeholder="Телефон" required>
+      <input type="email" name="email" placeholder="E-mail (необязательно)">
+        <button class="btn btn-primary" type="submit">Получить расчёт за 1 день</button>
+      </form>
+      <p class="hero-alt">или <a href="#works">посмотрите наши работы</a> ↓</p>
       <div class="hero-badges">
         <div><b>10+</b><span>лет на рынке</span></div>
         <div><b>500+</b><span>реализованных партий</span></div>
@@ -854,24 +864,14 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
       <h2>Рассчитаем ваш заказ <span>за 1 день</span></h2>
       <p>Оставьте заявку — менеджер свяжется, поможет с дизайном и пришлёт коммерческое предложение с ценой и сроками. Консультация бесплатна.</p>
       <p style="margin-top:16px"><span style="display:inline-block;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.4);border-radius:22px;padding:9px 18px;font-size:13.5px;font-weight:600">Нашли дешевле? Снизим цену конкурента на&nbsp;5%</span></p>
-      <p style="margin-top:18px">📞 <a href="tel:+79896051010"><b>+7 (989) 605-10-10</b></a><br>✉️ <a href="mailto:pushistyzavod@mail.ru">pushistyzavod@mail.ru</a></p>
+      <p style="margin-top:18px">📞 <a href="tel:+79896051010"><b>+7 (989) 605-10-10</b></a><br>✉️ <a href="mailto:info@pushistyzavod.ru">info@pushistyzavod.ru</a></p>
     </div>
     <form class="form" data-api-form data-form-name="Главная — расчёт заказа">
       <h3>Получить расчёт</h3>
       <small>Ответим в течение рабочего дня</small>
       <input type="text" name="name" placeholder="Компания / Имя" required>
       <input type="tel" name="phone" placeholder="Телефон" required>
-      <input type="email" name="email" placeholder="E-mail">
-      <select name="product">
-        <option value="">Что нужно произвести?</option>
-
-        <option>Мягкие игрушки</option>
-        <option>Рюкзаки / сумки</option>
-        <option>Тапочки</option>
-        <option>ПВХ-фигурки</option>
-        <option>Мягкие брелоки</option>
-        <option>Пластиковые брелоки</option>
-      </select>
+      <input type="email" name="email" placeholder="E-mail (необязательно)">
       <button class="btn btn-primary" type="submit">Отправить заявку</button>
       <div class="agree">Нажимая кнопку, вы соглашаетесь с политикой конфиденциальности.</div>
     </form>
@@ -907,7 +907,7 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
       <div>
         <h4>Контакты</h4>
         <a href="tel:+79896051010">+7 (989) 605-10-10</a>
-        <a href="mailto:pushistyzavod@mail.ru">pushistyzavod@mail.ru</a>
+        <a href="mailto:info@pushistyzavod.ru">info@pushistyzavod.ru</a>
         <a href="https://t.me/pushistyzavod" target="_blank">Telegram</a>
         <a href="https://vk.com/pushistyzavod" target="_blank">ВКонтакте</a>
         <a href="#cta" class="btn btn-primary" style="margin-top:12px">Оставить заявку</a>
@@ -992,7 +992,7 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
   });
 </script>
 
-<script src="/prototype/js/site.js"></script>
+<script src="/prototype/js/site.js?v=20260840"></script>
 </body>
 </html>
 

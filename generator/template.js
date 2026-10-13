@@ -252,6 +252,7 @@ function worksBlock(p) {
 
   <p class="lead">Реальные тиражи, произведённые на нашей фабрике. Больше кейсов — в разделе <a href="/works.html" style="color:var(--blue);font-weight:600">«Наши работы»</a>.</p>
   <div class="works-grid">${cases.map((c) => `<div class="work"><div class="ph"><img src="/prototype/images/works/${c.img}" alt="${esc(c.cap)} — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>${esc(c.cap)}</b><span>Тираж: ${c.qty}</span></div></div>`).join('')}</div>
+  <div class="works-more"><a class="btn btn-blue" href="/works.html">Все наши работы</a></div>
 </div></section>`;
 }
 
@@ -264,43 +265,6 @@ function priceBlock(p) {
   <table class="price-tbl"><thead><tr><th>Тираж</th><th>Цена за штуку</th><th>Стоимость партии</th></tr></thead><tbody>${rows}</tbody></table>
   <p class="price-note">* В цену включены: материалы, брендирование (вышивка или печать), бирка, полиэтиленовая упаковка. Отдельно считаются: разработка персонажа «с нуля», пресс-форма для ПВХ, подарочная упаковка, доставка. Сигнальный образец вычитается из суммы тиража.</p>
 </div></section>`;
-}
-
-function calcBlock(p) {
-  return `<section style="padding-top:0"><div class="container">
-  <div class="calc">
-    <div>
-      <h2 style="margin-bottom:18px">Калькулятор <span>стоимости</span></h2>
-      <label for="calcProduct">Тип изделия</label>
-      <select id="calcProduct">
-        <option value="toy"${p.priceKey === 'toy' ? ' selected' : ''}>Мягкая игрушка 20–25 см</option>
-        <option value="mini"${p.priceKey === 'mini' ? ' selected' : ''}>Мини-игрушка / брелок 10 см</option>
-        <option value="big"${p.priceKey === 'big' ? ' selected' : ''}>Большая игрушка 40–60 см</option>
-        <option value="maskot"${p.priceKey === 'maskot' ? ' selected' : ''}>Корпоративный маскот</option>
-        <option value="pvc"${p.priceKey === 'pvc' ? ' selected' : ''}>ПВХ-фигурка до 8 см</option>
-        <option value="brelok"${p.priceKey === 'brelok' ? ' selected' : ''}>ПВХ-брелок</option>
-        <option value="pillow"${p.priceKey === 'pillow' ? ' selected' : ''}>Подушка с логотипом</option>
-      </select>
-      <label for="calcQty">Тираж: <output id="calcQtyOut">1 000 шт</output></label>
-      <input type="range" id="calcQty" min="100" max="10000" step="100" value="1000">
-      <div class="qty-row"><span>100</span><span>10 000</span></div>
-    </div>
-    <div class="calc-result">
-      <div class="sum" id="calcSum">≈ 460 000 <small>₽</small></div>
-      <div class="per" id="calcPer">≈ 460 ₽ за штуку</div>
-      <div class="hint">Предварительный расчёт. Точную смету с учётом материалов и упаковки пришлём за 1 рабочий день.</div>
-      <a class="btn btn-primary" href="#cta">Получить точный расчёт</a>
-    </div>
-  </div>
-</div></section>
-<script>(function(){
-  var P={toy:[[100,690],[500,540],[1000,460],[3000,390],[5000,350],[10000,310]],mini:[[100,390],[500,290],[1000,240],[3000,199],[5000,179],[10000,159]],big:[[100,1490],[500,1190],[1000,990],[3000,890],[5000,790],[10000,720]],maskot:[[100,790],[500,620],[1000,540],[3000,470],[5000,430],[10000,390]],pvc:[[100,490],[500,360],[1000,290],[3000,240],[5000,210],[10000,185]],brelok:[[100,190],[500,140],[1000,115],[3000,95],[5000,85],[10000,75]],pillow:[[100,590],[500,470],[1000,410],[3000,360],[5000,330],[10000,299]]};
-  var sel=document.getElementById('calcProduct'),rng=document.getElementById('calcQty'),out=document.getElementById('calcQtyOut'),sum=document.getElementById('calcSum'),per=document.getElementById('calcPer');
-  function fmt(n){return n.toLocaleString('ru-RU')}
-  function priceFor(t,q){var l=P[t],r=l[0][1];for(var i=0;i<l.length;i++){if(q>=l[i][0])r=l[i][1]}return r}
-  function upd(){var q=+rng.value,p=priceFor(sel.value,q);out.textContent=fmt(q)+' шт';sum.innerHTML='≈ '+fmt(q*p)+' <small>₽</small>';per.textContent='≈ '+fmt(p)+' ₽ за штуку'}
-  sel.addEventListener('change',upd);rng.addEventListener('input',upd);upd();
-})();</script>`;
 }
 
 function deliveryBlock(p) {
@@ -371,7 +335,6 @@ function ctaBlock(p) {
       <div class="contacts">
         <a href="tel:${C.COMPANY.phoneTel}">📞 ${C.COMPANY.phone}</a>
         <a href="${C.COMPANY.tg}" target="_blank" rel="noopener">Telegram</a>
-        <a href="${C.COMPANY.wa}" target="_blank" rel="noopener">WhatsApp</a>
         <a href="mailto:${C.COMPANY.email}">✉️ ${C.COMPANY.email}</a>
       </div>
     </div>
@@ -434,7 +397,6 @@ function renderLanding(p, all) {
     + stepsBlock(p)
     + worksBlock(p)
     + priceBlock(p)
-    + calcBlock(p)
     + deliveryBlock(p)
     + reviewsBlock(p)
     + clientsBlock()
@@ -442,7 +404,7 @@ function renderLanding(p, all) {
     + relatedBlock(p, all)
     + (p.showCities ? citiesBlock(all) : '')
     + ctaBlock(p)
-    + `<script src="/prototype/js/site.js" defer></script>\n</body>\n</html>\n`;
+    + `<script src="/prototype/js/site.js?v=20260810" defer></script>\n</body>\n</html>\n`;
 }
 
 /* ---------- Хаб-страница ---------- */
@@ -463,7 +425,7 @@ function renderHub(p, all) {
     + groups
     + faqBlock(p)
     + ctaBlock(p)
-    + `<script src="/prototype/js/site.js" defer></script>\n</body>\n</html>\n`;
+    + `<script src="/prototype/js/site.js?v=20260810" defer></script>\n</body>\n</html>\n`;
 }
 
 /* ---------- Статья блога ---------- */
@@ -485,9 +447,8 @@ function renderArticle(a, all) {
     + `<section style="padding-top:26px"><div class="container"><div class="article">${a.body}${a.bodyExtra || ''}</div></div></section>`
 
     + (a.faq ? faqBlock(a) : '')
-    + `<section><div class="container rel-wrap"><h2 style="margin-bottom:22px">Полезные <span>страницы</span></h2><div class="rel-grid">${related}</div></div></section>`
     + ctaBlock(a)
-    + `<script src="/prototype/js/site.js" defer></script>\n</body>\n</html>\n`;
+    + `<script src="/prototype/js/site.js?v=20260810" defer></script>\n</body>\n</html>\n`;
 }
 
 module.exports = { renderLanding, renderHub, renderArticle, jsonldOrganization, jsonldLocalBusiness, esc };
