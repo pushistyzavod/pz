@@ -445,6 +445,11 @@ app.get('/404.html', (req, res) => {
 
 // Дубли служебных URL прототипа → 301 на канонические адреса
 app.get('/index.html', (req, res) => res.redirect(301, '/'));
+// /mascots/index.html → /mascots/ (иначе страница доступна по двум адресам)
+app.get(/^\/(.+\/)index\.html$/, (req, res, next) => {
+  if (req.params[0].startsWith('prototype/')) return next(); // обрабатывается ниже
+  res.redirect(301, '/' + req.params[0]);
+});
 app.get(/^\/prototype\/(.+\.html)$/, (req, res) => {
   let clean = '/' + req.params[0];
   if (clean.endsWith('/index.html')) clean = clean.slice(0, -'index.html'.length);

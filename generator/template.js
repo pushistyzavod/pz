@@ -20,7 +20,6 @@ function jsonldOrganization() {
       { '@type': 'PostalAddress', addressLocality: 'Москва', addressCountry: 'RU', description: 'Офис продаж' },
     ],
     sameAs: [C.COMPANY.tg, C.COMPANY.vk, C.COMPANY.max],
-    aggregateRating: { '@type': 'AggregateRating', ratingValue: C.COMPANY.rating.value, reviewCount: C.COMPANY.rating.count, bestRating: 5 },
   };
 }
 
@@ -84,7 +83,6 @@ function jsonldProduct(p) {
       availability: 'https://schema.org/InStock',
       areaServed: 'RU',
     },
-    aggregateRating: { '@type': 'AggregateRating', ratingValue: C.COMPANY.rating.value, reviewCount: C.COMPANY.rating.count, bestRating: 5 },
   };
 }
 
@@ -404,7 +402,7 @@ function renderLanding(p, all) {
     + relatedBlock(p, all)
     + (p.showCities ? citiesBlock(all) : '')
     + ctaBlock(p)
-    + `<script src="/prototype/js/site.js?v=20260810" defer></script>\n</body>\n</html>\n`;
+    + `<script src="/prototype/js/site.js?v=20261013" defer></script>\n</body>\n</html>\n`;
 }
 
 /* ---------- Хаб-страница ---------- */
@@ -425,7 +423,7 @@ function renderHub(p, all) {
     + groups
     + faqBlock(p)
     + ctaBlock(p)
-    + `<script src="/prototype/js/site.js?v=20260810" defer></script>\n</body>\n</html>\n`;
+    + `<script src="/prototype/js/site.js?v=20261013" defer></script>\n</body>\n</html>\n`;
 }
 
 /* ---------- Статья блога ---------- */
@@ -448,7 +446,7 @@ function renderArticle(a, all) {
 
     + (a.faq ? faqBlock(a) : '')
     + ctaBlock(a)
-    + `<script src="/prototype/js/site.js?v=20260810" defer></script>\n</body>\n</html>\n`;
+    + `<script src="/prototype/js/site.js?v=20261013" defer></script>\n</body>\n</html>\n`;
 }
 
 module.exports = { renderLanding, renderHub, renderArticle, jsonldOrganization, jsonldLocalBusiness, esc };

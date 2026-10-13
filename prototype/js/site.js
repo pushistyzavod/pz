@@ -190,7 +190,7 @@
 
   var header =
     '<header class="site-header"><div class="wrap">'
-    + '<a class="site-logo" href="/"><img class="logo-pic" src="/prototype/images/logo.png" alt="Пушистый Завод">Пушистый&nbsp;Завод</a>'
+    + '<a class="site-logo" href="/"><img class="logo-pic" src="/prototype/images/logo.png" alt="Пушистый Завод" width="172" height="240">Пушистый&nbsp;Завод</a>'
     + '<nav class="site-menu">'
     + '<a href="/" data-m="home">Главная</a>'
     + '<div class="site-mega-wrap">'
@@ -227,7 +227,7 @@
   var footer =
     '<footer class="site-footer"><div class="wrap">'
     + '<div class="cols">'
-    + '  <div class="brand"><img class="flogo" src="/prototype/images/logo.png" alt="Пушистый Завод"><b>Пушистый Завод</b><p>Фабрика полного цикла по производству мягких и пластиковых изделий на заказ для бизнеса. Опт от 100 штук, работа с юрлицами по договору.</p></div>'
+    + '  <div class="brand"><img class="flogo" src="/prototype/images/logo.png" alt="Пушистый Завод" width="172" height="240"><b>Пушистый Завод</b><p>Фабрика полного цикла по производству мягких и пластиковых изделий на заказ для бизнеса. Опт от 100 штук, работа с юрлицами по договору.</p></div>'
     + '  <div><h4>Продукция</h4>'
     + '    <a href="/soft-toys.html">Мягкие игрушки</a>'
     + '    <a href="/pvc-figures.html">Пластиковые фигурки из ПВХ</a>'
@@ -263,7 +263,7 @@
   var drawer =
     '<div class="site-backdrop"></div>'
     + '<aside class="site-drawer">'
-    + '<div class="d-head"><img src="/prototype/images/logo.png" alt="Пушистый Завод"><button class="d-close" aria-label="Закрыть меню">✕</button></div>'
+    + '<div class="d-head"><img src="/prototype/images/logo.png" alt="Пушистый Завод" width="172" height="240"><button class="d-close" aria-label="Закрыть меню">✕</button></div>'
     + '<nav>'
     + '<a href="/">Главная</a>'
     + '<a class="d-label">Что производим</a>'

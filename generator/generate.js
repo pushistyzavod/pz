@@ -209,7 +209,7 @@ const html404 = `<!DOCTYPE html>
     <a class="btn btn-ghost" href="/works.html">Наши работы</a>
   </div>
 </div></section>
-<script src="/prototype/js/site.js?v=20260810" defer></script>
+<script src="/prototype/js/site.js?v=20261013" defer></script>
 </body>
 </html>
 `;
@@ -230,6 +230,9 @@ Disallow: /page*.html
 Disallow: /files/
 Disallow: /tilda/
 Disallow: *?*
+Allow: /prototype/css/
+Allow: /prototype/js/
+Allow: /prototype/images/
 
 User-agent: Yandex
 Allow: /
@@ -244,6 +247,9 @@ Disallow: /page*.html
 Disallow: /files/
 Disallow: /tilda/
 Disallow: *?*
+Allow: /prototype/css/
+Allow: /prototype/js/
+Allow: /prototype/images/
 
 Sitemap: ${C.SITE}/sitemap.xml
 `;

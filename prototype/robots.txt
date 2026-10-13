@@ -12,6 +12,9 @@ Disallow: /page*.html
 Disallow: /files/
 Disallow: /tilda/
 Disallow: *?*
+Allow: /prototype/css/
+Allow: /prototype/js/
+Allow: /prototype/images/
 
 User-agent: Yandex
 Allow: /
@@ -26,5 +29,8 @@ Disallow: /page*.html
 Disallow: /files/
 Disallow: /tilda/
 Disallow: *?*
+Allow: /prototype/css/
+Allow: /prototype/js/
+Allow: /prototype/images/
 
 Sitemap: https://pushistyzavod.ru/sitemap.xml
