@@ -56,7 +56,7 @@ const CASES = [
   { img: 'brelok-pvh-lis-3000.jpg', cap: 'ПВХ-брелоки «Лис»', qty: '3 000 шт', tags: ['pvc', 'brelok'] },
   { img: 'brelok-pvh-ovechka-3000.jpg', cap: 'ПВХ-брелоки «Овечка»', qty: '3 000 шт', tags: ['pvc', 'brelok'] },
   { img: 'simvol-goda-loshad-rostiks-3000.jpg', cap: 'Лошадь — символ года', qty: '3 000 шт', tags: ['ny', 'toy'] },
-  { img: 'talisman-dlya-valfox-3000.jpg', cap: 'Талисман для Valfox', qty: '3 000 шт', tags: ['talisman'] },
+  { img: 'maskot-dlya-valfex-3000.jpg', cap: 'Маскот для компании VALFEX', qty: '3 000 шт', tags: ['talisman'] },
   { img: 'talisman-igrovogo-kluba-3000.jpg', cap: 'Талисман игрового клуба', qty: '3 000 шт', tags: ['talisman', 'it'] },
   { img: 'abs-figurka-kukolka-2500.jpg', cap: 'Коллекционные ABS-фигурки', qty: '2 500 шт', tags: ['pvc', 'figurka'] },
   { img: 'maskot-kiberprotekt-2000.jpg', cap: 'Маскот для «Киберпротект»', qty: '2 000 шт', tags: ['maskot', 'it'] },
