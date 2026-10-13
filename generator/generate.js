@@ -209,7 +209,7 @@ const html404 = `<!DOCTYPE html>
     <a class="btn btn-ghost" href="/works.html">Наши работы</a>
   </div>
 </div></section>
-<script src="/prototype/js/site.js?v=20261014" defer></script>
+<script src="/prototype/js/site.js?v=20261015" defer></script>
 </body>
 </html>
 `;
