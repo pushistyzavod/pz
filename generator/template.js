@@ -288,8 +288,8 @@ function reviewsBlock(p) {
   return `<section><div class="container">
   <h2>${C.H2.reviews[cl] || C.H2.reviews.default}</h2>
 
-  <p class="lead">Нас рекомендуют маркетологи, HR и event-агентства — читайте, что говорят о работе с фабрикой.</p>
-  <div class="reviews-grid">${items.map((r) => `<div class="review"><div class="rh"><img src="/prototype/images/reviews/${r.ava}" alt="${esc(r.name)} — отзыв о Пушистом Заводе" loading="lazy" decoding="async"><div><b>${esc(r.name)}</b><span>${esc(r.role)}</span></div></div><div class="stars">★★★★★</div><p>${esc(r.text)}</p></div>`).join('')}</div>
+  <p class="lead">Реальные отзывы клиентов с Яндекса — по ссылке можно прочитать оригинал.</p>
+  <div class="reviews-grid">${items.map((r) => `<div class="review"><div class="rh"><img src="/prototype/images/reviews/${r.ava}" alt="${esc(r.name)} — отзыв на Яндексе" loading="lazy" decoding="async"><div><b>${esc(r.name)}</b><span><a href="${r.url.replace(/&/g, '&amp;')}" target="_blank" rel="noopener">отзыв на Яндексе →</a></span></div></div><div class="stars">★★★★★</div><p>«${esc(r.text)}»</p></div>`).join('')}</div>
 </div></section>`;
 }
 
