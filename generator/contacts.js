@@ -43,7 +43,7 @@ const body = `
 
 <h2>Где мы находимся</h2>
 <ul>
-  <li><strong>Офис продаж:</strong> Москва</li>
+  <li><strong>Офис в Москве:</strong> ${co.officeAddress} — <a href="${co.mapUrl}" target="_blank" rel="noopener">на Яндекс Картах</a></li>
   <li><strong>Производство:</strong> ${co.factory}</li>
 </ul>
 <p>Готовые партии отправляем по России и в страны СНГ. Как устроена фабрика и что на ней делают — на странице <a href="/production.html">«Производство»</a>, примеры готовых изделий с тиражами — в разделе <a href="/works.html">«Наши работы»</a>.</p>

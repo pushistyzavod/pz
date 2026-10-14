@@ -281,15 +281,32 @@ function deliveryBlock(p) {
 </div></section>`;
 }
 
+// Три отзыва с Яндекс Карт на страницу: сначала подходящие по теме страницы (tags),
+// остальные — по кругу от хэша адреса, чтобы на разных страницах были разные отзывы
+function reviewPick(url) {
+  const n = C.REVIEWS.length;
+  let h = 0;
+  for (const ch of url) h = (h * 31 + ch.codePointAt(0)) >>> 0;
+  const rotate = (list) => list.map((_, i) => list[(h + i) % list.length]);
+  const themed = rotate(C.REVIEWS.filter((r) => r.tags.some((t) => url.includes(t))));
+  const all = rotate(C.REVIEWS);
+  const out = [];
+  for (const r of [...themed, ...all]) if (out.length < 3 && !out.includes(r)) out.push(r);
+  return out;
+}
+
+function reviewCards(items) {
+  const link = C.REVIEWS_URL.replace(/&/g, '&amp;');
+  return items.map((r) => `<div class="review"><div class="rh"><img src="/prototype/images/reviews/${r.ava}" alt="${esc(r.name)} — отзыв на Яндекс Картах" width="48" height="48" loading="lazy" decoding="async"><div><b>${esc(r.name)}</b><span>${r.date} · <a href="${link}" target="_blank" rel="noopener">на Яндекс Картах →</a></span></div></div><div class="stars">★★★★★</div><p>«${esc(r.text)}»</p></div>`).join('');
+}
+
 function reviewsBlock(p) {
-  const start = p.reviewOffset || 0;
-  const items = [0, 1, 2].map((i) => C.REVIEWS[(start + i) % C.REVIEWS.length]);
   const cl = clOf(p);
   return `<section><div class="container">
   <h2>${C.H2.reviews[cl] || C.H2.reviews.default}</h2>
 
-  <p class="lead">Реальные отзывы клиентов с Яндекса — по ссылке можно прочитать оригинал.</p>
-  <div class="reviews-grid">${items.map((r) => `<div class="review"><div class="rh"><img src="/prototype/images/reviews/${r.ava}" alt="${esc(r.name)} — отзыв на Яндексе" loading="lazy" decoding="async"><div><b>${esc(r.name)}</b><span><a href="${r.url.replace(/&/g, '&amp;')}" target="_blank" rel="noopener">отзыв на Яндексе →</a></span></div></div><div class="stars">★★★★★</div><p>«${esc(r.text)}»</p></div>`).join('')}</div>
+  <p class="lead">Реальные отзывы клиентов с Яндекс Карт — по ссылке можно прочитать оригинал.</p>
+  <div class="reviews-grid">${reviewCards(reviewPick(p.url))}</div>
 </div></section>`;
 }
 
@@ -452,4 +469,4 @@ function renderArticle(a, all) {
 // Версия css/js в адресах (?v=…) — меняется при каждом изменении site.js, чтобы обновился кэш
 const ASSET_VERSION = '20261017';
 
-module.exports = { renderLanding, renderHub, renderArticle, jsonldOrganization, jsonldLocalBusiness, jsonldBreadcrumb, head, breadcrumbs, ctaBlock, esc, ASSET_VERSION };
+module.exports = { renderLanding, renderHub, renderArticle, jsonldOrganization, jsonldLocalBusiness, jsonldBreadcrumb, head, breadcrumbs, ctaBlock, reviewPick, reviewCards, esc, ASSET_VERSION };
