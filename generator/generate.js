@@ -30,7 +30,7 @@ const CORE = [
   { slug: 'pvc-figures', url: '/pvc-figures.html', title: 'Пластиковые фигурки из ПВХ', h1plain: 'Пластиковые фигурки из ПВХ на заказ', linkLabel: 'Пластиковые фигурки из ПВХ', linkDesc: 'Фигурки, брелоки, флешки и джибитсы из ПВХ по вашему дизайну — от 100 штук.', priority: '0.9' },
   { slug: 'soft-goods', url: '/soft-goods.html', title: 'Мягкая продукция', h1plain: 'Мягкая продукция на заказ', linkLabel: 'Мягкая продукция', linkDesc: 'Рюкзаки, тапочки, подушки и аксессуары с вашим логотипом — производство оптом.', priority: '0.8' },
   { slug: 'works', url: '/works.html', title: 'Наши работы', h1plain: 'Наши работы', linkLabel: 'Наши работы', linkDesc: 'Примеры произведённых игрушек и сувениров с тиражами и сроками.', priority: '0.8' },
-  { slug: 'production', url: '/production.html', title: 'Производство', h1plain: 'Наше производство', linkLabel: 'Наше производство', linkDesc: 'Фабрика полного цикла в Улан-Удэ: раскрой, пошив, вышивка, ОТК.', priority: '0.8' },
+  { slug: 'production', url: '/production.html', title: 'Производство', h1plain: 'Наше производство', linkLabel: 'Наше производство', linkDesc: 'Производство в Москве, Иваново и Улан-Удэ: раскрой, пошив, вышивка, ОТК.', priority: '0.8' },
   { slug: 'news', url: '/news.html', title: 'Новости и статьи', h1plain: 'Новости и статьи', linkLabel: 'Новости и статьи', linkDesc: 'Экспертные статьи о производстве игрушек и корпоративных сувениров.', priority: '0.6' },
   { slug: 'privacy', url: '/privacy.html', title: 'Политика конфиденциальности', h1plain: 'Политика конфиденциальности', noindexSitemap: true, priority: '0.1' },
 ];

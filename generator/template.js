@@ -16,8 +16,10 @@ function jsonldOrganization() {
     telephone: C.COMPANY.phoneTel,
     foundingDate: '2016',
     address: [
+      { '@type': 'PostalAddress', streetAddress: 'Автозаводская ул., 23Б, корп. 2', addressLocality: 'Москва', addressCountry: 'RU', description: 'Офис продаж' },
+      { '@type': 'PostalAddress', addressLocality: 'Москва', addressCountry: 'RU', description: 'Производство' },
+      { '@type': 'PostalAddress', addressLocality: 'Иваново', addressRegion: 'Ивановская область', addressCountry: 'RU', description: 'Производство' },
       { '@type': 'PostalAddress', addressLocality: 'Улан-Удэ', addressRegion: 'Республика Бурятия', addressCountry: 'RU', description: 'Производство' },
-      { '@type': 'PostalAddress', addressLocality: 'Москва', addressCountry: 'RU', description: 'Офис продаж' },
     ],
     sameAs: [C.COMPANY.tg, C.COMPANY.vk, C.COMPANY.max],
   };
@@ -34,7 +36,7 @@ function jsonldLocalBusiness() {
     telephone: C.COMPANY.phoneTel,
     email: C.COMPANY.email,
     priceRange: '₽₽',
-    address: { '@type': 'PostalAddress', addressLocality: 'Улан-Удэ', addressRegion: 'Республика Бурятия', addressCountry: 'RU' },
+    address: { '@type': 'PostalAddress', streetAddress: 'Автозаводская ул., 23Б, корп. 2', addressLocality: 'Москва', addressCountry: 'RU' },
     openingHoursSpecification: { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], opens: '09:00', closes: '18:00' },
   };
 }
