@@ -309,11 +309,13 @@
 
     // 4) активный пункт меню
     var path = location.pathname;
-    var key = 'home';
+    // «Главная» подсвечиваем только на главной; на посадочных раньше ошибочно горела она
+    var key = (path === '/' || path === '/index.html') ? 'home' : '';
     if (/soft-toys|pvc-figures|soft-goods/.test(path)) key = 'products';
     else if (/works/.test(path)) key = 'works';
     else if (/production/.test(path)) key = 'production';
     else if (/news/.test(path)) key = 'news';
+    else if (/kontakty/.test(path)) key = 'contacts';
     var act = document.querySelector('.site-menu [data-m="' + key + '"]');
     if (act) act.classList.add('active');
 
@@ -582,8 +584,30 @@
     }
   }
 
+  // ---------- Оформление: цветные фоны секций вместо бело-серых ----------
+  // Серые секции (#f7f9fd, #f8fafd, #fafaff) на экране сливались с белыми в один фон.
+  // Делаем их нежными градиентами фирменных голубого, розового и персикового,
+  // а карточкам добавляем мягкую тень, чтобы они выделялись на цветном фоне.
+  function initDesign() {
+    var tintA = 'radial-gradient(900px 480px at 0% 0%,rgba(99,154,238,.22),rgba(99,154,238,0) 62%),'
+      + 'radial-gradient(900px 480px at 100% 100%,rgba(255,96,153,.17),rgba(255,96,153,0) 62%),#f1f5ff';
+    var tintB = 'radial-gradient(900px 480px at 100% 0%,rgba(255,170,120,.22),rgba(255,170,120,0) 62%),'
+      + 'radial-gradient(900px 480px at 0% 100%,rgba(255,96,153,.15),rgba(255,96,153,0) 62%),#fff4ee';
+    var st = document.createElement('style');
+    st.textContent = ''
+      + 'section.soft{background:' + tintA + ';border-color:transparent}'
+      + 'section.soft:nth-of-type(even){background:' + tintB + '}'
+      + 'section[style*="background:#f7f9fd"],section[style*="background:#fafaff"],section.clients{background:' + tintA + '!important}'
+      + 'section#cost,section#certs{background:' + tintB + '!important}'
+      + '.why{background:linear-gradient(135deg,#e8f0ff 0%,#f3efff 48%,#ffeef5 100%)!important}'
+      + '.pagehead{background:linear-gradient(120deg,#e7f0ff 0%,#f4eeff 55%,#ffeef6 100%)!important}'
+      + '.card6,.card,.step,.work,.review,.post,.case,.item,.shop,.rel,.hub-card{box-shadow:0 14px 34px -22px rgba(40,60,130,.35);border-color:rgba(99,154,238,.14)}';
+    document.head.appendChild(st);
+  }
+
   function start() {
     inject();
+    initDesign();
     initResponsiveFixes();
     initForms();
     initClickGoals();
