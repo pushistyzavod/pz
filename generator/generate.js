@@ -84,6 +84,7 @@ const landings = [...catalog, ...gifts, ...holidays, ...industriesAll, ...servic
 // Страницы, закрытые от индексации (noindex, follow) и убранные из sitemap:
 // города-шаблоны без переходов из поиска. Список — data/noindex.json.
 const NOINDEX = new Set(require('./data/noindex.json'));
+const { stripHtml } = require('./strip-prices');
 landings.forEach((p) => { if (NOINDEX.has(p.url)) p.noindex = true; });
 // Ротация отзывов и кейсов: разные страницы показывают разные подборки (анти-дубли контента)
 landings.forEach((p, i) => {
@@ -174,7 +175,8 @@ function writePage(urlPath, html) {
     ? OUT
     : path.join(OUT, urlPath.replace(/^\//, '').replace(/\/$/, ''));
   fs.mkdirSync(dir, { recursive: true });
-  fs.writeFileSync(path.join(dir, 'index.html'), html, 'utf8');
+  // Цены в данных генератора не утверждены владельцем — на страницы их не выводим (см. no-prices.js)
+  fs.writeFileSync(path.join(dir, 'index.html'), stripHtml(html), 'utf8');
 }
 
 let count = 0;
