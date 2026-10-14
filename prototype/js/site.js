@@ -545,8 +545,46 @@
     });
   }
 
+  // ---------- Правки адаптивности, общие для всех страниц ----------
+  function initResponsiveFixes() {
+    var st = document.createElement('style');
+    st.textContent = ''
+      // шапка на телефонах была на 2px шире экрана — страница ездила вбок
+      + '@media(max-width:560px){.site-header .wrap{padding:0 12px;gap:8px}.site-logo{flex:0 1 auto;min-width:0}.site-cta{gap:6px}}'
+      // длинные слова в заголовках и подписях переносятся, а не вылезают за экран
+      + '@media(max-width:600px){h1,h2,h3{overflow-wrap:anywhere}h2{font-size:25px}.cap b{overflow-wrap:anywhere;hyphens:auto}}'
+      + '@media(max-width:420px){h2{font-size:22px}}'
+      // самые узкие экраны (320px): кнопки переносят текст, карточки в сетке могут сжиматься
+      + '@media(max-width:380px){.btn{white-space:normal;text-align:center;max-width:100%}.grid>*{min-width:0}}'
+      // шрифт меньше 16px в полях заставляет iPhone увеличивать страницу при вводе
+      + '@media(max-width:900px){input,textarea,select{font-size:16px!important}}'
+      // подписи в сетке работ на телефоне
+      + '@media(max-width:600px){.cap b{font-size:14px}}'
+      // Шапка на ноутбуках: на ширине 1041–1440px меню не помещалось и наезжало на логотип и телефон.
+      // До 1200px показываем кнопку меню, как на планшете; до 1560px делаем меню компактнее;
+      // до 1420px телефон переносим из шапки в верхнюю тёмную строку.
+      + '@media(min-width:1041px) and (max-width:1200px){.site-menu{display:none}.site-contact{display:none}.site-burger{display:inline-flex;align-items:center;justify-content:center}.site-cta{margin-left:auto;gap:10px}}'
+      + '@media(min-width:1201px) and (max-width:1560px){.site-logo{font-size:19px;gap:9px}.site-logo .logo-pic{height:40px}.site-menu{font-size:14.5px}.site-menu>a,.site-mega-trigger{padding:10px 8px}.site-menu>a::after{left:8px;right:8px}.site-contact .msgs{display:none}}'
+      + '@media(min-width:1201px) and (max-width:1420px){.site-contact{display:none}}'
+      + '.site-topbar .tb-right a.tb-phone{display:none;font-weight:600;opacity:1;color:#fff}'
+      + '@media(min-width:1041px) and (max-width:1420px){.site-topbar .tb-right a.tb-phone{display:inline-flex}}'
+      // с телефоном верхняя строка на узких ноутбуках не помещалась в одну линию — убираем слоган слева
+      + '@media(min-width:1041px) and (max-width:1280px){.site-topbar .tb-left{display:none}}';
+    document.head.appendChild(st);
+
+    var tb = document.querySelector('.site-topbar .tb-right');
+    if (tb && !tb.querySelector('.tb-phone')) {
+      var ph = document.createElement('a');
+      ph.className = 'tb-phone';
+      ph.href = 'tel:' + PHONE_TEL;
+      ph.textContent = PHONE_HUMAN;
+      tb.insertBefore(ph, tb.firstChild);
+    }
+  }
+
   function start() {
     inject();
+    initResponsiveFixes();
     initForms();
     initClickGoals();
     initMetrika();

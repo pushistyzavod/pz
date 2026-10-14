@@ -214,7 +214,7 @@ const html404 = `<!DOCTYPE html>
     <a class="btn btn-ghost" href="/works.html">Наши работы</a>
   </div>
 </div></section>
-<script src="/prototype/js/site.js?v=20261016" defer></script>
+<script src="/prototype/js/site.js?v=20261017" defer></script>
 </body>
 </html>
 `;

@@ -273,7 +273,7 @@ function deliveryBlock(p) {
   return `<section class="soft"><div class="container">
   <h2>${C.H2.delivery[cl] || C.H2.delivery.default}</h2>
 
-  <div class="cards6" style="grid-template-columns:repeat(3,1fr)">
+  <div class="cards6">
     <div class="card6"><div class="i">💳</div><b>Оплата</b><p>Договор, счёт, безналичный расчёт, УПД. 70% предоплата, 30% перед отгрузкой. Постоянным клиентам — отсрочка платежа.</p></div>
     <div class="card6"><div class="i">⏱</div><b>Сроки</b><p>Макет — 2–4 дня, образец — ~10 дней, тираж — 2–5 недель. Дату отгрузки фиксируем в договоре и отвечаем за неё.</p></div>
     <div class="card6"><div class="i">🚚</div><b>Доставка</b><p>${cityText}</p></div>
@@ -450,6 +450,6 @@ function renderArticle(a, all) {
 }
 
 // Версия css/js в адресах (?v=…) — меняется при каждом изменении site.js, чтобы обновился кэш
-const ASSET_VERSION = '20261016';
+const ASSET_VERSION = '20261017';
 
 module.exports = { renderLanding, renderHub, renderArticle, jsonldOrganization, jsonldLocalBusiness, jsonldBreadcrumb, head, breadcrumbs, ctaBlock, esc, ASSET_VERSION };

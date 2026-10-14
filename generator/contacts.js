@@ -39,7 +39,7 @@ const body = `
   <li><strong>MAX:</strong> <a href="${co.max}" target="_blank" rel="noopener">написать в MAX</a></li>
   <li><strong>ВКонтакте:</strong> <a href="${co.vk}" target="_blank" rel="noopener">vk.com/pushistyzavod</a></li>
 </ul>
-<p>На заявки и письма отвечаем в течение рабочего дня. Расчёт стоимости и сроков присылаем за один рабочий день.</p>
+<p><strong>Режим работы:</strong> ${co.hours}. На заявки и письма отвечаем в течение рабочего дня. Расчёт стоимости и сроков присылаем за один рабочий день.</p>
 
 <h2>Где мы находимся</h2>
 <ul>
