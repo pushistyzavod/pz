@@ -229,6 +229,8 @@ const robots = `# robots.txt для pushistyzavod.ru
 User-agent: *
 Allow: /
 Disallow: /api/
+Disallow: /crm/
+Disallow: /prototype/crm/
 Disallow: /legacy
 Disallow: /old
 Disallow: /main
@@ -246,6 +248,8 @@ Allow: /prototype/images/
 User-agent: Yandex
 Allow: /
 Disallow: /api/
+Disallow: /crm/
+Disallow: /prototype/crm/
 Disallow: /legacy
 Disallow: /old
 Disallow: /main

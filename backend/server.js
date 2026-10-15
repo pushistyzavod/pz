@@ -313,6 +313,7 @@ app.post('/api/form', async (req, res) => {
       const submission = new FormSubmission(data);
       await submission.save();
       console.log('📝 Form submission saved:', submission._id);
+      await crm.onFormSubmission(data, submission); // заявка в CRM
     }
 
     // Отправляем уведомление на почту; ошибка почты не влияет на ответ клиенту
@@ -377,6 +378,9 @@ app.get('/api/blog', async (req, res) => {
     res.json({ status: 'success', articles: [] });
   }
 });
+
+// CRM: /crm/api/* (интерфейс — prototype/crm/, адрес /crm/)
+const crm = require('./crm')(app, { FormSubmission });
 
 // Health check
 app.get('/api/health', (req, res) => {
