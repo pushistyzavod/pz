@@ -88,7 +88,7 @@ const CASES = [
   { img: 'ryukzak-kapibara-700.jpg', cap: 'Рюкзак «Капибара»', qty: '700 шт', tags: ['softgoods', 'kids'] },
   { img: 'talisman-tc-voronezha-700.jpg', cap: 'Талисман ТЦ Воронежа', qty: '700 шт', tags: ['talisman', 'retail'] },
   { img: 'reklama-meda-promo-500.jpg', cap: 'Мед для рекламной акции', qty: '500 шт', tags: ['promo', 'fmcg'] },
-  { img: 'maskot-omchik-figurnoe-katanie-rf-500.jpg', cap: 'Омчик — фигурное катание РФ', qty: '500 шт', tags: ['maskot', 'sport'] },
+  { img: 'maskot-omchik-figurnoe-katanie-rf-500.jpg', cap: 'Омчик — фигурное катание РФ', qty: '600 шт', tags: ['maskot', 'sport'] },
   { img: 'talisman-dlya-golf-kluba-500.jpg', cap: 'Талисман гольф-клуба', qty: '500 шт', tags: ['talisman', 'sport'] },
   { img: 'talisman-elitnye-kvartiry-rf-800.jpg', cap: 'Талисман элитных квартир', qty: '800 шт', tags: ['talisman', 'zhk'] },
   { img: 'talisman-kot-neft-400.jpg', cap: 'Кот-нефтяник — талисман компании', qty: '400 шт', tags: ['talisman', 'neft'] },
