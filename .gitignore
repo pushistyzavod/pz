@@ -9,3 +9,4 @@ env
 bot/node_modules
 bot/.out
 bot/package-lock.json
+backend/data/
