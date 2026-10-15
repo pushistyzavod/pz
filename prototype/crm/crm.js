@@ -142,8 +142,8 @@
       var flow = '<div class="flow">' + [
         ['#/deals/new', '📥', 'Новые заявки', c.new || 0, c.new ? 'Нужно ответить' : 'Все разобраны'],
         ['#/deals/calc', '🧮', 'Ждут расчёт', c.calc || 0, DASH.notCalculated ? 'Не посчитано: ' + DASH.notCalculated : 'Все посчитаны'],
-        ['#/deals/sample', '🧸', 'Сигнальные образцы', c.sample || 0, DASH.samplesUnpaid ? 'Не оплачено: ' + DASH.samplesUnpaid : ''],
-        ['#/deals/production', '🏭', 'Партии в работе', c.production || 0, DASH.productionUnpaid ? 'Не оплачено: ' + DASH.productionUnpaid : ''],
+        ['#/deals/sample', '🧸', 'Сигнальные образцы', c.sample || 0, 'Оплачены, шьём'],
+        ['#/deals/production', '🏭', 'Партии в работе', c.production || 0, 'Оплачены, в производстве'],
         ['#/deals/closed', '✅', 'Готово', c.done || 0, ''],
       ].map(function (x, i) {
         var hot = /Нужно|Не /.test(x[4]);
@@ -151,9 +151,10 @@
       }).join('') + '</div>';
       var stat = function (n, label, href) { return '<a class="stat' + (n ? ' hot' : '') + '" href="' + href + '"><b>' + (n || 0) + '</b><span>' + label + '</span></a>'; };
       var attention = '<div class="stats">' + stat(DASH.unread, 'Непрочитанные сообщения', '#/messages') + stat(DASH.notCalculated, 'Ждут расчёт стоимости', '#/deals/calc?calc=0')
-        + stat(DASH.productionUnpaid, 'Партии без оплаты', '#/deals/production?paid=0') + (isAdmin() ? stat(DASH.unassigned, 'Без ответственного', '#/deals/all?unassigned=1') : '') + '</div>';
+        + (isAdmin() ? stat(DASH.unassigned, 'Без ответственного', '#/deals/all?unassigned=1') : '') + '</div>';
       var tasks = DASH.tasks.length ? DASH.tasks.map(taskRow).join('') : '<p class="muted small">На сегодня задач нет</p>';
-      var body = flow + '<h3 class="sec">Требует внимания</h3>' + attention + '<div class="grid2"><div class="card"><h3>Последние обращения</h3>' + dealCards(DASH.recent, true) + '</div>'
+      var em = (META.channels && META.channels.email) || {};
+      var body = (em.enabled && em.lastError ? '<div class="alert">⚠ Почта не синхронизируется: ' + esc(em.lastError) + '</div>' : '') + flow + '<h3 class="sec">Требует внимания</h3>' + attention + '<div class="grid2"><div class="card"><h3>Последние обращения</h3>' + dealCards(DASH.recent, true) + '</div>'
         + '<div class="card"><h3>Задачи на сегодня и просроченные</h3><div id="dtasks">' + tasks + '</div></div></div>';
       shell('dash', 'Рабочий стол', body, { actions: '<button class="btn small" id="newdeal">+ Заявка</button>' });
       bindTasks(qs('#dtasks'), pageDash); qs('#newdeal').addEventListener('click', newDealModal);
@@ -164,9 +165,9 @@
   var VIEWS = {
     all: ['Все заявки', ''], mine: ['Мои заявки', ''], new: ['Новые заявки', 'Свежие обращения: ответьте клиенту и переведите на расчёт.'],
     calc: ['Ждут расчёт стоимости', 'Сначала — заявки, которые ещё не посчитали. Посчитали — отметьте в заявке «✅ Да, посчитали».'],
-    sample: ['Сигнальные образцы', 'Клиенты, которые заказали образец: когда заказали, оплатили ли и готов ли образец.'],
-    production: ['Партии в работе', 'Заказанные партии: когда заказали, когда оплатили и сколько дней в работе.'],
-    closed: ['Готовые заказы', 'Завершённые партии с датами заказа, оплаты и завершения.'],
+    sample: ['Сигнальные образцы', 'Оплаченные образцы в работе: когда оплатили и готов ли образец.'],
+    production: ['Партии в работе', 'Оплаченные партии в производстве: когда оплатили и сколько дней в работе.'],
+    closed: ['Готовые заказы', 'Готовые партии: когда оплатили и когда завершили.'],
   };
   function query(name) { var m = location.hash.match(new RegExp('[?&]' + name + '=([^&]*)')); return m ? decodeURIComponent(m[1]) : ''; }
   function chip(href, label, onState) { return '<a class="chip' + (onState ? ' on' : '') + '" href="' + href + '">' + label + '</a>'; }
@@ -179,7 +180,6 @@
       var base = '#/' + (asMessages ? 'messages' : 'deals/' + view), chips = '';
       if (view === 'all' || view === 'mine') chips = chip(base, 'Все в работе', !status && !unassigned) + META.statuses.filter(function (s) { return ['done', 'archive'].indexOf(s[0]) < 0; }).map(function (s) { return chip(base + '?status=' + s[0], esc(s[1]), status === s[0]); }).join('') + (isAdmin() && view === 'all' ? chip(base + '?unassigned=1', 'Без ответственного', !!unassigned) : '');
       if (view === 'calc') chips = chip(base, 'Все', !calc) + chip(base + '?calc=0', '⏳ Ещё не посчитали', calc === '0') + chip(base + '?calc=1', '✅ Посчитали', calc === '1');
-      if (view === 'production') chips = chip(base, 'Все', !paid) + chip(base + '?paid=0', '❗ Не оплачено', paid === '0') + chip(base + '?paid=1', '✅ Оплачено', paid === '1');
       if (view === 'closed') chips = chip(base, '✅ Готово', status !== 'archive') + chip(base + '?status=archive', 'Отказ / архив', status === 'archive');
       var info = asMessages ? 'Сюда приходят заявки с сайта. Почта, Telegram и MAX подключаются следующими этапами.' : VIEWS[view][1];
       var body = (info ? '<p class="muted small" style="margin-bottom:12px">' + esc(info) + '</p>' : '')
@@ -198,9 +198,9 @@
   // колонки таблицы зависят от шага
   var COLS = {
     calc: [['Заявка от', function (d) { return day(d.createdAt); }], ['Посчитали?', function (d) { return d.calcDone ? yes('Да, ' + day(d.calcAt)) : wait('Ещё нет'); }], ['Сумма расчёта', function (d) { return d.calcAmount != null ? money(d.calcAmount) : '—'; }]],
-    sample: [['Образец заказан', function (d) { return day(d.sampleOrderedAt) || '—'; }], ['Оплата образца', function (d) { return d.samplePaidAt ? yes(day(d.samplePaidAt)) : no('❗ Не оплачен'); }], ['Образец готов', function (d) { return d.sampleDoneAt ? yes(day(d.sampleDoneAt)) : wait('Шьём'); }]],
-    production: [['Тираж', function (d) { return esc(d.qty || '—'); }], ['Заказали', function (d) { return day(d.orderedAt) || '—'; }], ['Оплатили', function (d) { return d.paidAt ? yes(day(d.paidAt)) : no('❗ Не оплачено'); }], ['Сумма', function (d) { return money(d.amount); }], ['В работе', function (d) { return daysSince(d.orderedAt); }]],
-    closed: [['Тираж', function (d) { return esc(d.qty || '—'); }], ['Заказали', function (d) { return day(d.orderedAt) || '—'; }], ['Оплатили', function (d) { return day(d.paidAt) || '—'; }], ['Завершили', function (d) { return day(d.completedAt) || '—'; }], ['Сумма', function (d) { return money(d.amount); }]],
+    sample: [['Оплатили образец', function (d) { return day(d.samplePaidAt) || '—'; }], ['Образец готов', function (d) { return d.sampleDoneAt ? yes(day(d.sampleDoneAt)) : wait('Шьём'); }], ['В работе', function (d) { return d.sampleDoneAt ? '—' : daysSince(d.samplePaidAt); }]],
+    production: [['Тираж', function (d) { return esc(d.qty || '—'); }], ['Оплатили', function (d) { return day(d.paidAt) || '—'; }], ['Сумма', function (d) { return money(d.amount); }], ['В работе', function (d) { return daysSince(d.paidAt); }]],
+    closed: [['Тираж', function (d) { return esc(d.qty || '—'); }], ['Оплатили', function (d) { return day(d.paidAt) || '—'; }], ['Готово', function (d) { return day(d.completedAt) || '—'; }], ['Сумма', function (d) { return money(d.amount); }]],
   };
   var DEFAULT_COLS = [['Последнее сообщение', function (d) { return '<div class="clip">' + (d.lastMessage ? esc(d.lastMessage.text) : '—') + '</div>'; }], ['Шаг', function (d) { return badge(d.status); }], ['Источник', function (d) { return src(d.source); }], ['Контакт', function (d) { return fmt(d.lastContactAt); }]];
   function dealTable(list, view) {
@@ -213,9 +213,9 @@
   }
   function stageLine(d, view) {
     if (view === 'calc') return d.calcDone ? yes('Посчитали ' + day(d.calcAt)) + (d.calcAmount != null ? ' <b>' + money(d.calcAmount) + '</b>' : '') : wait('Ещё не посчитали');
-    if (view === 'sample') return 'Заказан: ' + (day(d.sampleOrderedAt) || '—') + ' · ' + (d.samplePaidAt ? yes('оплачен ' + day(d.samplePaidAt)) : no('❗ не оплачен')) + ' · ' + (d.sampleDoneAt ? yes('готов') : wait('шьём'));
-    if (view === 'production') return 'Заказали: ' + (day(d.orderedAt) || '—') + ' · ' + (d.paidAt ? yes('оплатили ' + day(d.paidAt)) : no('❗ не оплачено')) + (d.amount != null ? ' · ' + money(d.amount) : '');
-    if (view === 'closed') return 'Заказ ' + (day(d.orderedAt) || '—') + ' · оплата ' + (day(d.paidAt) || '—') + ' · готово ' + (day(d.completedAt) || '—');
+    if (view === 'sample') return 'Оплатили: ' + (day(d.samplePaidAt) || '—') + ' · ' + (d.sampleDoneAt ? yes('готов ' + day(d.sampleDoneAt)) : wait('шьём, ' + daysSince(d.samplePaidAt)));
+    if (view === 'production') return 'Оплатили: ' + (day(d.paidAt) || '—') + ' · в работе ' + daysSince(d.paidAt) + (d.amount != null ? ' · ' + money(d.amount) : '');
+    if (view === 'closed') return 'Оплатили ' + (day(d.paidAt) || '—') + ' · готово ' + (day(d.completedAt) || '—') + (d.amount != null ? ' · ' + money(d.amount) : '');
     return '';
   }
   function dealCards(list, compact, view) {
@@ -229,7 +229,7 @@
   }
 
   // ---------- карточка заявки ----------
-  var LOG = { deal_created: 'создал(а) заявку', deal_updated: 'изменил(а) заявку', comment_added: 'добавил(а) комментарий', task_created: 'поставил(а) задачу', task_done: 'выполнил(а) задачу', task_updated: 'изменил(а) задачу' };
+  var LOG = { email_sent: 'отправил(а) письмо', email_failed: 'письмо не отправилось', deal_created: 'создал(а) заявку', deal_updated: 'изменил(а) заявку', comment_added: 'добавил(а) комментарий', task_created: 'поставил(а) задачу', task_done: 'выполнил(а) задачу', task_updated: 'изменил(а) задачу' };
   function changesText(d) {
     if (!d) return '';
     var out = [], L = META.labels || {};
@@ -245,6 +245,35 @@
     if (d.orderDetails) out.push('детали заказа');
     if (d.text) out.push('«' + d.text + '»');
     return out.join('; ');
+  }
+  function composer(deal, client) {
+    var mailOn = META.channels && META.channels.email && META.channels.email.enabled;
+    var lastIn = (deal.messages || []).slice().reverse().filter(function (m) { return m.channel === 'email' && m.meta && m.meta.messageId; })[0];
+    var to = lastIn && lastIn.dir === 'in' ? lastIn.meta.from : (client.emails || [])[0] || '';
+    var subj = lastIn && lastIn.meta.subject ? 'Re: ' + lastIn.meta.subject.replace(/^(\s*(re|ответ|fwd?)\s*:\s*)+/i, '') : (deal.title || '');
+    var useMail = mailOn && !!to;
+    return '<div class="reply"><div class="rtabs">' + (mailOn ? '<button type="button" data-mode="mail" class="' + (useMail ? 'on' : '') + '">✉️ Письмо клиенту</button>' : '') + '<button type="button" data-mode="note" class="' + (useMail ? '' : 'on') + '">💬 Комментарий команде</button>'
+      + '<span class="rhint muted small">' + (mailOn ? 'Telegram и MAX подключатся следующими' : 'Почта ещё не подключена') + '</span></div>'
+      + (mailOn ? '<form id="mf" class="' + (useMail ? '' : 'hide') + '"><div class="two"><div><label>Кому</label><input name="to" type="email" value="' + esc(to) + '" placeholder="адрес клиента" required></div><div><label>Тема</label><input name="subject" value="' + esc(subj) + '"></div></div>'
+        + '<textarea name="text" rows="4" placeholder="Текст письма" required></textarea><div class="mrow"><label class="file">📎 Файлы<input type="file" name="files" multiple></label><span class="fnames muted small"></span><div class="grow"></div><button class="btn" type="submit">Отправить письмо</button></div>'
+        + '<p class="muted small">Уйдёт с адреса ' + esc(META.channels.email.address) + ' и появится в «Отправленных» вашей почты.</p></form>' : '')
+      + '<form id="cf" class="' + (useMail ? 'hide' : '') + '"><div class="row2"><textarea name="text" placeholder="Комментарий для команды (клиент его не увидит)" rows="2"></textarea><button class="btn" type="submit">Добавить</button></div></form></div>';
+  }
+  function readFiles(input) {
+    var files = Array.prototype.slice.call(input.files || []);
+    return Promise.all(files.map(function (f) { return new Promise(function (ok, bad) { var r = new FileReader(); r.onload = function () { ok({ name: f.name, type: f.type, data: String(r.result).split(',')[1] || '' }); }; r.onerror = bad; r.readAsDataURL(f); }); }));
+  }
+  function fileSize(n) { return n > 1048576 ? (n / 1048576).toFixed(1) + ' МБ' : Math.max(1, Math.round(n / 1024)) + ' КБ'; }
+  function msgHtml(m) {
+    var meta = m.meta || {}, head = '', foot = '';
+    if (m.channel === 'email' && meta.subject) head = '<b class="subj">' + esc(meta.subject) + '</b>';
+    var files = (meta.attachments || []).map(function (a) { return a.id ? '<a class="att" href="/crm/api/files/' + esc(a.id) + '" target="_blank" rel="noopener">📎 ' + esc(a.name) + ' <span>' + fileSize(a.size || 0) + '</span></a>' : '<span class="att">📎 ' + esc(a.name) + ' — слишком большой, смотрите в почте</span>'; }).join('');
+    var who = m.dir === 'in' ? (SRC[m.channel] || m.channel) + (meta.from ? ' · ' + esc(meta.fromName || meta.from) : '')
+      : m.dir === 'note' ? 'Заметка · ' + esc(userName(m.userId))
+      : (SRC[m.channel] || m.channel) + (meta.via === 'mailbox' ? ' · отправлено из почты' : m.userId ? ' · ' + esc(userName(m.userId)) : '') + (meta.to && meta.to.length ? ' → ' + esc(meta.to.join(', ')) : '');
+    var st = m.dir === 'out' && meta.status === 'error' ? '<div class="send-err">⚠ Не отправлено: ' + esc(meta.error || '') + ' <button class="btn small ghost" data-retry="' + esc(m._id) + '">Повторить</button></div>'
+      : m.dir === 'out' && meta.status === 'sending' ? ' · ⏳ отправляется' : m.dir === 'out' && meta.status === 'sent' ? ' · ✓ отправлено' : '';
+    return '<div class="msg ' + esc(m.dir) + '">' + head + esc(m.text) + (files ? '<div class="atts">' + files + '</div>' : '') + '<span class="meta">' + who + ' · ' + fmt(m.at) + (st.charAt(0) === ' ' ? st : '') + '</span>' + (st.charAt(0) === '<' ? st : '') + '</div>';
   }
   function dateField(id, label, value) { return '<div class="field"><label>' + label + '</label><input type="date" id="' + id + '" value="' + dateOnly(value) + '"></div>'; }
   function pageDeal(id) {
@@ -268,14 +297,14 @@
         + '<div class="stage' + (deal.status === 'calc' ? ' cur' : '') + '"><h3>🧮 Расчёт стоимости</h3><div class="field"><label>Посчитали стоимость?</label><div class="yesno"><button type="button" data-calc="0" class="' + (!deal.calcDone ? 'on' : '') + '">⏳ Ещё нет</button><button type="button" data-calc="1" class="' + (deal.calcDone ? 'on yes' : '') + '">✅ Да, посчитали</button></div></div>'
         + '<div class="two">' + dateField('f-calcAt', 'Когда посчитали', deal.calcAt) + '<div class="field"><label>Сумма расчёта, ₽</label><input id="f-calcAmount" inputmode="decimal" value="' + esc(deal.calcAmount == null ? '' : deal.calcAmount) + '"></div></div>'
         + '<div class="field"><label>Тираж</label><input id="f-qty" placeholder="Например: 500 шт" value="' + esc(deal.qty || '') + '"></div></div>'
-        + '<div class="stage' + (deal.status === 'sample' ? ' cur' : '') + '"><h3>🧸 Сигнальный образец</h3><div class="three">' + dateField('f-sampleOrderedAt', 'Заказали образец', deal.sampleOrderedAt) + dateField('f-samplePaidAt', 'Оплатили образец', deal.samplePaidAt) + dateField('f-sampleDoneAt', 'Образец готов', deal.sampleDoneAt) + '</div></div>'
-        + '<div class="stage' + (deal.status === 'production' ? ' cur' : '') + '"><h3>🏭 Партия</h3><div class="three">' + dateField('f-orderedAt', 'Заказали партию', deal.orderedAt) + dateField('f-paidAt', 'Оплатили партию', deal.paidAt)
+        + '<div class="stage' + (deal.status === 'sample' ? ' cur' : '') + '"><h3>🧸 Сигнальный образец</h3><p class="muted small">Работаем по предоплате: оплатили — начинаем шить.</p><div class="two">' + dateField('f-samplePaidAt', 'Оплатили образец', deal.samplePaidAt) + dateField('f-sampleDoneAt', 'Образец готов', deal.sampleDoneAt) + '</div></div>'
+        + '<div class="stage' + (deal.status === 'production' ? ' cur' : '') + '"><h3>🏭 Партия</h3><p class="muted small">Оплатили — запускаем тираж.</p><div class="two">' + dateField('f-paidAt', 'Оплатили партию', deal.paidAt)
         + '<div class="field"><label>Сумма заказа, ₽</label><input id="f-amount" inputmode="decimal" value="' + esc(deal.amount == null ? '' : deal.amount) + '"></div></div>'
         + '<div class="field"><label>Детали заказа</label><textarea id="f-details" rows="2">' + esc(deal.orderDetails || '') + '</textarea></div></div>'
-        + '<div class="stage' + (deal.status === 'done' ? ' cur' : '') + '"><h3>✅ Завершение</h3>' + dateField('f-completedAt', 'Когда завершили', deal.completedAt) + '</div>'
+        + '<div class="stage' + (deal.status === 'done' ? ' cur' : '') + '"><h3>✅ Готово</h3>' + dateField('f-completedAt', 'Партия готова', deal.completedAt) + '</div>'
         + '<button class="btn" id="save">Сохранить</button></div>';
 
-      var feed = (deal.messages || []).map(function (m) { return { at: m.at, html: '<div class="msg ' + esc(m.dir) + '">' + esc(m.text) + '<span class="meta">' + (m.dir === 'in' ? (SRC[m.channel] || m.channel) + ' · ' : m.dir === 'note' ? 'Заметка · ' + esc(userName(m.userId)) + ' · ' : '') + fmt(m.at) + '</span></div>' }; })
+      var feed = (deal.messages || []).map(function (m) { return { at: m.at, html: msgHtml(m) }; })
         .concat((deal.comments || []).map(function (c) { return { at: c.at, html: '<div class="msg cmt">💬 ' + esc(c.text) + '<span class="meta">Комментарий · ' + esc(userName(c.userId)) + ' · ' + fmt(c.at) + '</span></div>' }; }))
         .sort(function (a, b) { return new Date(a.at) - new Date(b.at); }).map(function (x) { return x.html; }).join('');
       var commSel = '<select id="f-comm">' + Object.keys(META.comm).map(function (k) { return '<option value="' + k + '"' + (k === (deal.comm || '') ? ' selected' : '') + '>' + esc(META.comm[k] || '—') + '</option>'; }).join('') + '</select>';
@@ -289,8 +318,7 @@
       var body = stepBar + '<div class="tabs"><button data-t="steps" class="on">Этапы</button><button data-t="feed">Переписка</button><button data-t="info">Клиент</button><button data-t="tasks">Задачи</button></div>'
         + '<div class="deal"><div class="stack"><div data-pane="steps" class="show">' + stages + '</div>'
         + '<div data-pane="feed"><h3 class="sec">Переписка и комментарии</h3><div class="feed">' + (feed || '<div class="empty">Сообщений пока нет</div>') + '</div>'
-        + '<form class="reply" id="cf"><div class="row2"><textarea name="text" placeholder="Комментарий для команды (клиент его не увидит)" rows="2"></textarea><button class="btn" type="submit">Добавить</button></div>'
-        + '<p class="muted small" style="margin-top:6px">Ответ клиенту из CRM появится после подключения почты, Telegram и MAX.</p></form></div></div>'
+        + composer(deal, client) + '</div></div>'
         + '<div class="stack"><div class="card panel" data-pane="info"><h3>Клиент</h3><dl class="kv"><dt>Имя</dt><dd><a href="#/client/' + esc(client._id) + '">' + esc(client.name || 'Без имени') + '</a></dd><dt>Компания</dt><dd>' + esc(client.company || '—') + '</dd>'
         + '<dt>Телефон</dt><dd>' + phones + '</dd><dt>Почта</dt><dd>' + emails + '</dd><dt>Откуда</dt><dd>' + esc((deal.source && deal.source.label) || '—') + '</dd><dt>Заявка от</dt><dd>' + fmt(deal.createdAt) + '</dd></dl>' + other
         + '<div class="field" style="margin-top:12px"><label>Ответственный</label>' + asSel + '</div><div class="field"><label>Общение</label>' + commSel + '</div><button class="btn small ghost" id="save2">Сохранить</button></div>'
@@ -309,7 +337,7 @@
 
       function collect() {
         var b = { calcDone: calcDone, calcAmount: qs('#f-calcAmount').value, qty: qs('#f-qty').value, amount: qs('#f-amount').value, orderDetails: qs('#f-details').value, comm: qs('#f-comm').value };
-        ['calcAt', 'sampleOrderedAt', 'samplePaidAt', 'sampleDoneAt', 'orderedAt', 'paidAt', 'completedAt'].forEach(function (f) { b[f] = qs('#f-' + f).value || null; });
+        ['calcAt', 'samplePaidAt', 'sampleDoneAt', 'paidAt', 'completedAt'].forEach(function (f) { b[f] = qs('#f-' + f).value || null; });
         if (qs('#f-assignee')) b.assigneeId = qs('#f-assignee').value;
         return b;
       }
@@ -326,6 +354,31 @@
         save({ status: st }, 'Шаг: ' + statusName(st));
       });
 
+      on('.rtabs [data-mode]', 'click', function () {
+        var mode = this.getAttribute('data-mode');
+        Array.prototype.forEach.call(document.querySelectorAll('.rtabs [data-mode]'), function (b) { b.classList.toggle('on', b.getAttribute('data-mode') === mode); });
+        if (qs('#mf')) qs('#mf').classList.toggle('hide', mode !== 'mail'); qs('#cf').classList.toggle('hide', mode !== 'note');
+      });
+      var mf = qs('#mf'), sendKey = 'k' + Date.now() + Math.random().toString(16).slice(2);
+      if (mf) {
+        mf.files.addEventListener('change', function () { qs('.fnames', mf).textContent = Array.prototype.map.call(this.files, function (f) { return f.name; }).join(', '); });
+        mf.addEventListener('submit', function (e) {
+          e.preventDefault(); var btn = qs('button[type=submit]', mf); if (btn.disabled) return;
+          var total = Array.prototype.reduce.call(mf.files.files, function (s, f) { return s + f.size; }, 0);
+          if (total > 15 * 1024 * 1024) return toast('Файлы больше 15 МБ — отправьте ссылкой', true);
+          btn.disabled = true; btn.textContent = 'Отправляем…';
+          readFiles(mf.files).then(function (atts) {
+            return api('/deals/' + id + '/reply', { method: 'POST', body: { key: sendKey, to: [mf.to.value], subject: mf.subject.value, text: mf.text.value, attachments: atts } });
+          }).then(function (r) {
+            if (r.status === 'error') toast(r.error, true); else toast('Письмо отправлено');
+            refreshDash(); pageDeal(id);
+          }, function (err) { toast(err.message, true); btn.disabled = false; btn.textContent = 'Отправить письмо'; });
+        });
+      }
+      on('[data-retry]', 'click', function () {
+        var b = this; b.disabled = true;
+        api('/deals/' + id + '/messages/' + b.getAttribute('data-retry') + '/retry', { method: 'POST' }).then(function (r) { if (r.ok) toast('Письмо отправлено'); else toast(r.error, true); pageDeal(id); }, function (err) { toast(err.message, true); b.disabled = false; });
+      });
       var sending = false;
       qs('#cf').addEventListener('submit', function (e) {
         e.preventDefault(); if (sending) return; var t = e.target.text.value.trim(); if (!t) return;
@@ -435,7 +488,10 @@
     loading('settings', 'Настройки');
     var pwd = '<form class="card" id="pf"><h3>Смена пароля</h3><label>Текущий пароль</label><input name="current" type="password" autocomplete="current-password" required><label>Новый пароль (от 10 символов)</label><input name="password" type="password" minlength="10" autocomplete="new-password" required><button class="btn small" style="margin-top:12px">Сменить пароль</button></form>';
     var done = function (extra) {
-      shell('settings', isAdmin() ? 'Сотрудники и настройки' : 'Настройки', '<div class="stack">' + (extra || '') + '<div class="grid2">' + pwd + '<div class="card"><h3>Установить на телефон</h3><p class="small muted">Откройте CRM в браузере телефона и выберите «На экран Домой» (iPhone: кнопка «Поделиться»; Android: меню ⋮). CRM откроется как приложение.</p></div></div></div>');
+      var em = (META.channels && META.channels.email) || {};
+      var chans = '<div class="card"><h3>Каналы связи</h3><dl class="kv"><dt>✉️ Почта</dt><dd>' + (em.enabled ? (em.lastError ? '<span class="no-chip">Ошибка</span> ' + esc(em.lastError) : '<span class="ok-chip">Подключена</span> ' + esc(em.address) + (em.lastSync ? ' · проверено ' + fmt(em.lastSync) : '')) : 'не подключена') + '</dd>'
+        + '<dt>✈️ Telegram</dt><dd>не подключён</dd><dt>💬 MAX</dt><dd>не подключён</dd></dl></div>';
+      shell('settings', isAdmin() ? 'Сотрудники и настройки' : 'Настройки', '<div class="stack">' + chans + (extra || '') + '<div class="grid2">' + pwd + '<div class="card"><h3>Установить на телефон</h3><p class="small muted">Откройте CRM в браузере телефона и выберите «На экран Домой» (iPhone: кнопка «Поделиться»; Android: меню ⋮). CRM откроется как приложение.</p></div></div></div>');
       qs('#pf').addEventListener('submit', function (e) {
         e.preventDefault(); var f = e.target;
         api('/me/password', { method: 'POST', body: { current: f.current.value, password: f.password.value } }).then(function () { toast('Пароль изменён'); f.reset(); }, function (err) { toast(err.message, true); });
@@ -479,7 +535,7 @@
   }
 
   // ---------- данные и маршрутизация ----------
-  function loadMeta() { return api('/meta').then(function (m) { META = m; }); }
+  function loadMeta() { return Promise.all([api('/meta'), api('/channels').catch(function () { return {}; })]).then(function (r) { META = r[0]; META.channels = r[1] || {}; }); }
   function refreshDash() { return api('/dashboard').then(function (d) { DASH = d; updateBadges(); return d; }); }
   function updateBadges() {
     var unread = (DASH && DASH.unread) || 0;

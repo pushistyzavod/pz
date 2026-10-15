@@ -30,7 +30,7 @@ const DATE_FIELDS = ['calcAt', 'sampleOrderedAt', 'samplePaidAt', 'sampleDoneAt'
 const FIELD_LABELS = {
   calcDone: 'расчёт сделан', calcAt: 'дата расчёта', calcAmount: 'сумма расчёта', qty: 'тираж',
   sampleOrderedAt: 'образец заказан', samplePaidAt: 'образец оплачен', sampleDoneAt: 'образец готов',
-  orderedAt: 'партия заказана', paidAt: 'партия оплачена', completedAt: 'завершено',
+  orderedAt: 'партия заказана', paidAt: 'партия оплачена', completedAt: 'партия готова',
 };
 const COMM = { new: 'Новое сообщение', wait_staff: 'Ждёт ответа сотрудника', wait_client: 'Ждёт ответа клиента', '': '' };
 
@@ -119,7 +119,8 @@ const Log = mongoose.model('CrmLog', new Schema({
   at: { type: Date, default: Date.now, index: true },
 }, { collection: 'crm_log' }));
 
-const Counter = mongoose.model('CrmCounter', new Schema({ _id: String, seq: Number }, { collection: 'crm_counters' }));
+// счётчики: номер заявки, позиция чтения почтовых папок (seq + validity — UIDVALIDITY папки)
+const Counter = mongoose.model('CrmCounter', new Schema({ _id: String, seq: Number, validity: String }, { collection: 'crm_counters' }));
 
 // ---------- Вспомогательное ----------
 const nextNum = async () => (await Counter.findByIdAndUpdate('deal', { $inc: { seq: 1 } }, { new: true, upsert: true })).seq;
@@ -369,14 +370,12 @@ module.exports = function mountCrm(app, { FormSubmission } = {}) {
     const mine = await Deal.countDocuments({ assigneeId: req.user._id, status: { $in: OPEN_STATUSES } });
     const unassigned = req.isAdmin ? await Deal.countDocuments({ assigneeId: null, status: { $in: OPEN_STATUSES } }) : 0;
     const notCalculated = await Deal.countDocuments({ ...scope, status: 'calc', calcDone: { $ne: true } });
-    const samplesUnpaid = await Deal.countDocuments({ ...scope, status: 'sample', samplePaidAt: null });
-    const productionUnpaid = await Deal.countDocuments({ ...scope, status: 'production', paidAt: null });
     const waitingLong = await Deal.countDocuments({ ...scope, status: { $in: OPEN_STATUSES }, comm: { $in: ['new', 'wait_staff'] }, lastContactAt: { $lt: new Date(Date.now() - 24 * 3600 * 1000) } });
     const taskScope = req.isAdmin ? {} : { assigneeId: req.user._id };
     const endOfDay = new Date(); endOfDay.setHours(23, 59, 59, 999);
     const tasks = await Task.find({ ...taskScope, done: false, dueAt: { $lte: endOfDay } }).sort({ dueAt: 1 }).limit(20).lean();
     const recent = await Deal.find({ ...scope, status: { $in: OPEN_STATUSES } }).sort({ lastContactAt: -1 }).limit(8).lean();
-    res.json({ counts: Object.fromEntries(counts.map((c) => [c._id, c.n])), unread, mine, unassigned, waitingLong, notCalculated, samplesUnpaid, productionUnpaid, tasks, recent: await dealsView(recent) });
+    res.json({ counts: Object.fromEntries(counts.map((c) => [c._id, c.n])), unread, mine, unassigned, waitingLong, notCalculated, tasks, recent: await dealsView(recent) });
   });
 
   api.get('/deals', async (req, res) => {
@@ -386,7 +385,7 @@ module.exports = function mountCrm(app, { FormSubmission } = {}) {
     if (view === 'new') q.status = 'new';
     if (view === 'calc') { q.status = 'calc'; if (req.query.calc === '0') q.calcDone = { $ne: true }; if (req.query.calc === '1') q.calcDone = true; }
     if (view === 'sample') q.status = 'sample';
-    if (view === 'production') { q.status = 'production'; if (req.query.paid === '0') q.paidAt = null; if (req.query.paid === '1') q.paidAt = { $ne: null }; }
+    if (view === 'production') q.status = 'production';
     if (view === 'closed') q.status = req.query.status === 'archive' ? 'archive' : 'done';
     if (view === 'all' || view === 'mine' || view === 'messages') q.status = q.status || { $in: OPEN_STATUSES };
     if (req.query.status && STATUS_KEYS.includes(req.query.status) && view !== 'closed') q.status = req.query.status;
@@ -401,7 +400,7 @@ module.exports = function mountCrm(app, { FormSubmission } = {}) {
       if (/^\d+$/.test(term)) or.push({ num: Number(term) });
       q.$or = or;
     }
-    const sort = view === 'closed' ? { completedAt: -1, updatedAt: -1 } : view === 'production' ? { orderedAt: 1 } : view === 'sample' ? { sampleOrderedAt: 1 } : view === 'calc' ? { calcDone: 1, createdAt: 1 } : { unread: -1, lastContactAt: -1 };
+    const sort = view === 'closed' ? { completedAt: -1, updatedAt: -1 } : view === 'production' ? { paidAt: 1 } : view === 'sample' ? { samplePaidAt: 1 } : view === 'calc' ? { calcDone: 1, createdAt: 1 } : { unread: -1, lastContactAt: -1 };
     const deals = await Deal.find(q).sort(sort).limit(500).lean();
     res.json({ deals: await dealsView(deals) });
   });
@@ -443,8 +442,9 @@ module.exports = function mountCrm(app, { FormSubmission } = {}) {
       if (b.status !== deal.status) {
         changes.status = [deal.status, b.status]; deal.status = b.status;
         deal.closedAt = ['done', 'archive'].includes(b.status) ? today : null;
-        const auto = { sample: 'sampleOrderedAt', production: 'orderedAt', done: 'completedAt' }[b.status];
-        if (auto && !deal[auto] && !b[auto]) { deal[auto] = todayDay; autoSet.add(auto); changes[auto] = [null, todayDay.toISOString().slice(0, 10)]; }
+        // работаем по предоплате: попал на шаг «Образец» или «Партия» — значит, оплатил
+        const autos = { sample: ['samplePaidAt'], production: ['paidAt'], done: ['completedAt'] }[b.status] || [];
+        for (const auto of autos) if (!deal[auto] && !b[auto]) { deal[auto] = todayDay; autoSet.add(auto); changes[auto] = [null, todayDay.toISOString().slice(0, 10)]; }
       }
     }
     if (b.calcDone !== undefined && !!b.calcDone !== !!deal.calcDone) {
@@ -591,6 +591,9 @@ module.exports = function mountCrm(app, { FormSubmission } = {}) {
     const items = await Log.find().sort({ at: -1 }).limit(Math.min(500, Number(req.query.limit) || 200)).lean();
     res.json({ items });
   });
+
+  // каналы связи
+  const mail = require('./mail')({ api, Deal, Client, Counter, log, findOrCreateClient, addInbound, loadDeal, adminOnly, str, normEmail });
 
   api.use((err, req, res, next) => { console.error('CRM:', err.message); res.status(500).json({ error: 'Ошибка сервера CRM' }); });
   app.use('/crm/api', api);
