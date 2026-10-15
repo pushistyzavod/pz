@@ -9,19 +9,29 @@ const { Schema } = mongoose;
 const ObjectId = Schema.Types.ObjectId;
 
 // ---------- Справочники ----------
+// Шаги работы с клиентом — как на производстве:
+// заявка → расчёт стоимости → сигнальный образец → партия в работе → готово
 const STATUSES = [
-  ['new', 'Новая'],
-  ['work', 'В работе'],
-  ['wait_client', 'Ожидает ответа клиента'],
-  ['talks', 'Переговоры'],
-  ['order', 'Заказ оформлен'],
-  ['done', 'Заказ завершён'],
+  ['new', 'Новая заявка'],
+  ['calc', 'Расчёт стоимости'],
+  ['sample', 'Сигнальный образец'],
+  ['production', 'Партия в работе'],
+  ['done', 'Готово'],
   ['archive', 'Отказ / Архив'],
 ];
 const STATUS_KEYS = STATUSES.map((s) => s[0]);
-const OPEN_STATUSES = ['new', 'work', 'wait_client', 'talks', 'order'];
-// Сотрудник не закрывает заявки: «Заказ завершён» и «Отказ / Архив» ставит администратор
-const STAFF_STATUSES = ['new', 'work', 'wait_client', 'talks', 'order'];
+const OPEN_STATUSES = ['new', 'calc', 'sample', 'production'];
+// Сотрудник не отправляет заявки в архив — это делает администратор
+const STAFF_STATUSES = ['new', 'calc', 'sample', 'production', 'done'];
+// Прежние статусы (первая версия CRM) → новые шаги
+const OLD_STATUS = { work: 'calc', wait_client: 'calc', talks: 'calc', order: 'production' };
+// Даты и поля по шагам
+const DATE_FIELDS = ['calcAt', 'sampleOrderedAt', 'samplePaidAt', 'sampleDoneAt', 'orderedAt', 'paidAt', 'completedAt'];
+const FIELD_LABELS = {
+  calcDone: 'расчёт сделан', calcAt: 'дата расчёта', calcAmount: 'сумма расчёта', qty: 'тираж',
+  sampleOrderedAt: 'образец заказан', samplePaidAt: 'образец оплачен', sampleDoneAt: 'образец готов',
+  orderedAt: 'партия заказана', paidAt: 'партия оплачена', completedAt: 'завершено',
+};
 const COMM = { new: 'Новое сообщение', wait_staff: 'Ждёт ответа сотрудника', wait_client: 'Ждёт ответа клиента', '': '' };
 
 // ---------- Модели ----------
@@ -63,7 +73,7 @@ const Deal = mongoose.model('CrmDeal', new Schema({
   title: String,
   clientId: { type: ObjectId, index: true },
   source: { type: { type: String }, label: String },
-  status: { type: String, enum: STATUS_KEYS, default: 'new', index: true },
+  status: { type: String, default: 'new', index: true },
   comm: { type: String, default: 'new' },
   unread: { type: Boolean, default: true },
   assigneeId: { type: ObjectId, index: true },
@@ -73,6 +83,19 @@ const Deal = mongoose.model('CrmDeal', new Schema({
   comments: [{ userId: ObjectId, text: String, at: { type: Date, default: Date.now } }],
   lastContactAt: { type: Date, index: true },
   closedAt: Date,
+  // расчёт стоимости
+  calcDone: { type: Boolean, default: false },
+  calcAt: Date,
+  calcAmount: Number,
+  qty: String,
+  // сигнальный образец
+  sampleOrderedAt: Date,
+  samplePaidAt: Date,
+  sampleDoneAt: Date,
+  // партия
+  orderedAt: Date,
+  paidAt: Date,
+  completedAt: Date,
   formSubmissionId: { type: ObjectId, index: true },
 }, { timestamps: true, collection: 'crm_deals' }));
 
@@ -233,6 +256,9 @@ async function dealsView(deals) {
       client: { id: c._id, name: c.name, company: c.company, phone: (c.phones || [])[0], email: (c.emails || [])[0] },
       lastMessage: last ? { dir: last.dir, channel: last.channel, text: String(last.text || '').slice(0, 160), at: last.at } : null,
       lastContactAt: d.lastContactAt, createdAt: d.createdAt,
+      calcDone: d.calcDone, calcAt: d.calcAt, calcAmount: d.calcAmount, qty: d.qty,
+      sampleOrderedAt: d.sampleOrderedAt, samplePaidAt: d.samplePaidAt, sampleDoneAt: d.sampleDoneAt,
+      orderedAt: d.orderedAt, paidAt: d.paidAt, completedAt: d.completedAt,
     };
   });
 }
@@ -324,7 +350,7 @@ module.exports = function mountCrm(app, { FormSubmission } = {}) {
 
   api.get('/meta', async (req, res) => {
     const users = await User.find({ active: true }).sort({ role: 1, name: 1 }).lean();
-    res.json({ statuses: STATUSES, staffStatuses: STAFF_STATUSES, comm: COMM, users: users.map(userView) });
+    res.json({ statuses: STATUSES, staffStatuses: STAFF_STATUSES, comm: COMM, labels: FIELD_LABELS, users: users.map(userView) });
   });
 
   // Доступ сотрудника — только к своим заявкам
@@ -342,23 +368,28 @@ module.exports = function mountCrm(app, { FormSubmission } = {}) {
     const unread = await Deal.countDocuments({ ...scope, unread: true });
     const mine = await Deal.countDocuments({ assigneeId: req.user._id, status: { $in: OPEN_STATUSES } });
     const unassigned = req.isAdmin ? await Deal.countDocuments({ assigneeId: null, status: { $in: OPEN_STATUSES } }) : 0;
+    const notCalculated = await Deal.countDocuments({ ...scope, status: 'calc', calcDone: { $ne: true } });
+    const samplesUnpaid = await Deal.countDocuments({ ...scope, status: 'sample', samplePaidAt: null });
+    const productionUnpaid = await Deal.countDocuments({ ...scope, status: 'production', paidAt: null });
     const waitingLong = await Deal.countDocuments({ ...scope, status: { $in: OPEN_STATUSES }, comm: { $in: ['new', 'wait_staff'] }, lastContactAt: { $lt: new Date(Date.now() - 24 * 3600 * 1000) } });
     const taskScope = req.isAdmin ? {} : { assigneeId: req.user._id };
     const endOfDay = new Date(); endOfDay.setHours(23, 59, 59, 999);
     const tasks = await Task.find({ ...taskScope, done: false, dueAt: { $lte: endOfDay } }).sort({ dueAt: 1 }).limit(20).lean();
     const recent = await Deal.find({ ...scope, status: { $in: OPEN_STATUSES } }).sort({ lastContactAt: -1 }).limit(8).lean();
-    res.json({ counts: Object.fromEntries(counts.map((c) => [c._id, c.n])), unread, mine, unassigned, waitingLong, tasks, recent: await dealsView(recent) });
+    res.json({ counts: Object.fromEntries(counts.map((c) => [c._id, c.n])), unread, mine, unassigned, waitingLong, notCalculated, samplesUnpaid, productionUnpaid, tasks, recent: await dealsView(recent) });
   });
 
   api.get('/deals', async (req, res) => {
     const q = { ...dealScope(req) };
     const view = String(req.query.view || 'all');
     if (view === 'mine') q.assigneeId = req.user._id;
-    if (view === 'talks') q.status = 'talks';
-    if (view === 'orders') q.status = 'order';
-    if (view === 'closed') q.status = { $in: ['done', 'archive'] };
+    if (view === 'new') q.status = 'new';
+    if (view === 'calc') { q.status = 'calc'; if (req.query.calc === '0') q.calcDone = { $ne: true }; if (req.query.calc === '1') q.calcDone = true; }
+    if (view === 'sample') q.status = 'sample';
+    if (view === 'production') { q.status = 'production'; if (req.query.paid === '0') q.paidAt = null; if (req.query.paid === '1') q.paidAt = { $ne: null }; }
+    if (view === 'closed') q.status = req.query.status === 'archive' ? 'archive' : 'done';
     if (view === 'all' || view === 'mine' || view === 'messages') q.status = q.status || { $in: OPEN_STATUSES };
-    if (req.query.status && STATUS_KEYS.includes(req.query.status)) q.status = req.query.status;
+    if (req.query.status && STATUS_KEYS.includes(req.query.status) && view !== 'closed') q.status = req.query.status;
     if (view === 'messages') q['messages.0'] = { $exists: true };
     if (req.query.unassigned === '1' && req.isAdmin) q.assigneeId = null;
     const term = str(req.query.q, 100);
@@ -370,7 +401,8 @@ module.exports = function mountCrm(app, { FormSubmission } = {}) {
       if (/^\d+$/.test(term)) or.push({ num: Number(term) });
       q.$or = or;
     }
-    const deals = await Deal.find(q).sort({ unread: -1, lastContactAt: -1 }).limit(300).lean();
+    const sort = view === 'closed' ? { completedAt: -1, updatedAt: -1 } : view === 'production' ? { orderedAt: 1 } : view === 'sample' ? { sampleOrderedAt: 1 } : view === 'calc' ? { calcDone: 1, createdAt: 1 } : { unread: -1, lastContactAt: -1 };
+    const deals = await Deal.find(q).sort(sort).limit(500).lean();
     res.json({ deals: await dealsView(deals) });
   });
 
@@ -401,11 +433,37 @@ module.exports = function mountCrm(app, { FormSubmission } = {}) {
   api.patch('/deals/:id', async (req, res) => {
     const deal = await loadDeal(req, res); if (!deal) return;
     const b = req.body || {}; const changes = {};
+    const today = new Date();
+    // даты шагов — календарные дни по Москве, хранятся как полночь UTC
+    const todayDay = new Date(new Date().toLocaleDateString('sv-SE', { timeZone: 'Europe/Moscow' }) + 'T00:00:00Z');
+    const autoSet = new Set(); // даты, поставленные автоматически при переходе на шаг
     if (b.status !== undefined) {
-      if (!STATUS_KEYS.includes(b.status)) return res.status(400).json({ error: 'Неизвестный статус' });
-      if (!req.isAdmin && !STAFF_STATUSES.includes(b.status)) return res.status(403).json({ error: 'Этот статус может поставить только администратор' });
-      if (b.status !== deal.status) { changes.status = [deal.status, b.status]; deal.status = b.status; deal.closedAt = ['done', 'archive'].includes(b.status) ? new Date() : null; }
+      if (!STATUS_KEYS.includes(b.status)) return res.status(400).json({ error: 'Неизвестный шаг' });
+      if (!req.isAdmin && !STAFF_STATUSES.includes(b.status)) return res.status(403).json({ error: 'В архив заявку отправляет администратор' });
+      if (b.status !== deal.status) {
+        changes.status = [deal.status, b.status]; deal.status = b.status;
+        deal.closedAt = ['done', 'archive'].includes(b.status) ? today : null;
+        const auto = { sample: 'sampleOrderedAt', production: 'orderedAt', done: 'completedAt' }[b.status];
+        if (auto && !deal[auto] && !b[auto]) { deal[auto] = todayDay; autoSet.add(auto); changes[auto] = [null, todayDay.toISOString().slice(0, 10)]; }
+      }
     }
+    if (b.calcDone !== undefined && !!b.calcDone !== !!deal.calcDone) {
+      changes.calcDone = [!!deal.calcDone, !!b.calcDone]; deal.calcDone = !!b.calcDone;
+      if (deal.calcDone && !deal.calcAt && !b.calcAt) { deal.calcAt = todayDay; autoSet.add('calcAt'); changes.calcAt = [null, todayDay.toISOString().slice(0, 10)]; }
+    }
+    for (const f of DATE_FIELDS) {
+      if (b[f] === undefined || (autoSet.has(f) && !b[f])) continue;
+      const v = b[f] ? new Date(String(b[f]).slice(0, 10) + 'T00:00:00Z') : null;
+      if (v && isNaN(v)) return res.status(400).json({ error: 'Неверная дата: ' + FIELD_LABELS[f] });
+      const before = deal[f] ? deal[f].toISOString().slice(0, 10) : null; const after = v ? v.toISOString().slice(0, 10) : null;
+      if (before !== after) { changes[f] = [before, after]; deal[f] = v; }
+    }
+    if (b.calcAmount !== undefined) {
+      const v = b.calcAmount === '' || b.calcAmount === null ? null : Number(String(b.calcAmount).replace(/\s/g, '').replace(',', '.'));
+      if (v !== null && (!isFinite(v) || v < 0)) return res.status(400).json({ error: 'Сумма расчёта указана неверно' });
+      if (v !== (deal.calcAmount == null ? null : deal.calcAmount)) { changes.calcAmount = [deal.calcAmount, v]; deal.calcAmount = v; }
+    }
+    if (b.qty !== undefined && str(b.qty, 100) !== (deal.qty || '')) { changes.qty = [deal.qty || '', str(b.qty, 100)]; deal.qty = str(b.qty, 100); }
     if (b.assigneeId !== undefined) {
       if (!req.isAdmin) return res.status(403).json({ error: 'Назначать ответственного может администратор' });
       const id = b.assigneeId && mongoose.isValidObjectId(b.assigneeId) ? b.assigneeId : null;
@@ -537,8 +595,15 @@ module.exports = function mountCrm(app, { FormSubmission } = {}) {
   api.use((err, req, res, next) => { console.error('CRM:', err.message); res.status(500).json({ error: 'Ошибка сервера CRM' }); });
   app.use('/crm/api', api);
 
-  mongoose.connection.once('open', () => { importForms(FormSubmission).catch((e) => console.warn('CRM import:', e.message)); });
-  if (mongoose.connection.readyState === 1) importForms(FormSubmission).catch((e) => console.warn('CRM import:', e.message));
+  const boot = async () => {
+    for (const [from, to] of Object.entries(OLD_STATUS)) {
+      const r = await Deal.updateMany({ status: from }, { $set: { status: to } });
+      if (r.modifiedCount) console.log(`CRM: статус «${from}» → «${to}»: ${r.modifiedCount}`);
+    }
+    await importForms(FormSubmission);
+  };
+  mongoose.connection.once('open', () => { boot().catch((e) => console.warn('CRM boot:', e.message)); });
+  if (mongoose.connection.readyState === 1) boot().catch((e) => console.warn('CRM boot:', e.message));
 
   return { onFormSubmission: (data, submission) => onFormSubmission(data, submission).catch((e) => console.warn('CRM: заявка не создана:', e.message)) };
 };
