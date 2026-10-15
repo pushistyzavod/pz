@@ -349,18 +349,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://pushistyzavod.ru/dlya-zhk/</loc>
-    <lastmod>2026-08-08</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://pushistyzavod.ru/dlya-neftyanyh-kompaniy/</loc>
-    <lastmod>2026-08-08</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://pushistyzavod.ru/dlya-stroitelnyh-kompaniy/</loc>
     <lastmod>2026-08-08</lastmod>
     <changefreq>monthly</changefreq>
@@ -368,12 +356,6 @@
   </url>
   <url>
     <loc>https://pushistyzavod.ru/dlya-avtodilerov/</loc>
-    <lastmod>2026-08-08</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://pushistyzavod.ru/dlya-azs/</loc>
     <lastmod>2026-08-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -397,31 +379,7 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://pushistyzavod.ru/dlya-koffeen/</loc>
-    <lastmod>2026-08-08</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://pushistyzavod.ru/dlya-universitetov/</loc>
-    <lastmod>2026-08-08</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://pushistyzavod.ru/dlya-shkol/</loc>
-    <lastmod>2026-08-08</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://pushistyzavod.ru/dlya-detskih-sadov/</loc>
-    <lastmod>2026-08-08</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://pushistyzavod.ru/dlya-detskih-centrov/</loc>
     <lastmod>2026-08-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -433,19 +391,7 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://pushistyzavod.ru/dlya-klinik/</loc>
-    <lastmod>2026-08-08</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://pushistyzavod.ru/dlya-it-kompaniy/</loc>
-    <lastmod>2026-08-08</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://pushistyzavod.ru/dlya-agentstv/</loc>
     <lastmod>2026-08-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -463,19 +409,7 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://pushistyzavod.ru/dlya-strahovyh/</loc>
-    <lastmod>2026-08-08</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://pushistyzavod.ru/dlya-ritela/</loc>
-    <lastmod>2026-08-08</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://pushistyzavod.ru/dlya-tc/</loc>
     <lastmod>2026-08-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -493,12 +427,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://pushistyzavod.ru/dlya-telkoma/</loc>
-    <lastmod>2026-08-08</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://pushistyzavod.ru/dlya-goskompaniy/</loc>
     <lastmod>2026-08-08</lastmod>
     <changefreq>monthly</changefreq>
@@ -511,49 +439,13 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://pushistyzavod.ru/dlya-festivaley/</loc>
-    <lastmod>2026-08-08</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://pushistyzavod.ru/dlya-meropriyatiy/</loc>
     <lastmod>2026-08-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://pushistyzavod.ru/dlya-kinoteatrov/</loc>
-    <lastmod>2026-08-08</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://pushistyzavod.ru/dlya-muzeev/</loc>
-    <lastmod>2026-08-08</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://pushistyzavod.ru/dlya-zooparkov/</loc>
-    <lastmod>2026-08-08</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://pushistyzavod.ru/dlya-akvaparkov/</loc>
-    <lastmod>2026-08-08</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://pushistyzavod.ru/dlya-fitnes-klubov/</loc>
-    <lastmod>2026-08-08</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://pushistyzavod.ru/dlya-delivery/</loc>
     <lastmod>2026-08-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>

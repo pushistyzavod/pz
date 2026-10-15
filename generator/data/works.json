@@ -1,0 +1,657 @@
+[
+ {
+  "title": "Бренд меда",
+  "img": "/prototype/images/works/brend-meda.jpg",
+  "qty": null
+ },
+ {
+  "title": "Волчок — персонаж из детского мультфильма",
+  "img": "/prototype/images/works/volchok-iz-detskogo-multfilma-personazh.jpg",
+  "qty": null
+ },
+ {
+  "title": "Выставка цветов в Москве",
+  "img": "/prototype/images/works/vystavka-cvetov-moskva.jpg",
+  "qty": null
+ },
+ {
+  "title": "Маскот ко Дню строителя",
+  "img": "/prototype/images/works/den-stroitelya-maskot.jpg",
+  "qty": null
+ },
+ {
+  "title": "Дракон — символ года",
+  "img": "/prototype/images/works/drakon-simvol-goda.jpg",
+  "qty": null
+ },
+ {
+  "title": "Подушка для компании кетчупа",
+  "img": "/prototype/images/works/kepka-kompaniya-ketchupa.jpg",
+  "qty": null
+ },
+ {
+  "title": "Кибер-кот для IT-компании",
+  "img": "/prototype/images/works/kiber-kot-ai-ti-kompaniya.jpg",
+  "qty": null
+ },
+ {
+  "title": "Кот Крепыш — персонаж",
+  "img": "/prototype/images/works/kot-krepysh-personazh.jpg",
+  "qty": null
+ },
+ {
+  "title": "Маскот ко Дню защиты детей",
+  "img": "/prototype/images/works/maskot-den-zaschity-detey.jpg",
+  "qty": null
+ },
+ {
+  "title": "Персонаж для аптеки",
+  "img": "/prototype/images/works/personazh-dlya-apteki.jpg",
+  "qty": null
+ },
+ {
+  "title": "Персонаж Ёжик",
+  "img": "/prototype/images/works/personazh-ezhik.jpg",
+  "qty": null
+ },
+ {
+  "title": "Подарок ко Дню защиты детей",
+  "img": "/prototype/images/works/podarok-na-den-zaschity-detey.jpg",
+  "qty": null
+ },
+ {
+  "title": "Подушка-зайка",
+  "img": "/prototype/images/works/podushka-zai-ka.jpg",
+  "qty": null
+ },
+ {
+  "title": "Подушка-панда",
+  "img": "/prototype/images/works/podushka-panda.jpg",
+  "qty": null
+ },
+ {
+  "title": "Подушка-привидение",
+  "img": "/prototype/images/works/podushka-prividenie.jpg",
+  "qty": null
+ },
+ {
+  "title": "Промо для зубной пасты",
+  "img": "/prototype/images/works/promo-zubnoi-pasty.jpg",
+  "qty": null
+ },
+ {
+  "title": "Рюкзачок «Летучая мышь»",
+  "img": "/prototype/images/works/ryukzachok-letuchaya-mysh.jpg",
+  "qty": null
+ },
+ {
+  "title": "Символ года — водяной дракон",
+  "img": "/prototype/images/works/simvol-goda-vodyanoi-drakon.jpg",
+  "qty": null
+ },
+ {
+  "title": "Символ года — дракон",
+  "img": "/prototype/images/works/simvol-goda-drakon.jpg",
+  "qty": null
+ },
+ {
+  "title": "Символ года — лошадь",
+  "img": "/prototype/images/works/simvol-goda-loshad.jpg",
+  "qty": null
+ },
+ {
+  "title": "Строительная фирма «Этажи»",
+  "img": "/prototype/images/works/stroitelnaya-firma-etazhi.jpg",
+  "qty": null
+ },
+ {
+  "title": "Талисман волейбольной команды",
+  "img": "/prototype/images/works/talisman-voleybolnoy-komandy.jpg",
+  "qty": null
+ },
+ {
+  "title": "Талисман музея искусств",
+  "img": "/prototype/images/works/talisman-muzeya-iskusstv.jpg",
+  "qty": null
+ },
+ {
+  "title": "Талисман футбольной команды",
+  "img": "/prototype/images/works/talisman-futbolnoi-komandy.jpg",
+  "qty": null
+ },
+ {
+  "title": "Сувенирная ярмарка «Я люблю Москву»",
+  "img": "/prototype/images/works/ya-lyublyu-moskvu-suvenirnaya-yarmarka.jpg",
+  "qty": null
+ },
+ {
+  "title": "Якутский мишка",
+  "img": "/prototype/images/works/yakutskiy-mishka.jpg",
+  "qty": null
+ },
+ {
+  "title": "Маскот пятерочка",
+  "img": "/prototype/images/works/maskot-pyaterochka-300000.jpg",
+  "qty": "300 000 шт"
+ },
+ {
+  "title": "Персонаж сока Добрый",
+  "img": "/prototype/images/works/personazh-soka-dobryy-100000.jpg",
+  "qty": "100 000 шт"
+ },
+ {
+  "title": "Маскот школы",
+  "img": "/prototype/images/works/maskot-shkoly-50900.jpg",
+  "qty": "900 шт"
+ },
+ {
+  "title": "Новогодняя елка РФ",
+  "img": "/prototype/images/works/novogodnyaya-elka-rf-30000.jpg",
+  "qty": "30 000 шт"
+ },
+ {
+  "title": "Маскот Зева",
+  "img": "/prototype/images/works/maskot-zeva-20000.jpg",
+  "qty": "20 000 шт"
+ },
+ {
+  "title": "Маскот для BMW",
+  "img": "/prototype/images/works/maskot-dlya-bmw-10000.jpg",
+  "qty": "10 000 шт"
+ },
+ {
+  "title": "Талисман Локомотив",
+  "img": "/prototype/images/works/talisman-lokomotiv-10000.jpg",
+  "qty": "10 000 шт"
+ },
+ {
+  "title": "Персонаж из Сказки для детей",
+  "img": "/prototype/images/works/personazh-iz-skazki-dlya-detey-8000.jpg",
+  "qty": "8 000 шт"
+ },
+ {
+  "title": "Промо мультфильма",
+  "img": "/prototype/images/works/promo-multfilma-8000.jpg",
+  "qty": "8 000 шт"
+ },
+ {
+  "title": "Символ года Лошади Ростикс",
+  "img": "/prototype/images/works/simvol-goda-loshadi-rostiks-7000.jpg",
+  "qty": "7 000 шт"
+ },
+ {
+  "title": "Промо детский мир",
+  "img": "/prototype/images/works/promo-detskiy-mir-6000.jpg",
+  "qty": "6 000 шт"
+ },
+ {
+  "title": "Персонаж из игры",
+  "img": "/prototype/images/works/personazh-iz-igry-5600.jpg",
+  "qty": "5 600 шт"
+ },
+ {
+  "title": "Талисман барс",
+  "img": "/prototype/images/works/talisman-bars-4000.jpg",
+  "qty": "4 000 шт"
+ },
+ {
+  "title": "Символ года — лошадь Ростикс",
+  "img": "/prototype/images/works/simvol-goda-loshad-rostiks-3000.jpg",
+  "qty": "3 000 шт"
+ },
+ {
+  "title": "Талисман игрового клуба",
+  "img": "/prototype/images/works/talisman-igrovogo-kluba-3000.jpg",
+  "qty": "3 000 шт"
+ },
+ {
+  "title": "Новогодний подарок Нами",
+  "img": "/prototype/images/works/novogodniy-podarok-nami-3000.jpg",
+  "qty": "3 000 шт"
+ },
+ {
+  "title": "Персонаж аэрофлот",
+  "img": "/prototype/images/works/personazh-aeroflot-3000.jpg",
+  "qty": "3 000 шт"
+ },
+ {
+  "title": "Талисман Авангард",
+  "img": "/prototype/images/works/talisman-avangard-3000.jpg",
+  "qty": "3 000 шт"
+ },
+ {
+  "title": "Талисман федерации спортивной гимнастики РФ",
+  "img": "/prototype/images/works/talisman-federacii-sportivnoy-gimnastiki-rf-3000.jpg",
+  "qty": "3 000 шт"
+ },
+ {
+  "title": "Маскот для компании VALFEX",
+  "img": "/prototype/images/works/maskot-dlya-valfex-3000.jpg",
+  "qty": "3 000 шт"
+ },
+ {
+  "title": "Маскот киберпротект",
+  "img": "/prototype/images/works/maskot-kiberprotekt-2000.jpg",
+  "qty": "2 000 шт"
+ },
+ {
+  "title": "Маскот кондиционеров",
+  "img": "/prototype/images/works/maskot-kondicionerov-2000.jpg",
+  "qty": "2 000 шт"
+ },
+ {
+  "title": "Талисман федерации спортивной гимнастики РФ",
+  "img": "/prototype/images/works/talisman-federacii-sportivnoy-gimnastiki-rf-2000.jpg",
+  "qty": "2 000 шт"
+ },
+ {
+  "title": "Московский зоопарк черепашка",
+  "img": "/prototype/images/works/moskovskiy-zoopark-cherepashka-1500.jpg",
+  "qty": "1 500 шт"
+ },
+ {
+  "title": "Новогодний подарок",
+  "img": "/prototype/images/works/novogodniy-podarok-1500.jpg",
+  "qty": "1 500 шт"
+ },
+ {
+  "title": "Персонаж Алтайский Барс",
+  "img": "/prototype/images/works/personazh-altayskiy-bars-1000.jpg",
+  "qty": "1 000 шт"
+ },
+ {
+  "title": "Маскот для ПСБ",
+  "img": "/prototype/images/works/maskot-dlya-psb-800.jpg",
+  "qty": "800 шт"
+ },
+ {
+  "title": "Талисман элитные квартиры РФ",
+  "img": "/prototype/images/works/talisman-elitnye-kvartiry-rf-800.jpg",
+  "qty": "800 шт"
+ },
+ {
+  "title": "Промо для выставки игр",
+  "img": "/prototype/images/works/promo-dlya-vystavki-igr-700.jpg",
+  "qty": "700 шт"
+ },
+ {
+  "title": "Снежный барс для выставки",
+  "img": "/prototype/images/works/snezhnyy-bars-dlya-vystavki-700.jpg",
+  "qty": "700 шт"
+ },
+ {
+  "title": "Талисман ТЦ Воронежа",
+  "img": "/prototype/images/works/talisman-tc-voronezha-700.jpg",
+  "qty": "700 шт"
+ },
+ {
+  "title": "Маскот для trasho",
+  "img": "/prototype/images/works/maskot-dlya-trasho-600.jpg",
+  "qty": "600 шт"
+ },
+ {
+  "title": "Маскот Совушка",
+  "img": "/prototype/images/works/maskot-sovushka-500.jpg",
+  "qty": "500 шт"
+ },
+ {
+  "title": "Промо для выставки",
+  "img": "/prototype/images/works/promo-dlya-vystavki-500.jpg",
+  "qty": "500 шт"
+ },
+ {
+  "title": "Маскот МВК",
+  "img": "/prototype/images/works/maskot-mvk-500.jpg",
+  "qty": "500 шт"
+ },
+ {
+  "title": "Маскот Омчик фигурное катание РФ",
+  "img": "/prototype/images/works/maskot-omchik-figurnoe-katanie-rf-500.jpg",
+  "qty": null
+ },
+ {
+  "title": "Маскот для технолицей",
+  "img": "/prototype/images/works/maskot-dlya-tehnolicey-500.jpg",
+  "qty": "500 шт"
+ },
+ {
+  "title": "Маскот утка",
+  "img": "/prototype/images/works/maskot-utka-500.jpg",
+  "qty": "500 шт"
+ },
+ {
+  "title": "Персонаж для международной выставки",
+  "img": "/prototype/images/works/personazh-dlya-mezhdunarodnoy-vystavki-500.jpg",
+  "qty": "500 шт"
+ },
+ {
+  "title": "Персонаж порабайки РФ",
+  "img": "/prototype/images/works/personazh-porabayki-rf-500.jpg",
+  "qty": "500 шт"
+ },
+ {
+  "title": "Реклама меда промо",
+  "img": "/prototype/images/works/reklama-meda-promo-500.jpg",
+  "qty": "500 шт"
+ },
+ {
+  "title": "Талисман для гольф клуба",
+  "img": "/prototype/images/works/talisman-dlya-golf-kluba-500.jpg",
+  "qty": "500 шт"
+ },
+ {
+  "title": "Талисман элитные квартиры РФ",
+  "img": "/prototype/images/works/talisman-elitnye-kvartiry-rf-500.jpg",
+  "qty": "500 шт"
+ },
+ {
+  "title": "Персонаж для международной выставки",
+  "img": "/prototype/images/works/personazh-dlya-mezhdunarodnoy-vystavki-450.jpg",
+  "qty": "450 шт"
+ },
+ {
+  "title": "Талисман для сети отелей",
+  "img": "/prototype/images/works/talisman-dlya-seti-oteley-400.jpg",
+  "qty": "400 шт"
+ },
+ {
+  "title": "Талисман кот-нефть",
+  "img": "/prototype/images/works/talisman-kot-neft-400.jpg",
+  "qty": "400 шт"
+ },
+ {
+  "title": "Маскот для IT-компании AR",
+  "img": "/prototype/images/works/maskot-dlya-it-kompanii-ar-350.jpg",
+  "qty": "350 шт"
+ },
+ {
+  "title": "Персонаж для отеля radisson",
+  "img": "/prototype/images/works/personazh-dlya-otelya-radisson-350.jpg",
+  "qty": "350 шт"
+ },
+ {
+  "title": "Маскот кот",
+  "img": "/prototype/images/works/maskot-kot-300.jpg",
+  "qty": "300 шт"
+ },
+ {
+  "title": "Талисман элитные квартиры РФ",
+  "img": "/prototype/images/works/talisman-elitnye-kvartiry-rf-300.jpg",
+  "qty": "300 шт"
+ },
+ {
+  "title": "Персонаж для Роскосмоса Стрелка",
+  "img": "/prototype/images/works/personazh-dlya-roskosmosa-strelka-100.jpg",
+  "qty": "100 шт"
+ },
+ {
+  "title": "Маскот IT-компании",
+  "img": "/prototype/images/works/maskot-it-kompanii-100.jpg",
+  "qty": "100 шт"
+ },
+ {
+  "title": "Маскот для EMCO",
+  "img": "/prototype/images/works/maskot-dlya-emco-100.jpg",
+  "qty": "100 шт"
+ },
+ {
+  "title": "Маскот слон",
+  "img": "/prototype/images/works/maskot-slon-100.jpg",
+  "qty": "100 шт"
+ },
+ {
+  "title": "Маскот транспортная компания",
+  "img": "/prototype/images/works/maskot-transportnaya-kompaniya-100.jpg",
+  "qty": "100 шт"
+ },
+ {
+  "title": "Робот для IT-компании",
+  "img": "/prototype/images/works/robot-dlya-it-kompanii-100.jpg",
+  "qty": "100 шт"
+ },
+ {
+  "title": "Талисман донские соколы",
+  "img": "/prototype/images/works/talisman-donskie-sokoly-100.jpg",
+  "qty": "100 шт"
+ },
+ {
+  "title": "Фигурка АБС «Добро Фонд»",
+  "img": "/prototype/images/works/abs-dobro-fond.jpg",
+  "qty": null
+ },
+ {
+  "title": "Фигурка АБС «Зайка», Олимпиада Сочи",
+  "img": "/prototype/images/works/abs-zaika-sochi.jpg",
+  "qty": null
+ },
+ {
+  "title": "Маскот олимпийской команды России",
+  "img": "/prototype/images/works/abs-maskot-olimp-rossiya.jpg?v=20260839",
+  "qty": null
+ },
+ {
+  "title": "Фигурка АБС «Медведь», Олимпиада Сочи",
+  "img": "/prototype/images/works/abs-medved-sochi.jpg",
+  "qty": null
+ },
+ {
+  "title": "Маскот «Совушка-космонавт»",
+  "img": "/prototype/images/works/pvh-sovushka-kosmonavt.jpg?v=20260839",
+  "qty": null
+ },
+ {
+  "title": "Фигурка АБС «Содик»",
+  "img": "/prototype/images/works/abs-sodik.jpg?v=20260839",
+  "qty": null
+ },
+ {
+  "title": "Маскот «Совушка»",
+  "img": "/prototype/images/works/pvh-sovushka.jpg?v=20260839",
+  "qty": null
+ },
+ {
+  "title": "Фигурка ПВХ «Хинкал»",
+  "img": "/prototype/images/works/pvh-khinkal.jpg",
+  "qty": null
+ },
+ {
+  "title": "Джибитсы на спорте",
+  "img": "/prototype/images/works/dzhibitsy-sport-200000.jpg",
+  "qty": "200 000 шт"
+ },
+ {
+  "title": "Фигурка АБС для Динамо",
+  "img": "/prototype/images/works/abs-figurka-dinamo-5000.jpg",
+  "qty": "5 000 шт"
+ },
+ {
+  "title": "Фигурка АБС РЖД",
+  "img": "/prototype/images/works/abs-figurka-rzhd-4000.jpg",
+  "qty": "4 000 шт"
+ },
+ {
+  "title": "ПВХ брелок «Корги»",
+  "img": "/prototype/images/works/brelok-pvh-korgi-5000.jpg",
+  "qty": "5 000 шт"
+ },
+ {
+  "title": "ПВХ брелок для Яндекс",
+  "img": "/prototype/images/works/brelok-pvh-yandex-3000.jpg",
+  "qty": "3 000 шт"
+ },
+ {
+  "title": "ПВХ брелок «Лис»",
+  "img": "/prototype/images/works/brelok-pvh-lis-3000.jpg",
+  "qty": "3 000 шт"
+ },
+ {
+  "title": "ПВХ брелок «Овечка»",
+  "img": "/prototype/images/works/brelok-pvh-ovechka-3000.jpg",
+  "qty": "3 000 шт"
+ },
+ {
+  "title": "ПВХ фигурка для казино",
+  "img": "/prototype/images/works/figurka-pvh-casino-1500.jpg",
+  "qty": "1 500 шт"
+ },
+ {
+  "title": "ПВХ фигурка «Ботаник»",
+  "img": "/prototype/images/works/figurka-pvh-botanik-1000.jpg",
+  "qty": "1 000 шт"
+ },
+ {
+  "title": "Фигурка капибара «Спокойствие»",
+  "img": "/prototype/images/works/figurka-pvh-kapibara-spokoy-1000.jpg",
+  "qty": "1 000 шт"
+ },
+ {
+  "title": "Фигурка капибара «Спорт»",
+  "img": "/prototype/images/works/figurka-pvh-kapibara-sport-1000.jpg",
+  "qty": "1 000 шт"
+ },
+ {
+  "title": "Фигурка капибара «Танцор»",
+  "img": "/prototype/images/works/figurka-pvh-kapibara-tancor-1000.jpg",
+  "qty": "1 000 шт"
+ },
+ {
+  "title": "Фигурка «Рос. биол. протезы»",
+  "img": "/prototype/images/works/figurka-pvh-protezy-500.jpg",
+  "qty": "500 шт"
+ },
+ {
+  "title": "ПВХ флешка 1XBet",
+  "img": "/prototype/images/works/fleshka-pvh-1xbet-800.jpg",
+  "qty": "800 шт"
+ },
+ {
+  "title": "Флешка «Лиса», Мосзоопарк",
+  "img": "/prototype/images/works/fleshka-pvh-lisa-moszoopark-300.jpg",
+  "qty": "300 шт"
+ },
+ {
+  "title": "Флешка «Пингвин», Океанариум",
+  "img": "/prototype/images/works/fleshka-pvh-pingvin-okeanarium-500.jpg",
+  "qty": "500 шт"
+ },
+ {
+  "title": "Джибитсы «Деньги»",
+  "img": "/prototype/images/works/dzhibitsy-dengi-1000.jpg",
+  "qty": "1 000 шт"
+ },
+ {
+  "title": "Фигурка АБС для Тинькофф",
+  "img": "/prototype/images/works/abs-figurka-tinkoff-700.jpg",
+  "qty": "700 шт"
+ },
+ {
+  "title": "Фигурка АБС Mindray",
+  "img": "/prototype/images/works/abs-figurka-mindray-6000.jpg",
+  "qty": "6 000 шт"
+ },
+ {
+  "title": "Фигурка АБС 7S",
+  "img": "/prototype/images/works/abs-figurka-7s-1200.jpg",
+  "qty": "1 200 шт"
+ },
+ {
+  "title": "Фигурка АБС Киберпротект",
+  "img": "/prototype/images/works/abs-figurka-kiberprotekt-1000.jpg",
+  "qty": "1 000 шт"
+ },
+ {
+  "title": "Фигурка-куколка АБС",
+  "img": "/prototype/images/works/abs-figurka-kukolka-2500.jpg",
+  "qty": "2 500 шт"
+ },
+ {
+  "title": "Фигурка АБС «Медведь»",
+  "img": "/prototype/images/works/abs-figurka-medved-500.jpg",
+  "qty": "500 шт"
+ },
+ {
+  "title": "ПВХ фигурка для IT-компании",
+  "img": "/prototype/images/works/figurka-pvh-it-kompaniya-1000.jpg",
+  "qty": "1 000 шт"
+ },
+ {
+  "title": "ПВХ фигурка для выставки",
+  "img": "/prototype/images/works/figurka-pvh-vystavka-500.jpg",
+  "qty": "500 шт"
+ },
+ {
+  "title": "ПВХ фигурка для онлайн-продаж",
+  "img": "/prototype/images/works/figurka-pvh-online-prodazhi-500.jpg",
+  "qty": "500 шт"
+ },
+ {
+  "title": "Рюкзак «Капибара»",
+  "img": "/prototype/images/works/ryukzak-kapibara-700.jpg",
+  "qty": "700 шт"
+ },
+ {
+  "title": "Рюкзак «Божья коровка», детсад",
+  "img": "/prototype/images/works/ryukzak-bozhya-korovka-sad-300.jpg",
+  "qty": "300 шт"
+ },
+ {
+  "title": "Тапочки «Рик-огурчик»",
+  "img": "/prototype/images/works/tapochki-rik-ogurchik-5000.jpg",
+  "qty": "5 000 шт"
+ },
+ {
+  "title": "Тапочки КФС",
+  "img": "/prototype/images/works/tapochki-kfs-500.jpg",
+  "qty": "500 шт"
+ },
+ {
+  "title": "Тапочки для выставки",
+  "img": "/prototype/images/works/tapochki-vystavka-800.jpg",
+  "qty": "800 шт"
+ },
+ {
+  "title": "Тапочки для выставки",
+  "img": "/prototype/images/works/tapochki-vystavka-500.jpg",
+  "qty": "500 шт"
+ },
+ {
+  "title": "Тапочки «Волк», сувениры",
+  "img": "/prototype/images/works/tapochki-volk-suvenir-300.jpg",
+  "qty": "300 шт"
+ },
+ {
+  "title": "Подушка «Кот», маркетплейсы",
+  "img": "/prototype/images/works/podushka-kot-marketpleysy-4000.jpg",
+  "qty": "4 000 шт"
+ },
+ {
+  "title": "Подушка «Лисичка»",
+  "img": "/prototype/images/works/podushka-lisichka-800.jpg",
+  "qty": "800 шт"
+ },
+ {
+  "title": "Подушка «Акулёнок»",
+  "img": "/prototype/images/works/podushka-akulenok-250.jpg",
+  "qty": "250 шт"
+ },
+ {
+  "title": "Подушка «Клубничка», больница",
+  "img": "/prototype/images/works/podushka-klubnichka-bolnitsa-500.jpg",
+  "qty": "500 шт"
+ },
+ {
+  "title": "Конфетница «Слон»",
+  "img": "/prototype/images/works/konfetnitsa-slon-1000.jpg",
+  "qty": "1 000 шт"
+ },
+ {
+  "title": "Конфетница «Обезьянка», зоопарк",
+  "img": "/prototype/images/works/konfetnitsa-obezyanka-zoopark-1000.jpg",
+  "qty": "1 000 шт"
+ },
+ {
+  "title": "Конфетница «Символ 2026»",
+  "img": "/prototype/images/works/konfetnitsa-simvol-goda-2026-500.jpg",
+  "qty": "500 шт"
+ }
+]
