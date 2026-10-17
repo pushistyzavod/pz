@@ -21,13 +21,13 @@ const COMPANY = {
 
 // Кластеры → родительская страница в хлебных крошках
 const PARENTS = {
-  catalog:   { url: '/soft-toys.html', label: 'Мягкие игрушки' },
-  plastic:   { url: '/pvc-figures.html', label: 'ПВХ-фигурки' },
+  catalog:   { url: '/soft-toys/', label: 'Мягкие игрушки' },
+  plastic:   { url: '/pvc-figures/', label: 'ПВХ-фигурки' },
   gifts:     { url: '/korporativnye-podarki/', label: 'Корпоративные подарки' },
   holidays:  { url: '/korporativnye-podarki/', label: 'Корпоративные подарки' },
   industries:{ url: '/dlya-biznesa/', label: 'Отраслевые решения' },
-  services:  { url: '/production.html', label: 'Производство' },
-  production:{ url: '/production.html', label: 'Производство' },
+  services:  { url: '/production/', label: 'Производство' },
+  production:{ url: '/production/', label: 'Производство' },
   cities:    { url: '/dostavka-po-rf/', label: 'Доставка по России' },
 };
 

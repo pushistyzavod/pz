@@ -5,7 +5,7 @@ function mk(o) {
   return {
     cluster: 'news',
     url: `/news/${o.slug}/`,
-    crumbs: [{ url: '/', label: 'Главная' }, { url: '/news.html', label: 'Новости и статьи' }, { label: o.h1plain }],
+    crumbs: [{ url: '/', label: 'Главная' }, { url: '/news/', label: 'Новости и статьи' }, { label: o.h1plain }],
     image: '/prototype/images/hero-main.webp',
     category: 'Экспертиза',
     readTime: '7 минут чтения',

@@ -215,13 +215,13 @@
   ],
   "core": [
     "/",
-    "/soft-toys.html",
-    "/pvc-figures.html",
-    "/soft-goods.html",
-    "/works.html",
-    "/production.html",
-    "/news.html",
-    "/privacy.html"
+    "/soft-toys/",
+    "/pvc-figures/",
+    "/soft-goods/",
+    "/works/",
+    "/production/",
+    "/news/",
+    "/privacy/"
   ],
   "counts": {
     "landings": 195,

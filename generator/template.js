@@ -250,9 +250,9 @@ function worksBlock(p) {
   return `<section class="soft" id="works"><div class="container">
   <h2>${C.H2.works[cl] || C.H2.works.default}</h2>
 
-  <p class="lead">Реальные тиражи, произведённые на нашей фабрике. Больше кейсов — в разделе <a href="/works.html" style="color:var(--blue);font-weight:600">«Наши работы»</a>.</p>
+  <p class="lead">Реальные тиражи, произведённые на нашей фабрике. Больше кейсов — в разделе <a href="/works/" style="color:var(--blue);font-weight:600">«Наши работы»</a>.</p>
   <div class="works-grid">${cases.map((c) => `<div class="work"><div class="ph"><img src="/prototype/images/works/${c.img}" alt="${esc(c.cap)} — производство Пушистый Завод" loading="lazy" decoding="async"></div><div class="cap"><b>${esc(c.cap)}</b><span>Тираж: ${c.qty}</span></div></div>`).join('')}</div>
-  <div class="works-more"><a class="btn btn-blue" href="/works.html">Все наши работы</a></div>
+  <div class="works-more"><a class="btn btn-blue" href="/works/">Все наши работы</a></div>
 </div></section>`;
 }
 
@@ -361,7 +361,7 @@ function ctaBlock(p) {
       <input type="email" name="email" placeholder="E-mail">
       <textarea name="product" rows="3" placeholder="Что изготовить? Например: ${esc(p.formHint)}"></textarea>
       <button class="btn btn-primary" type="submit">Получить расчёт</button>
-      <small>Нажимая кнопку, вы соглашаетесь с <a href="/privacy.html">политикой конфиденциальности</a>. Ответим в течение рабочего дня.</small>
+      <small>Нажимая кнопку, вы соглашаетесь с <a href="/privacy/">политикой конфиденциальности</a>. Ответим в течение рабочего дня.</small>
     </form>
   </div>
 </div></section>`;
@@ -469,6 +469,6 @@ function renderArticle(a, all) {
 }
 
 // Версия css/js в адресах (?v=…) — меняется при каждом изменении site.js, чтобы обновился кэш
-const ASSET_VERSION = '20261018';
+const ASSET_VERSION = '20261019';
 
 module.exports = { renderLanding, renderHub, renderArticle, jsonldOrganization, jsonldLocalBusiness, jsonldBreadcrumb, head, breadcrumbs, ctaBlock, reviewPick, reviewCards, esc, ASSET_VERSION };

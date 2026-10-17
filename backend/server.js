@@ -458,6 +458,7 @@ app.get(/^\/prototype\/(.+\.html)$/, (req, res) => {
   let clean = '/' + req.params[0];
   if (clean.endsWith('/index.html')) clean = clean.slice(0, -'index.html'.length);
   if (clean === '/index.html') clean = '/';
+  if (prototypePages['/' + req.params[0].replace(/\.html$/, '/')]) clean = '/' + req.params[0].replace(/\.html$/, '/');
   if (clean === '/404.html') {
     return res.status(404).sendFile(path.join(prototypeDir, '404.html'));
   }
@@ -468,9 +469,9 @@ app.get(/^\/prototype\/(.+\.html)$/, (req, res) => {
 // Эти URL уже известны поисковикам (были в старом sitemap.xml) — переносим вес.
 const legacyFileRedirects = {
   '/page40738358.html': '/',                          // старая главная
-  '/page40861203.html': '/privacy.html',              // политика конфиденциальности
+  '/page40861203.html': '/privacy/',              // политика конфиденциальности
   '/page41124919.html': '/novogodnie-podarki/',       // happynewyear
-  '/page68079733.html': '/news.html',                 // блог
+  '/page68079733.html': '/news/',                 // блог
   '/page69512967.html': '/igrushki-s-logotipom/',     // корпоративные мягкие игрушки с логотипом
   '/page69877857.html': '/novogodnie-podarki/',       // подарки на Новый год
   '/page69880855.html': '/podarki-na-8-marta/',       // подарки на 8 марта
@@ -478,7 +479,7 @@ const legacyFileRedirects = {
   '/page69886785.html': '/podarki-detyam-sotrudnikov/', // новогодние подарки детям
   '/page70261533.html': '/den-rozhdeniya-kompanii/',  // подарки на день рождения компании
   '/page70664017.html': '/plastic-igrushki/',         // производство пластиковых игрушек
-  '/page68731663.html': '/works.html',                // slider (наши работы)
+  '/page68731663.html': '/works/',                // slider (наши работы)
   '/page69516079.html': '/',                          // служебный header Тильды
   '/page69516455.html': '/',                          // служебный footer Тильды
   '/page71447431.html': '/',                          // служебная страница Тильды
@@ -503,10 +504,10 @@ const legacyRedirects = {
   '/podarki-sotrudnikam-na-den-rozhdeniya-kompanii': '/den-rozhdeniya-kompanii/',
   '/proizvodstvo-plastikovyh-igrushek-na-zakaz': '/plastic-igrushki/',
   '/happynewyear': '/novogodnie-podarki/',
-  '/blog': '/news.html',
+  '/blog': '/news/',
   '/contacts': '/kontakty/',
   '/kontakty.html': '/kontakty/',
-  '/slider': '/works.html',
+  '/slider': '/works/',
   '/main': '/',
   '/old': '/',
   '/legacy': '/',
@@ -520,11 +521,11 @@ Object.entries(legacyRedirects).forEach(([from, to]) => {
 });
 
 // Старые статьи блога Тильды (/tpost/<id>-<slug>) — поисковики до сих пор за ними приходят
-app.get(/^\/tpost\//, (req, res) => res.redirect(301, '/news.html'));
+app.get(/^\/tpost\//, (req, res) => res.redirect(301, '/news/'));
 
 // ---------------------------------------------------------------------------
-// Основные страницы сайта. Канонический URL — с .html.
-// Варианты без .html и со слешем → 301 на канонический (никаких дублей).
+// Основные страницы сайта. Канонический URL — без .html и со слешем (/soft-toys/),
+// как у всех остальных страниц. Старые /soft-toys.html и /soft-toys → 301 на него.
 // Маршруты объявлены ДО статики: иначе express.static перехватывает /news
 // (существует директория prototype/news/) и уводит в цепочку 301→404.
 // ---------------------------------------------------------------------------
@@ -544,13 +545,13 @@ function sendPage(res, dir, file, next) {
 
 const prototypePages = {
   '/': 'index.html',
-  '/soft-toys.html': 'soft-toys.html',
-  '/soft-goods.html': 'soft-goods.html',
-  '/pvc-figures.html': 'pvc-figures.html',
-  '/works.html': 'works.html',
-  '/production.html': 'production.html',
-  '/news.html': 'news.html',
-  '/privacy.html': 'privacy.html',
+  '/soft-toys/': 'soft-toys.html',
+  '/soft-goods/': 'soft-goods.html',
+  '/pvc-figures/': 'pvc-figures.html',
+  '/works/': 'works.html',
+  '/production/': 'production.html',
+  '/news/': 'news.html',
+  '/privacy/': 'privacy.html',
 };
 
 Object.entries(prototypePages).forEach(([route, file]) => {
@@ -558,10 +559,13 @@ Object.entries(prototypePages).forEach(([route, file]) => {
     app.get('/', (req, res, next) => sendPage(res, prototypeDir, file, next));
     return;
   }
-  app.get(route, (req, res, next) => sendPage(res, prototypeDir, file, next));
-  const bare = route.replace(/\.html$/, '');
-  app.get(bare, (req, res) => res.redirect(301, route));
-  app.get(bare + '/', (req, res) => res.redirect(301, route));
+  const bare = route.slice(0, -1);
+  const keepQuery = (req) => { const i = req.originalUrl.indexOf('?'); return i < 0 ? '' : req.originalUrl.slice(i); };
+  // без strict routing Express считает /soft-toys и /soft-toys/ одним адресом — различаем сами
+  app.get(route, (req, res, next) => (req.path.endsWith('/')
+    ? sendPage(res, prototypeDir, file, next)
+    : res.redirect(301, route + keepQuery(req))));
+  app.get([bare + '.html', bare + '.html/'], (req, res) => res.redirect(301, route + keepQuery(req)));
 });
 
 const staticOptions = {

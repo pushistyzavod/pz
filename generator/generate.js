@@ -26,13 +26,13 @@ const articles = require('./data/articles');
 // Основные (существующие) страницы сайта — для перелинковки и sitemap
 const CORE = [
   { slug: 'home', url: '/', title: 'Главная', h1plain: 'Производство мягких игрушек и сувениров на заказ', linkLabel: 'Главная', linkDesc: 'Фабрика полного цикла: игрушки, маскоты, ПВХ-фигурки и мерч на заказ для бизнеса.', priority: '1.0' },
-  { slug: 'soft-toys', url: '/soft-toys.html', title: 'Мягкие игрушки на заказ', h1plain: 'Мягкие игрушки на заказ', linkLabel: 'Мягкие игрушки на заказ', linkDesc: 'Производство мягких игрушек с логотипом оптом от 100 штук — от макета до тиража.', priority: '0.9' },
-  { slug: 'pvc-figures', url: '/pvc-figures.html', title: 'Пластиковые фигурки из ПВХ', h1plain: 'Пластиковые фигурки из ПВХ на заказ', linkLabel: 'Пластиковые фигурки из ПВХ', linkDesc: 'Фигурки, брелоки, флешки и джибитсы из ПВХ по вашему дизайну — от 100 штук.', priority: '0.9' },
-  { slug: 'soft-goods', url: '/soft-goods.html', title: 'Мягкая продукция', h1plain: 'Мягкая продукция на заказ', linkLabel: 'Мягкая продукция', linkDesc: 'Рюкзаки, тапочки, подушки и аксессуары с вашим логотипом — производство оптом.', priority: '0.8' },
-  { slug: 'works', url: '/works.html', title: 'Наши работы', h1plain: 'Наши работы', linkLabel: 'Наши работы', linkDesc: 'Примеры произведённых игрушек и сувениров с тиражами и сроками.', priority: '0.8' },
-  { slug: 'production', url: '/production.html', title: 'Производство', h1plain: 'Наше производство', linkLabel: 'Наше производство', linkDesc: 'Производство в Москве, Иваново и Улан-Удэ: раскрой, пошив, вышивка, ОТК.', priority: '0.8' },
-  { slug: 'news', url: '/news.html', title: 'Новости и статьи', h1plain: 'Новости и статьи', linkLabel: 'Новости и статьи', linkDesc: 'Экспертные статьи о производстве игрушек и корпоративных сувениров.', priority: '0.6' },
-  { slug: 'privacy', url: '/privacy.html', title: 'Политика конфиденциальности', h1plain: 'Политика конфиденциальности', noindexSitemap: true, priority: '0.1' },
+  { slug: 'soft-toys', url: '/soft-toys/', title: 'Мягкие игрушки на заказ', h1plain: 'Мягкие игрушки на заказ', linkLabel: 'Мягкие игрушки на заказ', linkDesc: 'Производство мягких игрушек с логотипом оптом от 100 штук — от макета до тиража.', priority: '0.9' },
+  { slug: 'pvc-figures', url: '/pvc-figures/', title: 'Пластиковые фигурки из ПВХ', h1plain: 'Пластиковые фигурки из ПВХ на заказ', linkLabel: 'Пластиковые фигурки из ПВХ', linkDesc: 'Фигурки, брелоки, флешки и джибитсы из ПВХ по вашему дизайну — от 100 штук.', priority: '0.9' },
+  { slug: 'soft-goods', url: '/soft-goods/', title: 'Мягкая продукция', h1plain: 'Мягкая продукция на заказ', linkLabel: 'Мягкая продукция', linkDesc: 'Рюкзаки, тапочки, подушки и аксессуары с вашим логотипом — производство оптом.', priority: '0.8' },
+  { slug: 'works', url: '/works/', title: 'Наши работы', h1plain: 'Наши работы', linkLabel: 'Наши работы', linkDesc: 'Примеры произведённых игрушек и сувениров с тиражами и сроками.', priority: '0.8' },
+  { slug: 'production', url: '/production/', title: 'Производство', h1plain: 'Наше производство', linkLabel: 'Наше производство', linkDesc: 'Производство в Москве, Иваново и Улан-Удэ: раскрой, пошив, вышивка, ОТК.', priority: '0.8' },
+  { slug: 'news', url: '/news/', title: 'Новости и статьи', h1plain: 'Новости и статьи', linkLabel: 'Новости и статьи', linkDesc: 'Экспертные статьи о производстве игрушек и корпоративных сувениров.', priority: '0.6' },
+  { slug: 'privacy', url: '/privacy/', title: 'Политика конфиденциальности', h1plain: 'Политика конфиденциальности', noindexSitemap: true, priority: '0.1' },
 ];
 
 /* ---------- Хабы ---------- */
@@ -215,10 +215,10 @@ const html404 = `<!DOCTYPE html>
   <div class="hero-cta" style="justify-content:center">
     <a class="btn btn-primary" href="/">На главную</a>
     <a class="btn btn-ghost" href="/korporativnye-podarki/">Корпоративные подарки</a>
-    <a class="btn btn-ghost" href="/works.html">Наши работы</a>
+    <a class="btn btn-ghost" href="/works/">Наши работы</a>
   </div>
 </div></section>
-<script src="/prototype/js/site.js?v=20261018" defer></script>
+<script src="/prototype/js/site.js?v=20261019" defer></script>
 </body>
 </html>
 `;

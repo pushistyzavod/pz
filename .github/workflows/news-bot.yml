@@ -105,7 +105,7 @@ jobs:
           URLS: ${{ needs.bot.outputs.urls }}
           KEY: 115ea3389c92ea8a429ccfa13bb6b845
         run: |
-          for url in $URLS https://pushistyzavod.ru/news.html; do
+          for url in $URLS https://pushistyzavod.ru/news/; do
             for engine in yandex.com www.bing.com; do
               code=$(curl -s -o /dev/null -m 20 -w '%{http_code}' -G "https://${engine}/indexnow" --data-urlencode "url=${url}" --data-urlencode "key=${KEY}" || true)
               echo "${engine} ${url} -> ${code}"

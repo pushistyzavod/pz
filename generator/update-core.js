@@ -44,7 +44,7 @@ const PAGES = {
     ],
   },
   'soft-toys.html': {
-    url: '/soft-toys.html',
+    url: '/soft-toys/',
     title: 'Мягкие игрушки на заказ с логотипом оптом от 100 шт — «Пушистый Завод»',
     desc: 'Производство мягких игрушек на заказ для бизнеса: маскоты, символ года, брелоки, персонажи. Бесплатный макет, образец ~10 дней, тираж от 100 штук.',
     crumbs: [{ url: '/', label: 'Главная' }, { label: 'Мягкие игрушки' }],
@@ -56,7 +56,7 @@ const PAGES = {
     ],
   },
   'pvc-figures.html': {
-    url: '/pvc-figures.html',
+    url: '/pvc-figures/',
     title: 'Пластиковые фигурки из ПВХ на заказ — производство «Пушистый Завод»',
     desc: 'Пластиковые фигурки из ПВХ на заказ: брелоки, флешки, джибитсы, магниты с логотипом. 3D-модель, пресс-форма, тираж от 100 штук.',
     crumbs: [{ url: '/', label: 'Главная' }, { label: 'ПВХ-фигурки' }],
@@ -68,7 +68,7 @@ const PAGES = {
     ],
   },
   'soft-goods.html': {
-    url: '/soft-goods.html',
+    url: '/soft-goods/',
     title: 'Мягкая продукция на заказ: рюкзаки, тапочки, подушки оптом — «Пушистый Завод»',
     desc: 'Мягкая продукция на заказ для бизнеса: рюкзаки, тапочки, подушки, сумки и аксессуары с логотипом. Опт от 100 штук, производство в России.',
     crumbs: [{ url: '/', label: 'Главная' }, { label: 'Мягкая продукция' }],
@@ -79,7 +79,7 @@ const PAGES = {
     ],
   },
   'works.html': {
-    url: '/works.html',
+    url: '/works/',
     title: 'Наши работы — примеры произведённых игрушек и сувениров с тиражами',
     desc: 'Примеры работ фабрики «Пушистый Завод»: маскоты, талисманы, ПВХ-фигурки и игрушки с тиражами и сроками — от 100 до 300 000 штук.',
     crumbs: [{ url: '/', label: 'Главная' }, { label: 'Наши работы' }],
@@ -92,7 +92,7 @@ const PAGES = {
   },
 
   'production.html': {
-    url: '/production.html',
+    url: '/production/',
     title: 'Производство «Пушистый Завод» — полный цикл: раскрой, пошив, брендирование',
     desc: 'Наши производства в Москве, Иваново и Улан-Удэ: конструкторское бюро, раскрой, вышивка, пошив, ОТК. Полный цикл изготовления игрушек и сувениров на заказ.',
     crumbs: [{ url: '/', label: 'Главная' }, { label: 'Производство' }],
@@ -106,13 +106,13 @@ const PAGES = {
   },
 
   'news.html': {
-    url: '/news.html',
+    url: '/news/',
     title: 'Новости и статьи о производстве сувениров на заказ — блог «Пушистый Завод»',
     desc: 'Экспертные статьи о производстве мягких игрушек, ПВХ-изделий и корпоративных подарков: сроки, цены, тиражи, маркировка, тренды мерча.',
     crumbs: [{ url: '/', label: 'Главная' }, { label: 'Новости и статьи' }],
   },
   'privacy.html': {
-    url: '/privacy.html',
+    url: '/privacy/',
     title: 'Политика конфиденциальности — «Пушистый Завод»',
     desc: 'Политика конфиденциальности сайта pushistyzavod.ru: как мы собираем, используем и защищаем персональные данные.',
     crumbs: [{ url: '/', label: 'Главная' }, { label: 'Политика конфиденциальности' }],
@@ -204,7 +204,7 @@ function formBlock(p) {
         <input type="email" name="email" placeholder="E-mail" style="${inp}">
         <textarea name="product" rows="3" placeholder="Что изготовить? Например: ${T.esc(f.formHint)}" style="${inp};resize:vertical"></textarea>
         <button type="submit" style="display:inline-flex;align-items:center;justify-content:center;padding:15px 30px;border-radius:32px;font-weight:600;font-size:15px;background:#ff6099;color:#fff;border:none;cursor:pointer;font-family:inherit">Получить расчёт</button>
-        <small style="color:#6b6b76;font-size:12.5px;line-height:1.5">Нажимая кнопку, вы соглашаетесь с <a href="/privacy.html">политикой конфиденциальности</a>. Ответим в течение рабочего дня.</small>
+        <small style="color:#6b6b76;font-size:12.5px;line-height:1.5">Нажимая кнопку, вы соглашаетесь с <a href="/privacy/">политикой конфиденциальности</a>. Ответим в течение рабочего дня.</small>
       </form>
     </div>
   </div>
@@ -318,7 +318,7 @@ Object.entries(PAGES).forEach(([file, p]) => {
   let html = fs.readFileSync(full, 'utf8');
 
   // устаревшие ссылки на старый блог Тильды → актуальный раздел новостей
-  html = html.replace(/href="\/blog"/g, 'href="/news.html"');
+  html = html.replace(/href="\/blog"/g, 'href="/news/"');
 
   // идемпотентность: если canonical уже есть — пропускаем мета (кроме повторного прогона)
   html = patchHead(html, p);
