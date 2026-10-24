@@ -457,7 +457,7 @@ function featuredCaseBlock(p) {
     <span class="fcs-tag"><i></i>Кейс · Международный фестиваль молодёжи 2026</span>
     <h2>${t.h2}</h2>
     <p>${t.lead}</p>
-    <ul><li>📺 Эфир Первого канала</li><li>📰 Фото в РИА Новости</li><li>🌍 Участники из 191 страны</li></ul>
+    <ul><li>🧸 13 000 шт за 21 день</li><li>📺 Эфир Первого канала</li><li>📰 Фото в РИА Новости</li><li>🌍 Участники из 191 страны</li></ul>
     <div class="fcs-btns">
       <a class="fcs-btn" href="${c.news}">Смотреть видео и историю</a>
       <a class="fcs-link" href="${c.ria}" target="_blank" rel="noopener">Читать статью на РИА Новости →</a>
