@@ -268,7 +268,7 @@ function priceBlock(p) {
 }
 
 function deliveryBlock(p) {
-  const cityText = p.city
+  const cityText = p.deliveryText ? p.deliveryText : p.city
     ? `В ${p.cityPrep || p.city} партии отправляем транспортными компаниями СДЭК, Деловые Линии, ПЭК и ЖелДорЭкспедиция. Ориентировочный срок доставки — ${p.delivery}. Груз страхуем, трек-номер присылаем в день отгрузки.`
     : 'Отправляем партии по всей России: СДЭК, Деловые Линии, ПЭК, ЖелДорЭкспедиция. Срок доставки — 1–7 дней в зависимости от города. Груз страхуем, трек-номер присылаем в день отгрузки.';
   const cl = clOf(p);
@@ -276,7 +276,7 @@ function deliveryBlock(p) {
   <h2>${C.H2.delivery[cl] || C.H2.delivery.default}</h2>
 
   <div class="cards6">
-    <div class="card6"><div class="i">💳</div><b>Оплата</b><p>Договор, счёт, безналичный расчёт, УПД. 70% предоплата, 30% перед отгрузкой. Постоянным клиентам — отсрочка платежа.</p></div>
+    <div class="card6"><div class="i">💳</div><b>Оплата</b><p>Договор, счёт, безналичный расчёт, УПД. Работаем по предоплате: после оплаты счёта запускаем образец или тираж.</p></div>
     <div class="card6"><div class="i">⏱</div><b>Сроки</b><p>Макет — 2–4 дня, образец — ~10 дней, тираж — 2–5 недель. Дату отгрузки фиксируем в договоре и отвечаем за неё.</p></div>
     <div class="card6"><div class="i">🚚</div><b>Доставка</b><p>${cityText}</p></div>
   </div>
@@ -408,12 +408,13 @@ function renderLanding(p, all) {
     + hero(p)
     + introBlock(p)
     + extraBlock(p)
-    + benefitsBlock(p)
+    // lean: страницы городов и отраслей без кейсов — без самых общих блоков, чтобы основной текст был уникальным
+    + (p.lean ? '' : benefitsBlock(p))
 
     + statsBlock()
     + stepsBlock(p)
     + worksBlock(p)
-    + priceBlock(p)
+    + (p.lean ? '' : priceBlock(p))
     + deliveryBlock(p)
     + reviewsBlock(p)
     + clientsBlock()

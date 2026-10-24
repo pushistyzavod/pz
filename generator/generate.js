@@ -87,6 +87,17 @@ const NOINDEX = new Set(require('./data/noindex.json'));
 const { stripHtml } = require('./strip-prices');
 const { apply: applyIndustryFacts } = require('./industry-facts');
 landings.forEach((p) => { if (NOINDEX.has(p.url)) p.noindex = true; });
+// Отраслевые страницы без прямых кейсов: уникальные тексты (data/industry-texts.js)
+const INDUSTRY_TEXTS = require('./data/industry-texts');
+landings.forEach((p) => {
+  const t = INDUSTRY_TEXTS[p.slug];
+  if (!t) return;
+  p.intro = t.intro;
+  p.extra = { h2: `Идеи для ${p.sphere}`, paras: ['С чего обычно начинают. Любую идею доработаем под ваш бренд на бесплатном макете.'], list: t.ideas };
+  p.faq = [...t.faq, ...C.FAQ_COMMON.slice(0, 3)];
+  p.lean = true;
+});
+landings.forEach((p) => { if (p.cluster === 'cities') p.lean = true; });
 // Ротация отзывов и кейсов: разные страницы показывают разные подборки (анти-дубли контента)
 landings.forEach((p, i) => {
   if (!p.reviewOffset) p.reviewOffset = i % 5;

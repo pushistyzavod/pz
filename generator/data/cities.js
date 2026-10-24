@@ -85,45 +85,75 @@ const CITIES = [
   ['novocherkassk', 'Новочеркасск', 'Новочеркасске', '5–7 дней', 'казачья столица: энергетика, машиностроение и казачья культура'],
 ];
 
-// Федеральный округ города — для уникального регионального абзаца (анти-дубль гео-страниц)
-const DISTRICT = {
-  center: ['moskva', 'voronezh', 'ryazan', 'tula', 'kursk', 'belgorod', 'vladimir', 'ivanovo', 'kaluga', 'kostroma', 'smolensk', 'tambov', 'tver', 'yaroslavl', 'bryansk', 'lipetsk', 'orel'],
-  nw: ['spb', 'kaliningrad', 'arhangelsk', 'murmansk', 'pskov', 'vologda', 'petrozavodsk', 'velikiy-novgorod'],
-  volga: ['kazan', 'nn', 'samara', 'ufa', 'saratov', 'volgograd', 'perm', 'tolliatti', 'izhevsk', 'ulyanovsk', 'orenburg', 'penza', 'kirov', 'cheboksary', 'saransk', 'yoshkar-ola', 'chelny'],
-  ural: ['ekb', 'tiumen', 'surgut', 'magnitogorsk', 'nizhniy-tagil', 'kurgan', 'nizhnevartovsk'],
-  siberia: ['novosibirsk', 'krasnoyarsk', 'omsk', 'barnaul', 'irkutsk', 'kemerovo', 'novokuznetsk', 'tomsk', 'ulan-ude', 'chita', 'abakan'],
-  dv: ['khabarovsk', 'vladivostok', 'yakutsk', 'yuzhno-sahalinsk', 'petropavlovsk', 'blagoveshchensk', 'komsomolsk'],
-  south: ['krasnodar', 'rnd', 'sochi', 'astrakhan', 'novorossiysk', 'taganrog', 'novocherkassk'],
-  caucasus: ['mahachkala', 'grozny', 'nalchik', 'stavropol', 'simferopol', 'sevastopol'],
-};
-const DISTRICT_TEXT = {
-  center: 'Центральная Россия — наш крупнейший регион поставок: головные офисы заказывают тиражи сразу для всей сети филиалов. Отправки идут сборными грузами еженедельно, возможна мультиотгрузка по офисам и торговым точкам вашей сети.',
-  nw: 'Для Северо-Запада работаем через терминалы СДЭК и Деловых Линий. Учитываем влажный климат региона: по запросу добавляем влагозащитную упаковку паллет, чтобы плюш приехал в идеальном состоянии.',
-  volga: 'Поволжье обслуживаем регулярными маршрутами Деловых Линий и ПЭК. Здесь сильны промышленность и машиностроение, поэтому чаще всего производим талисманов предприятий, мерч для дилерских сетей и подарки к заводским юбилеям.',
-  ural: 'Урал — ближний для нас регион: партии едут напрямую без перегрузок. Для промышленных городов Урала чаще всего делаем талисманов предприятий, подарки к корпоративным датам и мерч для спортивных клубов.',
-  siberia: 'В Сибири — наше производство в Улан-Удэ: действуют пониженные тарифы логистики, а образец при желании можно посмотреть прямо на производстве. Для сибирских городов работаем с предоплатой по счёту и полным пакетом документов.',
-  dv: 'Для Дальнего Востока главный вопрос — логистика: отправляем авиа и ж/д-контейнерами, график закладываем с запасом к вашей дате, груз страхуем на полную стоимость партии. Ближайшая фабрика полного цикла к вам — это мы.',
-  south: 'Юг России — курорты, агробизнес и портовые города: здесь популярны подарки для отелей и санаториев, сувениры к туристическому сезону и промо-игрушки для агрокомпаний. К сезону бронируйте тираж заранее — мощности разбирают быстро.',
-  caucasus: 'Для Северного Кавказа и Крыма учитываем региональную специфику: быстрый рост малого бизнеса, турбизм и нюансы дизайна персонажей — всё обсуждаем на брифе. Доставка — СДЭК и Деловые Линии с обязательной страховкой.',
-};
-function districtOf(slugSuffix) {
-  return Object.keys(DISTRICT).find((k) => DISTRICT[k].includes(slugSuffix)) || 'center';
-}
-
 // Города, где есть производство «Пушистого Завода»
 const PRODUCTION_CITIES = ['moskva', 'ivanovo', 'ulan-ude'];
 
-function mkCity([slugSuffix, name, inCity, delivery, regionNote], idx) {
+const TEXTS = require('./city-texts');
+
+// Производства «Пушистого Завода» — от них считаем расстояние до города
+const PRODUCTIONS = [
+  { slug: 'moskva', name: 'Москва', in: 'Москве', c: [55.756, 37.617] },
+  { slug: 'ivanovo', name: 'Иваново', in: 'Иванове', c: [57.000, 40.973] },
+  { slug: 'ulan-ude', name: 'Улан-Удэ', in: 'Улан-Удэ', c: [51.834, 107.584] },
+];
+const ROAD_FACTOR = 1.3; // дороги длиннее прямой линии — для оценки срока доставки
+function km([la1, lo1], [la2, lo2]) {
+  const r = Math.PI / 180;
+  const a = Math.sin((la2 - la1) * r / 2) ** 2 + Math.cos(la1 * r) * Math.cos(la2 * r) * Math.sin((lo2 - lo1) * r / 2) ** 2;
+  return 6371 * 2 * Math.asin(Math.sqrt(a));
+}
+const daysWord = (n) => (n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20) ? 'дня' : 'дней');
+
+// Логистика города: ближайшее производство, расстояние по дорогам, ориентир срока ТК
+function logistics(slugSuffix, name, inCity) {
+  const t = TEXTS[slugSuffix];
+  if (PRODUCTION_CITIES.includes(slugSuffix)) {
+    const others = PRODUCTIONS.filter((x) => x.slug !== slugSuffix).map((x) => x.in).join(' и ');
+    return {
+      delivery: 'по городу',
+      deliveryText: `В ${inCity} работает одно из наших производств. Доставку по городу или самовывоз обсуждаем при расчёте; в другие города отправляем транспортными компаниями.`,
+      para: `В ${inCity} работает одно из производств «Пушистого Завода», так что заказываете напрямую у производителя. Другие наши производства — в ${others}.`,
+      faqA: `В ${inCity} работает одно из наших производств, поэтому доставка по городу быстрая. Вариант — доставку или самовывоз — согласуем при расчёте заказа.`,
+    };
+  }
+  if (t.far) {
+    return {
+      delivery: 'авиа или комбинированно',
+      deliveryText: `В ${inCity} отправляем авиа или комбинированным транспортом. Срок зависит от способа, поэтому дату получения называем в расчёте и закладываем запас.`,
+      para: `Наши производства — в Москве, Иванове и Улан-Удэ. В ${inCity} заказ едет авиа или комбинированным транспортом, поэтому срок доставки считаем отдельно и называем дату получения ещё в расчёте.`,
+      faqA: `Доставка в ${inCity} — авиа или комбинированным транспортом; срок зависит от способа и сезона. Дату получения называем в расчёте и закладываем в график с запасом.`,
+    };
+  }
+  const near = PRODUCTIONS.map((x) => ({ ...x, d: km(t.c, x.c) * ROAD_FACTOR })).sort((a, b) => a.d - b.d)[0];
+  const air = Math.round(near.d / ROAD_FACTOR / 10) * 10; // по прямой — точное число
+  const d = Math.ceil(near.d / 500) + 1;
+  const days = `${d}–${d + 1} ${daysWord(d + 1)}`;
+  return {
+    delivery: days,
+    deliveryText: `Ближайшее наше производство — в ${near.in}, до города ${name} около ${air} км по прямой. Транспортная компания обычно везёт такой груз ${days}. Груз страхуем, трек-номер присылаем в день отгрузки.`,
+    para: `Наши производства — в Москве, Иванове и Улан-Удэ. От ближайшего, в ${near.in}, до города ${name} около ${air} км по прямой; транспортная компания обычно везёт сборный груз на такое расстояние ${days}. Точный срок и стоимость доставки называем в расчёте заказа.`,
+    faqA: `Ближайшее наше производство — в ${near.in}, около ${air} км по прямой. Транспортной компанией (СДЭК, Деловые Линии, ПЭК) это обычно ${days}. Точный срок и стоимость назовём в расчёте, трек-номер пришлём в день отгрузки.`,
+  };
+}
+
+// Ссылки «Что можно заказать»: у соседних по списку городов — разные тройки
+const RELATED_POOL = ['mascots', 'symbol-goda', 'pvc-brelki', 'plyushevye-brelki', 'igrushki-s-logotipom', 'korporativnye-podarki', 'novogodnie-podarki', 'podushki-s-logotipom', 'rostovye-maskoty', 'suveniry-s-logotipom', 'podarki-sotrudnikam', 'podarki-klientam'];
+
+function mkCity([slugSuffix, name, inCity], idx) {
   const slug = `igrushki-${slugSuffix}`;
-  const isHome = slugSuffix === 'ulan-ude';
+  const t = TEXTS[slugSuffix];
+  if (!t) throw new Error(`Нет уникального текста для города ${slugSuffix} (data/city-texts.js)`);
+  const L = logistics(slugSuffix, name, inCity);
+  const delivery = L.delivery;
   const intro = [
-    `${PRODUCTION_CITIES.includes(slugSuffix) ? `В ${inCity} — одно из производств «Пушистого Завода»: компании города заказывают игрушки напрямую, по ценам производителя.` : `Компании в ${inCity} заказывают игрушки у «Пушистого Завода» напрямую: производство выполняет заказы для всей России по единым ценам производителя.`} ${delivery.charAt(0).toUpperCase() + delivery.slice(1)} — срок доставки готовой партии до вашего склада; образец присылаем курьером или показываем по видео.`,
-    `Работаем с компаниями всех отраслей в ${inCity}: ${regionNote}. Каждый проект ведёт персональный менеджер: бриф по телефону или в мессенджере, бесплатный макет за 2–4 дня, договор и счёт на вашу компанию, фотоотчёты с производства.`,
-    DISTRICT_TEXT[districtOf(slugSuffix)],
-    isHome
-      ? 'В Улан-Удэ — одно из наших производств: приезжайте в гости, покажем раскройный и швейный цеха, вышивку, ОТК и склад. Образцы для местных клиентов отдаём лично, тиражи — самовывозом или по городу в день готовности.'
-      : `Доставляем через СДЭК, Деловые Линии, ПЭК и ЖелДорЭкспедицию: груз страхуем, упаковываем в жёсткую тару, трек-номер присылаем в день отгрузки. Для срочных проектов возможна авиадоставка.`,
+    t.a,
+    L.para,
   ];
+  const extra = {
+    h2: `Идеи для компаний в ${inCity}`,
+    paras: ['Что хорошо работает именно здесь. Любую идею доработаем под ваш бренд на бесплатном макете.'],
+    list: t.i,
+  };
 
   return {
     slug,
@@ -137,9 +167,11 @@ function mkCity([slugSuffix, name, inCity, delivery, regionNote], idx) {
     eyebrow: `Город: ${name}`,
     introH2: `Игрушки и сувениры для бизнеса в ${inCity}`,
     intro,
+    extra,
     city: name,
     cityPrep: inCity,
     delivery,
+    deliveryText: L.deliveryText,
 
     crumbs: [{ url: '/', label: 'Главная' }, { url: C.PARENTS.cities.url, label: C.PARENTS.cities.label }, { label: name }],
     schemaType: 'Service',
@@ -150,19 +182,26 @@ function mkCity([slugSuffix, name, inCity, delivery, regionNote], idx) {
     reviewOffset: CITIES.indexOf(CITIES.find((c) => c[0] === slugSuffix)) % 4,
 
     faq: [
-      { q: `Как заказать игрушки, находясь в ${inCity}?`, a: 'Всё дистанционно: бриф по телефону или мессенджерам, бесплатный макет за 2–4 дня, образец показываем по видео или присылаем курьером. Договор и счёт — на вашу компанию, оплата безналичная.' },
-      { q: `Сколько идёт доставка до города ${name}?`, a: `Ориентировочно ${delivery} транспортной компанией (СДЭК, Деловые Линии, ПЭК). Груз страхуем, трек-номер присылаем в день отгрузки. Для срочных проектов — авиадоставка.` },
-      { q: 'Цены для регионов отличаются от московских?', a: 'Нет: цены производства едины для всей России — вы платите за изделие, а не за географию. Разница только в стоимости логистики, и она считается по тарифам ТК без наценок.' },
-      ...C.FAQ_COMMON.slice(idx % 4, idx % 4 + 4),
+      t.q,
+      { q: `Сколько идёт доставка до города ${name}?`, a: L.faqA },
+      ...C.FAQ_COMMON.slice(idx % 4, idx % 4 + 1),
     ],
     relatedGroups: [
-      { title: 'Продукция', pages: ['mascots', 'symbol-goda', 'pvc-brelki'] },
-
-      { title: 'Полезное', pages: ['dostavka-po-rf', 'korporativnye-podarki', 'novogodnie-podarki'] },
+      { title: 'Что можно заказать', pages: [...[0, 1, 2].map((k) => RELATED_POOL[(idx * 3 + k) % RELATED_POOL.length]), 'dostavka-po-rf'] },
     ],
     formName: `Заявка: ${name}`,
     formHint: `игрушки с логотипом для компании в ${inCity}, 500 шт`,
   };
 }
 
-module.exports = CITIES.map(mkCity);
+const pages = CITIES.map(mkCity);
+
+// «Соседние города»: три ближайших по карте — своя подборка ссылок у каждой страницы
+pages.forEach((p, i) => {
+  const me = TEXTS[CITIES[i][0]].c;
+  const near = CITIES.map((c, j) => ({ j, d: j === i ? Infinity : km(me, TEXTS[c[0]].c) }))
+    .sort((a, b) => a.d - b.d).slice(0, 3).map((x) => `igrushki-${CITIES[x.j][0]}`);
+  p.relatedGroups.unshift({ title: 'Соседние города', pages: near });
+});
+
+module.exports = pages;
