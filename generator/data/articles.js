@@ -1,7 +1,16 @@
 // Блог: экспертные SEO-статьи (URL: /news/<slug>/)
 const C = require('./config');
 
+// Обложки статей: свободные изображения (CC0 / общественное достояние), см. data/news-covers.json
+const COVERS = require('./news-covers.json');
+
 function mk(o) {
+  const cv = COVERS[o.slug];
+  const cover = cv && !o.photo ? {
+    image: cv.src,
+    photo: { src: cv.src, alt: cv.alt, width: cv.width, height: cv.height },
+    cover: cv,
+  } : {};
   return {
     cluster: 'news',
     url: `/news/${o.slug}/`,
@@ -12,6 +21,7 @@ function mk(o) {
     formName: `Заявка из статьи: ${o.h1plain}`,
     formHint: 'прочитал статью, нужен расчёт тиража',
     ...o,
+    ...cover,
   };
 }
 

@@ -489,6 +489,13 @@ function renderHub(p, all) {
 }
 
 /* ---------- Статья блога ---------- */
+// Обложка статьи со ссылкой на автора и лицензию (свободное изображение)
+function coverFigure(cv) {
+  const c = cv.credit || {};
+  const who = [c.author, c.source].filter(Boolean).map(esc).join(', ');
+  return `<figure style="margin:0 0 26px"><img src="${cv.src}" alt="${esc(cv.alt)}" width="${cv.width}" height="${cv.height}" style="width:100%;height:auto;border-radius:20px" fetchpriority="high" decoding="async">`
+    + `<figcaption style="margin-top:8px;font-size:12px;color:#8a8f9c">Фото: <a href="${esc(c.url)}" target="_blank" rel="noopener nofollow" style="color:inherit">${who}</a>, ${esc(c.license)}</figcaption></figure>`;
+}
 function renderArticle(a, all) {
   const schemas = [jsonldOrganization(), jsonldBreadcrumb(a.crumbs), jsonldArticle(a), a.faq ? jsonldFAQ(a.faq) : null].filter(Boolean);
   const related = (a.related || []).map((slug) => {
@@ -504,7 +511,7 @@ function renderArticle(a, all) {
     <div class="meta article" style="padding:0"><span class="cat">${esc(a.category)}</span><span>${a.dateHuman}</span><span>·</span><span>${a.readTime}</span></div>
   </div>
 </div></section>`
-    + `<section style="padding-top:26px"><div class="container"><div class="article">${a.body}${a.bodyExtra || ''}</div></div></section>`
+    + `<section style="padding-top:26px"><div class="container"><div class="article">${a.cover ? coverFigure(a.cover) : ''}${a.body}${a.bodyExtra || ''}</div></div></section>`
 
     + (a.faq ? faqBlock(a) : '')
     + ctaBlock(a)
