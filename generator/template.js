@@ -508,7 +508,7 @@ function renderArticle(a, all) {
   <div>
     <span class="eyebrow">${esc(a.eyebrow)}</span>
     <h1 style="font-size:36px">${a.h1}</h1>
-    <div class="meta article" style="padding:0"><span class="cat">${esc(a.category)}</span><span>${a.dateHuman}</span><span>·</span><span>${a.readTime}</span></div>
+    <div class="meta" style="display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;padding:0;margin-top:14px;font-size:14px;color:#6b6b76"><span class="cat" style="background:#eef1f8;color:#639aee;font-weight:600;border-radius:20px;padding:4px 12px">${esc(a.category)}</span><span>${a.dateHuman}</span></div>
   </div>
 </div></section>`
     + `<section style="padding-top:26px"><div class="container"><div class="article">${a.cover ? coverFigure(a.cover) : ''}${a.body}${a.bodyExtra || ''}</div></div></section>`
