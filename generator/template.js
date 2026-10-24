@@ -131,7 +131,7 @@ function head(p, schemas) {
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/prototype/css/landing.css">
+<link rel="stylesheet" href="/prototype/css/landing.css?v=${ASSET_VERSION}">
 ${schemas.map((s) => `<script type="application/ld+json">${JSON.stringify(s)}</script>`).join('\n')}
 </head>
 <body>
@@ -277,7 +277,7 @@ function deliveryBlock(p) {
 
   <div class="cards6">
     <div class="card6"><div class="i">💳</div><b>Оплата</b><p>Договор, счёт, безналичный расчёт, УПД. Работаем по предоплате: после оплаты счёта запускаем образец или тираж.</p></div>
-    <div class="card6"><div class="i">⏱</div><b>Сроки</b><p>Макет — 2–4 дня, образец — ~10 дней, тираж — 2–5 недель. Дату отгрузки фиксируем в договоре и отвечаем за неё.</p></div>
+    <div class="card6"><div class="i">⏱</div><b>Сроки</b><p>Макет — 2–4 дня, образец — ~10 дней, тираж — 3–6 недель. Дату отгрузки фиксируем в договоре и отвечаем за неё.</p></div>
     <div class="card6"><div class="i">🚚</div><b>Доставка</b><p>${cityText}</p></div>
   </div>
 </div></section>`;
@@ -521,6 +521,6 @@ function renderArticle(a, all) {
 }
 
 // Версия css/js в адресах (?v=…) — меняется при каждом изменении site.js, чтобы обновился кэш
-const ASSET_VERSION = '20261019';
+const ASSET_VERSION = '20261025';
 
 module.exports = { renderLanding, renderHub, renderArticle, jsonldOrganization, jsonldLocalBusiness, jsonldBreadcrumb, head, breadcrumbs, ctaBlock, reviewPick, reviewCards, esc, ASSET_VERSION };
