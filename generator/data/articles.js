@@ -516,6 +516,14 @@ const pages = [
   }),
 ];
 
+// Расширенные тексты статей (data/articles-text.js) поверх исходных
+const { T: TEXTS, UPDATED } = require('./articles-text');
+pages.forEach((p) => {
+  const t = TEXTS[p.slug];
+  if (!t) return;
+  Object.assign(p, t, { bodyExtra: '', updated: UPDATED });
+});
+
 // Новости, опубликованные через Telegram-бота (bot/publish.js), — новые первыми
 const botPosts = require('./news-posts.json').map((p) => mk(p));
 

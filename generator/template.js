@@ -96,7 +96,7 @@ function jsonldArticle(a) {
     description: a.desc,
     image: C.SITE + a.image,
     datePublished: a.date,
-    dateModified: a.date,
+    dateModified: a.updated || a.date,
     author: { '@type': 'Organization', name: 'Пушистый Завод', url: C.SITE + '/' },
     publisher: { '@id': C.SITE + '/#org' },
     mainEntityOfPage: C.SITE + a.url,
@@ -489,6 +489,8 @@ function renderHub(p, all) {
 }
 
 /* ---------- Статья блога ---------- */
+const MONTHS_GEN = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
+const humanDate = (iso) => { const [y, m, d] = String(iso).split('-').map(Number); return `${d} ${MONTHS_GEN[m - 1]} ${y}`; };
 // Обложка статьи со ссылкой на автора и лицензию (свободное изображение)
 function coverFigure(cv) {
   const c = cv.credit || {};
@@ -508,7 +510,7 @@ function renderArticle(a, all) {
   <div>
     <span class="eyebrow">${esc(a.eyebrow)}</span>
     <h1 style="font-size:36px">${a.h1}</h1>
-    <div class="meta" style="display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;padding:0;margin-top:14px;font-size:14px;color:#6b6b76"><span class="cat" style="background:#eef1f8;color:#639aee;font-weight:600;border-radius:20px;padding:4px 12px">${esc(a.category)}</span><span>${a.dateHuman}</span></div>
+    <div class="meta" style="display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;padding:0;margin-top:14px;font-size:14px;color:#6b6b76"><span class="cat" style="background:#eef1f8;color:#639aee;font-weight:600;border-radius:20px;padding:4px 12px">${esc(a.category)}</span><span>${a.dateHuman}</span>${a.updated && a.updated !== a.date ? `<span>· обновлено ${humanDate(a.updated)}</span>` : ''}</div>
   </div>
 </div></section>`
     + `<section style="padding-top:26px"><div class="container"><div class="article">${a.cover ? coverFigure(a.cover) : ''}${a.body}${a.bodyExtra || ''}</div></div></section>`
