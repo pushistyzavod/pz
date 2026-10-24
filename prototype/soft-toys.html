@@ -435,6 +435,68 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
   </div>
 </section>
 
+<!-- КЕЙС: МЕЖДУНАРОДНЫЙ ФЕСТИВАЛЬ МОЛОДЁЖИ 2026 -->
+<style>
+.fcase{padding:64px 0;background:linear-gradient(135deg,#0d1b4d 0%,#23206b 52%,#4a1f63 100%);color:#fff;position:relative;overflow:hidden}
+.fcase::before{content:'';position:absolute;inset:-40% -10% auto auto;width:620px;height:620px;background:radial-gradient(circle,rgba(255,96,153,.28),transparent 62%);pointer-events:none}
+.fcase .container{position:relative}
+.fcase .fc-eyebrow{display:inline-flex;align-items:center;gap:8px;padding:7px 14px;border-radius:30px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);font-size:12.5px;font-weight:600;letter-spacing:.04em;text-transform:uppercase}
+.fcase .fc-eyebrow i{width:8px;height:8px;border-radius:50%;background:#ff4d6d;box-shadow:0 0 0 4px rgba(255,77,109,.25)}
+.fcase h2{color:#fff;margin:18px 0 14px;font-size:clamp(28px,4vw,44px);line-height:1.12}
+.fcase h2 span{background:linear-gradient(100deg,#ffd166,#ff8fb8 60%,#a8b8ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.fcase .fc-lead{max-width:820px;font-size:17px;line-height:1.65;color:rgba(255,255,255,.86);margin:0 0 26px}
+.fcase .fc-media{display:grid;grid-template-columns:1.55fr 1fr;gap:22px;align-items:start}
+.fcase figure{margin:0;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.16);border-radius:20px;overflow:hidden;box-shadow:0 26px 60px -30px rgba(0,0,0,.7)}
+.fcase video,.fcase figure img{display:block;width:100%;height:auto;background:#000}
+.fcase figcaption{padding:12px 16px;font-size:13.5px;line-height:1.5;color:rgba(255,255,255,.78)}
+.fcase figcaption b{color:#fff}
+.fcase .fc-badges{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 28px;padding:0;list-style:none}
+.fcase .fc-badges li{padding:9px 15px;border-radius:12px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);font-size:14px;font-weight:600}
+.fcase .fc-done{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:26px}
+.fcase .fc-done div{padding:18px;border-radius:16px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14)}
+.fcase .fc-done b{display:block;font-size:16px;margin-bottom:6px}
+.fcase .fc-done p{margin:0;font-size:14px;line-height:1.55;color:rgba(255,255,255,.8)}
+.fcase .fc-cta{display:flex;flex-wrap:wrap;align-items:center;gap:16px;margin-top:30px}
+.fcase .fc-cta .btn{background:linear-gradient(120deg,#ff6099,#ff8ab8);color:#fff;border:0;max-width:100%;white-space:normal;text-align:center}
+.fcase .fc-cta span{color:rgba(255,255,255,.75);font-size:14px}
+@media (max-width:900px){.fcase .fc-cta .btn{width:100%;justify-content:center}.fcase{padding:46px 0}.fcase .fc-media,.fcase .fc-done{grid-template-columns:1fr}.fcase .fc-lead{font-size:16px}}
+</style>
+<section class="fcase" id="festival-2026" aria-labelledby="fcase-title">
+  <div class="container">
+    <span class="fc-eyebrow"><i></i>Кейс · Международный фестиваль молодёжи 2026</span>
+    <h2 id="fcase-title">Наши Чебурашки — в эфире <span>Первого канала</span></h2>
+    <p class="fc-lead">Для Международного фестиваля молодёжи 2026 в Екатеринбурге мы сшили мягких Чебурашек в футболках с эмблемой фестиваля. На гала-концерте закрытия с нашими игрушками в руках были участники из разных стран — в зале и на сцене. Трансляцию показал Первый канал, а РИА Новости открыли фоторепортаж о закрытии снимком с нашими Чебурашками.</p>
+    <ul class="fc-badges">
+      <li>📺 Эфир Первого канала</li>
+      <li>📰 Фото в РИА Новости</li>
+      <li>🌍 Участники из разных стран</li>
+      <li>📍 Екатеринбург, 2026</li>
+    </ul>
+    <div class="fc-media">
+      <figure>
+        <video controls playsinline preload="none" poster="/prototype/images/cases/festival-molodezhi-2026-efir.jpg" width="1280" height="720">
+          <source src="/prototype/video/festival-molodezhi-2026.mp4" type="video/mp4">
+        </video>
+        <figcaption><b>Первый канал</b> · гала-концерт закрытия Международного фестиваля молодёжи 2026. Наши Чебурашки — у участников в зале и на сцене.</figcaption>
+      </figure>
+      <figure>
+        <img src="/prototype/images/cases/festival-molodezhi-2026-ria.jpg" alt="РИА Новости: участники Международного фестиваля молодёжи в Екатеринбурге с мягкими Чебурашками производства Пушистого Завода" width="1320" height="1123" loading="lazy" decoding="async">
+        <figcaption><b>РИА Новости</b> · «Международный фестиваль молодёжи в Екатеринбурге завершился гала-концертом» — первый кадр фоторепортажа.</figcaption>
+      </figure>
+    </div>
+    <div class="fc-done">
+      <div><b>Персонаж</b><p>Чебурашка с узнаваемыми большими ушами и мягким коричневым мехом — таким его помнят и в России, и за рубежом.</p></div>
+      <div><b>Символика фестиваля</b><p>Футболки нескольких цветов с эмблемой фестиваля — игрушка сразу работает как часть айдентики события.</p></div>
+      <div><b>Игрушка, которую увозят домой</b><p>Чебурашки остались у участников как память о фестивале — мерч, который живёт и после события.</p></div>
+    </div>
+    <div class="fc-cta">
+      <a class="btn" href="#cta">Сделать игрушку для вашего события</a>
+      <span>Макет — бесплатно, образец — около 10 дней</span>
+    </div>
+  </div>
+</section>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoObject","name":"Чебурашки «Пушистого Завода» на гала-концерте Международного фестиваля молодёжи 2026","description":"Мягкие Чебурашки в футболках с эмблемой Международного фестиваля молодёжи 2026 у участников гала-концерта закрытия в Екатеринбурге. Фрагмент трансляции Первого канала.","thumbnailUrl":"https://pushistyzavod.ru/prototype/images/cases/festival-molodezhi-2026-efir.jpg","contentUrl":"https://pushistyzavod.ru/prototype/video/festival-molodezhi-2026.mp4","uploadDate":"2026-10-24","duration":"PT32S","publisher":{"@id":"https://pushistyzavod.ru/#org"}}</script>
+
 <!-- ПРИМЕРЫ РАБОТ -->
 <section id="works">
   <div class="container">
