@@ -413,6 +413,7 @@ function renderLanding(p, all) {
 
     + statsBlock()
     + stepsBlock(p)
+    + featuredCaseBlock(p)
     + worksBlock(p)
     + (p.lean ? '' : priceBlock(p))
     + deliveryBlock(p)
@@ -423,6 +424,47 @@ function renderLanding(p, all) {
     + (p.showCities ? citiesBlock(all) : '')
     + ctaBlock(p)
     + `<script src="/prototype/js/site.js?v=${ASSET_VERSION}" defer></script>\n</body>\n</html>\n`;
+}
+
+// Кейс «Международный фестиваль молодёжи 2026» — на подходящих посадочных (data/featured-case.js).
+// Стили внутри блока: landing.css подключается без версии и кэшируется браузерами
+const FEATURED = require('./data/featured-case');
+function featuredCaseBlock(p) {
+  const t = FEATURED.PAGES[p.slug];
+  if (!t) return '';
+  const c = FEATURED.CASE;
+  return `<style>
+.fcs{padding:56px 0;background:linear-gradient(135deg,#0d1b4d 0%,#23206b 52%,#4a1f63 100%);color:#fff}
+.fcs .fcs-in{display:grid;grid-template-columns:1.1fr 1fr;gap:34px;align-items:center}
+.fcs .fcs-tag{display:inline-flex;align-items:center;gap:8px;padding:6px 13px;border-radius:30px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase}
+.fcs .fcs-tag i{width:8px;height:8px;border-radius:50%;background:#ff4d6d;box-shadow:0 0 0 4px rgba(255,77,109,.25)}
+.fcs h2{color:#fff;margin:16px 0 12px;font-size:clamp(24px,3.2vw,36px);line-height:1.15}
+.fcs h2 span{background:linear-gradient(100deg,#ffd166,#ff8fb8 60%,#a8b8ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.fcs p{margin:0 0 18px;font-size:16px;line-height:1.65;color:rgba(255,255,255,.86)}
+.fcs ul{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 22px;padding:0;list-style:none}
+.fcs li{padding:7px 12px;border-radius:10px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);font-size:13.5px;font-weight:600}
+.fcs .fcs-btns{display:flex;flex-wrap:wrap;gap:12px 18px;align-items:center}
+.fcs .fcs-btn{display:inline-flex;align-items:center;justify-content:center;padding:13px 22px;border-radius:30px;background:linear-gradient(120deg,#ff6099,#ff8ab8);color:#fff;font-weight:700;text-decoration:none;text-align:center}
+.fcs .fcs-link{color:#ffd166;font-weight:700;text-decoration:underline;text-underline-offset:3px}
+.fcs .fcs-ph{position:relative;display:block;border-radius:20px;overflow:hidden;border:1px solid rgba(255,255,255,.16);box-shadow:0 26px 60px -30px rgba(0,0,0,.7)}
+.fcs .fcs-ph img{display:block;width:100%;height:auto}
+.fcs .fcs-ph b{position:absolute;left:50%;top:50%;width:72px;height:72px;margin:-36px 0 0 -36px;border-radius:50%;background:rgba(255,96,153,.92);display:flex;align-items:center;justify-content:center;font-size:26px;box-shadow:0 0 0 10px rgba(255,96,153,.25)}
+.fcs .fcs-ph small{position:absolute;left:12px;bottom:12px;padding:5px 10px;border-radius:8px;background:rgba(0,0,0,.6);font-size:12.5px;color:#fff}
+@media (max-width:900px){.fcs{padding:42px 0}.fcs .fcs-in{grid-template-columns:1fr}.fcs .fcs-btn{width:100%}}
+</style>
+<section class="fcs" aria-label="Кейс: Международный фестиваль молодёжи 2026"><div class="container"><div class="fcs-in">
+  <div>
+    <span class="fcs-tag"><i></i>Кейс · Международный фестиваль молодёжи 2026</span>
+    <h2>${t.h2}</h2>
+    <p>${t.lead}</p>
+    <ul><li>📺 Эфир Первого канала</li><li>📰 Фото в РИА Новости</li><li>🌍 Участники из 191 страны</li></ul>
+    <div class="fcs-btns">
+      <a class="fcs-btn" href="${c.news}">Смотреть видео и историю</a>
+      <a class="fcs-link" href="${c.ria}" target="_blank" rel="noopener">Читать статью на РИА Новости →</a>
+    </div>
+  </div>
+  <a class="fcs-ph" href="${c.news}"><img src="${c.photo}" alt="Участники Международного фестиваля молодёжи 2026 с мягкими Чебурашками производства Пушистого Завода — кадр эфира Первого канала" width="1280" height="720" loading="lazy" decoding="async"><b>▶</b><small>Первый канал · гала-концерт закрытия</small></a>
+</div></div></section>`;
 }
 
 /* ---------- Хаб-страница ---------- */

@@ -134,7 +134,7 @@ function apply(html, url) {
   html = html.replace(/(<section><div class="container">\s*<h2>[^<]*<\/h2>\s*<div class="prose">)<p>[\s\S]*?<\/p>/, (m, head) => `${head}<p>${f.intro}</p>`);
   // примеры работ — только работы для этой отрасли
   html = html.replace(/(<section class="soft" id="works">[\s\S]*?<div class="works-grid">)[\s\S]*?(<\/div>\s*(?:<div class="works-more">|<\/div><\/section>))/, (m, a, b) => a + worksGrid(slug) + b);
-  html = html.replace(/(<section class="soft" id="works"><div class="container">\s*<h2>)Проекты <span>для вашей отрасли<\/span>(<\/h2>)/, '$1Наши работы <span>для отрасли</span>$2');
+  html = html.replace(/(<section class="soft" id="works"><div class="container">\s*<h2>)(?:Проекты <span>для вашей отрасли<\/span>|Примеры <span>наших работ<\/span>)(<\/h2>)/, '$1Наши работы <span>для отрасли</span>$2');
   // описания для поисковиков и соцсетей
   html = html.replace(/(<meta (?:name|property)="(?:description|og:description|twitter:description)" content=")[^"]*(")/g, (m, a, b) => a + attr(f.desc) + b);
   html = html.replace(/("@type":"(?:Service|Product)"[^<]*?"description":")[^"]*(")/g, (m, a, b) => a + f.desc.replace(/"/g, '\\"') + b);

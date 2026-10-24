@@ -201,6 +201,7 @@
     "/dlya-biznesa/"
   ],
   "articles": [
+    "/news/cheburashki-festival-molodezhi-2026/",
     "/news/kak-zakazat-igrushki-s-logotipom/",
     "/news/tirazh-igrushek-kakoy-vygoden/",
     "/news/sroki-proizvodstva-igrushek/",
@@ -226,8 +227,8 @@
   "counts": {
     "landings": 195,
     "hubs": 1,
-    "articles": 11,
+    "articles": 12,
     "core": 8,
-    "total": 215
+    "total": 216
   }
 }
