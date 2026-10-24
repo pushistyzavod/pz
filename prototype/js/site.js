@@ -507,10 +507,11 @@
       + 'Продолжая пользоваться сайтом, вы соглашаетесь с <a href="/privacy/">Политикой конфиденциальности</a>.</span>'
       + '<button class="ck-ok" type="button">Принять</button>';
     document.body.appendChild(el);
-    setTimeout(function () { el.classList.add('show'); }, 900);
+    setTimeout(function () { el.classList.add('show'); syncContactWidget(); }, 900);
     el.querySelector('.ck-ok').addEventListener('click', function () {
       try { localStorage.setItem('ckConsent', '1'); } catch (e) {}
       el.classList.remove('show');
+      syncContactWidget();
       setTimeout(function () { el.parentNode && el.parentNode.removeChild(el); }, 350);
     });
   }
@@ -605,6 +606,100 @@
     document.head.appendChild(st);
   }
 
+  // ---------- Плавающий виджет контактов (правый нижний угол) ----------
+  // Круглая кнопка; по нажатию снизу вверх раскрываются телефон, почта, VK и Telegram.
+  // Повторное нажатие, клик мимо или Esc — закрывают. Пока виден cookie-баннер,
+  // виджет поднимается над ним (syncContactWidget вызывается из initCookie).
+  function syncContactWidget() {
+    var w = document.getElementById('cw');
+    if (!w) return;
+    var ck = document.querySelector('.ckbox.show');
+    w.style.setProperty('--cw-lift', ck ? ck.offsetHeight + 'px' : '0px');
+  }
+  function initContactWidget() {
+    if (document.getElementById('cw')) return;
+    var svg = function (d) { return '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="' + d + '"/></svg>'; };
+    var items = [
+      { cls: 'tel', href: 'tel:+79896051010', label: '+7 (989) 605-10-10', title: 'Позвонить',
+        d: 'M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24c1.12.37 2.33.57 3.58.57a1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.2 2.45.57 3.57a1 1 0 01-.25 1.02l-2.2 2.2z' },
+      { cls: 'mail', href: 'mailto:info@pushistyzavod.ru', label: 'info@pushistyzavod.ru', title: 'Написать на почту',
+        d: 'M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2zm0 4.25l-8 5-8-5V6l8 5 8-5v2.25z' },
+      { cls: 'vk', href: 'https://vk.com/pushistyzavod', label: 'ВКонтакте', title: 'Мы во ВКонтакте', ext: true,
+        d: 'M12.77 17.29c-5.47 0-8.59-3.75-8.72-9.99h2.74c.09 4.58 2.11 6.52 3.71 6.92V7.3h2.58v3.95c1.58-.17 3.24-1.97 3.8-3.95h2.58c-.43 2.44-2.23 4.24-3.51 4.98 1.28.6 3.33 2.17 4.11 5.01h-2.84c-.61-1.9-2.13-3.37-4.14-3.57v3.57h-.31z' },
+      { cls: 'tg', href: 'https://t.me/pushistyzavod', label: 'Telegram', title: 'Написать в Telegram', ext: true,
+        d: 'M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z' },
+    ];
+    var st = document.createElement('style');
+    st.textContent = ''
+      + '.cw{--cw-lift:0px;position:fixed;right:20px;bottom:calc(20px + var(--cw-lift) + env(safe-area-inset-bottom,0px));z-index:280;display:flex;flex-direction:column;align-items:flex-end;gap:12px;font-family:inherit;transition:bottom .3s}'
+      + '.cw-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;align-items:flex-end;gap:12px;pointer-events:none}'
+      + '.cw-list li{opacity:0;transform:translateY(16px) scale(.6);transition:opacity .2s,transform .25s cubic-bezier(.3,1.4,.5,1)}'
+      + '.cw.open .cw-list{pointer-events:auto}'
+      + '.cw.open .cw-list li{opacity:1;transform:none}'
+      + '.cw.open .cw-list li:nth-last-child(1){transition-delay:0s}.cw.open .cw-list li:nth-last-child(2){transition-delay:.04s}.cw.open .cw-list li:nth-last-child(3){transition-delay:.08s}.cw.open .cw-list li:nth-last-child(4){transition-delay:.12s}'
+      + '.cw-item{display:flex;align-items:center;gap:10px;text-decoration:none;margin-right:5px}'
+      + '.cw-ic{width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;box-shadow:0 10px 24px -10px rgba(20,30,80,.55);transition:transform .15s}'
+      + '.cw-ic svg{width:24px;height:24px;fill:currentColor}'
+      + '.cw-item:hover .cw-ic,.cw-item:focus-visible .cw-ic{transform:scale(1.08)}'
+      + '.cw-tel .cw-ic{background:#22b573}.cw-mail .cw-ic{background:#639aee}.cw-vk .cw-ic{background:#0077ff}.cw-tg .cw-ic{background:#229ed9}'
+      + '.cw-lbl{background:#fff;color:#22242b;font-size:13.5px;font-weight:600;line-height:1;padding:9px 13px;border-radius:12px;box-shadow:0 8px 24px -12px rgba(20,30,80,.45);white-space:nowrap;opacity:0;transform:translateX(6px);transition:.15s;pointer-events:none}'
+      + '.cw-item:hover .cw-lbl,.cw-item:focus-visible .cw-lbl{opacity:1;transform:none}'
+      + '.cw-btn{position:relative;width:60px;height:60px;border-radius:50%;border:none;cursor:pointer;color:#fff;background:linear-gradient(135deg,#ff6099,#8d7ff0 55%,#639aee);box-shadow:0 14px 30px -10px rgba(255,96,153,.65);display:flex;align-items:center;justify-content:center;padding:0;-webkit-tap-highlight-color:transparent;transition:transform .2s}'
+      + '.cw-btn:hover{transform:scale(1.05)}'
+      + '.cw-btn:focus-visible{outline:3px solid rgba(99,154,238,.5);outline-offset:3px}'
+      + '.cw-btn svg{position:absolute;width:28px;height:28px;fill:currentColor;transition:transform .25s,opacity .2s}'
+      + '.cw-btn .cw-x{opacity:0;transform:rotate(-90deg) scale(.5)}'
+      + '.cw.open .cw-btn .cw-chat{opacity:0;transform:rotate(90deg) scale(.5)}'
+      + '.cw.open .cw-btn .cw-x{opacity:1;transform:none}'
+      + '.cw-btn::before{content:"";position:absolute;inset:0;border-radius:50%;background:inherit;z-index:-1;animation:cwPulse 2.4s ease-out infinite}'
+      + '.cw.open .cw-btn::before{animation:none;opacity:0}'
+      + '@keyframes cwPulse{0%{transform:scale(1);opacity:.55}80%,100%{transform:scale(1.55);opacity:0}}'
+      + '@media(prefers-reduced-motion:reduce){.cw-btn::before{animation:none}.cw-list li,.cw-btn svg{transition:none}}'
+      // на телефонах подписи видны сразу — наведения мышью там нет
+      + '@media(hover:none),(max-width:600px){.cw{right:14px;bottom:calc(14px + var(--cw-lift) + env(safe-area-inset-bottom,0px))}.cw-btn{width:56px;height:56px}.cw-ic{width:48px;height:48px}.cw-lbl{opacity:1;transform:none}.cw-item{margin-right:4px}}'
+      // на телефоне при открытом меню слегка затемняем страницу — подписи читаются лучше
+      + '@media(hover:none),(max-width:600px){.cw::before{content:"";position:fixed;inset:0;background:rgba(15,18,30,.28);opacity:0;pointer-events:none;transition:opacity .2s;z-index:-1}.cw.open::before{opacity:1}}'
+      + '@media print{.cw{display:none}}';
+    document.head.appendChild(st);
+
+    var wrap = document.createElement('div');
+    wrap.className = 'cw';
+    wrap.id = 'cw';
+    wrap.innerHTML = '<ul class="cw-list" id="cw-list" aria-label="Связаться с нами">'
+      + items.map(function (it) {
+        return '<li><a class="cw-item cw-' + it.cls + '" href="' + it.href + '" title="' + it.title + '" aria-label="' + it.title + ': ' + it.label + '"'
+          + (it.ext ? ' target="_blank" rel="noopener"' : '') + ' tabindex="-1">'
+          + '<span class="cw-lbl">' + it.label + '</span><span class="cw-ic">' + svg(it.d) + '</span></a></li>';
+      }).join('')
+      + '</ul>'
+      + '<button class="cw-btn" type="button" aria-expanded="false" aria-controls="cw-list" aria-label="Открыть контакты">'
+      + '<svg class="cw-chat" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3C6.48 3 2 6.92 2 11.75c0 2.58 1.28 4.9 3.32 6.5L4.5 21.5l3.9-1.9c1.12.33 2.33.5 3.6.5 5.52 0 10-3.92 10-8.75S17.52 3 12 3zM7.5 13a1.25 1.25 0 110-2.5 1.25 1.25 0 010 2.5zm4.5 0a1.25 1.25 0 110-2.5A1.25 1.25 0 0112 13zm4.5 0a1.25 1.25 0 110-2.5 1.25 1.25 0 010 2.5z"/></svg>'
+      + '<svg class="cw-x" viewBox="0 0 24 24" aria-hidden="true"><path d="M18.3 5.71a1 1 0 00-1.41 0L12 10.59 7.11 5.7A1 1 0 105.7 7.11L10.59 12 5.7 16.89a1 1 0 101.41 1.41L12 13.41l4.89 4.89a1 1 0 001.41-1.41L13.41 12l4.89-4.89a1 1 0 000-1.4z"/></svg>'
+      + '</button>';
+    document.body.appendChild(wrap);
+
+    var btn = wrap.querySelector('.cw-btn');
+    var links = wrap.querySelectorAll('.cw-item');
+    function setOpen(open) {
+      wrap.classList.toggle('open', open);
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      btn.setAttribute('aria-label', open ? 'Закрыть контакты' : 'Открыть контакты');
+      for (var i = 0; i < links.length; i++) links[i].tabIndex = open ? 0 : -1;
+    }
+    for (var j = 0; j < links.length; j++) links[j].addEventListener('click', function () { setTimeout(function () { setOpen(false); }, 150); });
+    btn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      setOpen(!wrap.classList.contains('open'));
+    });
+    document.addEventListener('click', function (e) {
+      if (wrap.classList.contains('open') && !wrap.contains(e.target)) setOpen(false);
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && wrap.classList.contains('open')) { setOpen(false); btn.focus(); }
+    });
+    syncContactWidget();
+  }
+
   function start() {
     inject();
     initDesign();
@@ -613,6 +708,7 @@
     initClickGoals();
     initMetrika();
     initCookie();
+    initContactWidget();
     initNewWorks();
   }
 
