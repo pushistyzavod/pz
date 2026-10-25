@@ -158,10 +158,10 @@ function hero(p) {
       <a class="btn btn-ghost" href="#works">Примеры работ</a>
     </div>
     <div class="hero-facts">
-      <span class="fact"><i>📦</i> Тираж от 100 шт</span>
-      <span class="fact"><i>🎯</i> Образец ~10 дней</span>
-      <span class="fact"><i>⏱</i> Тираж 3–6 недель</span>
-      <span class="fact"><i>📄</i> Договор, УПД</span>
+      <span class="fact"><i>${ic('📦')}</i> Тираж от 100 шт</span>
+      <span class="fact"><i>${ic('🎯')}</i> Образец ~10 дней</span>
+      <span class="fact"><i>${ic('⏱')}</i> Тираж 3–6 недель</span>
+      <span class="fact"><i>${ic('📄')}</i> Договор, УПД</span>
     </div>
   </div>
   <div class="hero-img"><img src="${p.image}" alt="${esc(p.imgAlt)}" width="480" height="340" fetchpriority="high" decoding="async"></div>
@@ -190,6 +190,20 @@ function extraBlock(p) {
 
 const clOf = (p) => (C.H2.benefits[p.cluster] ? p.cluster : 'default');
 
+// Фирменные иконки вместо эмодзи (линии в цветах сайта). Ключ — эмодзи из данных,
+// поэтому в data/*.js ничего менять не нужно: неизвестный ключ выводится как есть.
+const ICON_PATHS = {
+  '🏭': '<path d="M3 21V10.5l5 3v-3l5 3v-3l5 3V6l3-1v16z"/><path d="M7 17.5h2M11 17.5h2M15 17.5h2"/>',
+  '✅': '<path d="M12 3l7 3v5c0 4.6-3 8.5-7 10-4-1.5-7-5.4-7-10V6z"/><path d="M8.8 12.2l2.2 2.2 4.3-4.4"/>',
+  '🎯': '<circle cx="6.8" cy="7" r="2.6"/><circle cx="17.2" cy="7" r="2.6"/><circle cx="12" cy="13.5" r="7"/><path d="M9.6 12h.01M14.4 12h.01"/><path d="M10.5 16c.9.7 2.1.7 3 0"/><ellipse cx="12" cy="15.2" rx="2.6" ry="2"/>',
+  '📄': '<path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5"/><path d="M10 13h6M10 17h4"/>',
+  '🚚': '<path d="M2.5 6.5h11.5v10H2.5z"/><path d="M14 10h4l3.5 3.5v3H14"/><circle cx="6.5" cy="18" r="2"/><circle cx="17.5" cy="18" r="2"/>',
+  '⏱': '<circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.8 1.8"/><path d="M10 2.5h4"/>',
+  '💳': '<rect x="2.5" y="5.5" width="19" height="13" rx="2.5"/><path d="M2.5 10h19"/><path d="M6.5 15h4"/>',
+  '📦': '<path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M4 7.5l8 4.5 8-4.5"/><path d="M12 12v9"/>',
+};
+const ic = (e) => (ICON_PATHS[e] ? `<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">${ICON_PATHS[e]}</svg>` : e);
+
 function benefitsBlock(p) {
   const items = p.benefits || C.BENEFITS;
   const cl = clOf(p);
@@ -197,7 +211,7 @@ function benefitsBlock(p) {
   <h2>${C.H2.benefits[cl]}</h2>
   <p class="lead">${C.LEADS.benefits[cl]}</p>
 
-  <div class="cards6">${items.map((b) => `<div class="card6"><div class="i">${b.i}</div><b>${b.b}</b><p>${b.p}</p></div>`).join('')}</div>
+  <div class="cards6">${items.map((b) => `<div class="card6"><div class="i">${ic(b.i)}</div><b>${b.b}</b><p>${b.p}</p></div>`).join('')}</div>
 </div></section>`;
 }
 
@@ -276,9 +290,9 @@ function deliveryBlock(p) {
   <h2>${C.H2.delivery[cl] || C.H2.delivery.default}</h2>
 
   <div class="cards6">
-    <div class="card6"><div class="i">💳</div><b>Оплата</b><p>Договор, счёт, безналичный расчёт, УПД. Работаем по предоплате: после оплаты счёта запускаем образец или тираж.</p></div>
-    <div class="card6"><div class="i">⏱</div><b>Сроки</b><p>Макет — 2–4 дня, образец — ~10 дней, тираж — 3–6 недель. Дату отгрузки фиксируем в договоре и отвечаем за неё.</p></div>
-    <div class="card6"><div class="i">🚚</div><b>Доставка</b><p>${cityText}</p></div>
+    <div class="card6"><div class="i">${ic('💳')}</div><b>Оплата</b><p>Договор, счёт, безналичный расчёт, УПД. Работаем по предоплате: после оплаты счёта запускаем образец или тираж.</p></div>
+    <div class="card6"><div class="i">${ic('⏱')}</div><b>Сроки</b><p>Макет — 2–4 дня, образец — ~10 дней, тираж — 3–6 недель. Дату отгрузки фиксируем в договоре и отвечаем за неё.</p></div>
+    <div class="card6"><div class="i">${ic('🚚')}</div><b>Доставка</b><p>${cityText}</p></div>
   </div>
 </div></section>`;
 }
@@ -521,6 +535,6 @@ function renderArticle(a, all) {
 }
 
 // Версия css/js в адресах (?v=…) — меняется при каждом изменении site.js, чтобы обновился кэш
-const ASSET_VERSION = '20261029';
+const ASSET_VERSION = '20261030';
 
 module.exports = { renderLanding, renderHub, renderArticle, jsonldOrganization, jsonldLocalBusiness, jsonldBreadcrumb, head, breadcrumbs, ctaBlock, reviewPick, reviewCards, esc, ASSET_VERSION };
