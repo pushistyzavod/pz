@@ -198,7 +198,7 @@
     + '<div class="tb-left">Собственное производство в РФ · Опт от 100 штук · Работаем с юрлицами по договору</div>'
     + '<div class="tb-right">'
     + '<span>Пн–Пт 9:00–18:00 (МСК)</span>'
-    + '<a href="mailto:' + EMAIL + '">✉️ ' + EMAIL + '</a>'
+    + '<a href="mailto:' + EMAIL + '"><svg width="1.15em" height="1.15em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" style="flex:none;vertical-align:-0.2em;margin-right:.35em"><rect x="3.5" y="5.5" width="17" height="13" rx="2"/><path d="M4 7l8 6 8-6"/></svg>' + EMAIL + '</a>'
     + '</div></div></div>';
 
 
@@ -517,7 +517,7 @@
     el.className = 'ckbox';
     el.setAttribute('role', 'dialog');
     el.innerHTML =
-      '<span>🍪 Мы используем cookie и Яндекс.Метрику для анализа посещаемости и улучшения сайта. '
+      '<span><svg width="1.2em" height="1.2em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" style="flex:none;vertical-align:-0.2em;margin-right:.35em"><circle cx="12" cy="12" r="9"/><path d="M8.5 9h.01M14.5 8h.01M9.5 14.5h.01M15 14h.01M12 11.5h.01"/></svg>Мы используем cookie и Яндекс.Метрику для анализа посещаемости и улучшения сайта. '
       + 'Продолжая пользоваться сайтом, вы соглашаетесь с <a href="/privacy/">Политикой конфиденциальности</a>.</span>'
       + '<button class="ck-ok" type="button">Принять</button>';
     document.body.appendChild(el);

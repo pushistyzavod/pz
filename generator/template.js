@@ -364,9 +364,9 @@ function ctaBlock(p) {
       <h2>Получите расчёт <span>за 1 рабочий день</span></h2>
       <p>Оставьте заявку — обсудим задачу, предложим варианты под бюджет и пришлём смету со сроками. Бесплатно нарисуем макет будущего изделия.</p>
       <div class="contacts">
-        <a href="tel:${C.COMPANY.phoneTel}">📞 ${C.COMPANY.phone}</a>
+        <a href="tel:${C.COMPANY.phoneTel}"><svg width="1.15em" height="1.15em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" style="flex:none;vertical-align:-0.2em;margin-right:.35em"><path d="M5 3h3.5l1.6 4.2-2.2 1.4a11 11 0 006.5 6.5l1.4-2.2L20 14.5V18a2 2 0 01-2 2A16 16 0 013 5a2 2 0 012-2z"/></svg>${C.COMPANY.phone}</a>
         <a href="${C.COMPANY.tg}" target="_blank" rel="noopener">Telegram</a>
-        <a href="mailto:${C.COMPANY.email}">✉️ ${C.COMPANY.email}</a>
+        <a href="mailto:${C.COMPANY.email}"><svg width="1.15em" height="1.15em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" style="flex:none;vertical-align:-0.2em;margin-right:.35em"><rect x="3.5" y="5.5" width="17" height="13" rx="2"/><path d="M4 7l8 6 8-6"/></svg>${C.COMPANY.email}</a>
       </div>
     </div>
     <form data-api-form data-form-name="${esc(p.formName)}">
@@ -471,7 +471,7 @@ function featuredCaseBlock(p) {
     <span class="fcs-tag"><i></i>Кейс · Международный фестиваль молодёжи 2026</span>
     <h2>${t.h2}</h2>
     <p>${t.lead}</p>
-    <ul><li>🧸 13 000 шт за 21 день</li><li>📺 Эфир Первого канала</li><li>📰 Фото в РИА Новости</li><li>🌍 Участники из 191 страны</li></ul>
+    <ul><li><svg width="1.15em" height="1.15em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" style="flex:none;vertical-align:-0.2em;margin-right:.35em"><circle cx="6.8" cy="7" r="2.6"/><circle cx="17.2" cy="7" r="2.6"/><circle cx="12" cy="13.5" r="7"/><path d="M9.6 12h.01M14.4 12h.01"/><ellipse cx="12" cy="15.4" rx="2.6" ry="2"/></svg>13 000 шт за 21 день</li><li><svg width="1.15em" height="1.15em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" style="flex:none;vertical-align:-0.2em;margin-right:.35em"><rect x="3" y="6.5" width="18" height="12.5" rx="2.2"/><path d="M8.5 3l3.5 3.5L15.5 3"/></svg>Эфир Первого канала</li><li><svg width="1.15em" height="1.15em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" style="flex:none;vertical-align:-0.2em;margin-right:.35em"><path d="M4 8.5h3l1.8-2.5h6.4L17 8.5h3V19H4z"/><circle cx="12" cy="13.5" r="3.4"/></svg>Фото в РИА Новости</li><li><svg width="1.15em" height="1.15em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" style="flex:none;vertical-align:-0.2em;margin-right:.35em"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.4 2.6 3.6 5.6 3.6 9s-1.2 6.4-3.6 9c-2.4-2.6-3.6-5.6-3.6-9S9.6 5.6 12 3z"/></svg>Участники из 191 страны</li></ul>
     <div class="fcs-btns">
       <a class="fcs-btn" href="${c.news}">Смотреть видео и историю</a>
       <a class="fcs-link" href="${c.ria}" target="_blank" rel="noopener">Читать статью на РИА Новости →</a>
@@ -535,6 +535,6 @@ function renderArticle(a, all) {
 }
 
 // Версия css/js в адресах (?v=…) — меняется при каждом изменении site.js, чтобы обновился кэш
-const ASSET_VERSION = '20261030';
+const ASSET_VERSION = '20261031';
 
 module.exports = { renderLanding, renderHub, renderArticle, jsonldOrganization, jsonldLocalBusiness, jsonldBreadcrumb, head, breadcrumbs, ctaBlock, reviewPick, reviewCards, esc, ASSET_VERSION };
