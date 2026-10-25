@@ -521,6 +521,6 @@ function renderArticle(a, all) {
 }
 
 // Версия css/js в адресах (?v=…) — меняется при каждом изменении site.js, чтобы обновился кэш
-const ASSET_VERSION = '20261027';
+const ASSET_VERSION = '20261028';
 
 module.exports = { renderLanding, renderHub, renderArticle, jsonldOrganization, jsonldLocalBusiness, jsonldBreadcrumb, head, breadcrumbs, ctaBlock, reviewPick, reviewCards, esc, ASSET_VERSION };
