@@ -81,8 +81,8 @@ header.nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.95);bac
 .chero-stats div:first-child{padding-left:0;border-left:none}
 .chero-stats b{display:block;font-size:27px;font-weight:700;color:var(--ink);line-height:1.1}
 .chero-stats span{font-size:13px;color:#7d879b}
-.chero-visual{position:relative;justify-self:center}
-.chero-visual img{position:relative;z-index:2;width:min(460px,118%);height:auto;filter:drop-shadow(0 6px 8px rgba(30,45,85,.16));transform:scale(1.18);transform-origin:50% 100%}
+.chero-visual{position:relative;justify-self:stretch;display:flex;flex-direction:column;align-items:center}
+.chero-visual img{position:relative;z-index:2;width:min(540px,135%);max-width:none;height:auto;filter:drop-shadow(0 6px 8px rgba(30,45,85,.16));transform:scale(1.18);transform-origin:50% 100%}
 .chero-visual .cv-shadow{position:absolute;bottom:-1%;left:50%;transform:translateX(-50%);width:64%;height:30px;border-radius:50%;background:radial-gradient(closest-side,rgba(30,45,85,.36),transparent 74%);filter:blur(10px);z-index:1}
 
 /* Quick nav (anchor chips) */
@@ -212,7 +212,7 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
   .chero-inner{grid-template-columns:1fr;padding:32px 0 40px}
   .chero h1{font-size:32px}
   .chero-visual{order:-1}
-  .chero-visual img{width:min(320px,100%);height:auto;margin:0 auto;transform:scale(1.12);transform-origin:50% 100%}
+  .chero-visual img{width:min(400px,88%);max-width:100%;height:auto;margin:0 auto;transform:scale(1.12);transform-origin:50% 100%}
   .subcat{grid-template-columns:1fr;gap:20px}
   .subcat:nth-child(even) .subcat-img{order:0}
   .opts{grid-template-columns:1fr 1fr}
@@ -308,7 +308,7 @@ footer a{display:block;padding:5px 0;opacity:.85}footer a:hover{opacity:1;color:
           <div><b>3–6 нед.</b><span>тираж</span></div>
         </div>
       </div>
-      <div class="chero-visual"><img src="/prototype/images/soft-goods-hero.webp" alt="Мягкая продукция на заказ — рюкзаки, тапочки и подушки с логотипом — Пушистый Завод" fetchpriority="high" decoding="async"><span class="cv-shadow" aria-hidden="true"></span></div>
+      <div class="chero-visual"><img src="/prototype/images/soft-goods-hero-v2.webp" width="1117" height="930" alt="Мягкая продукция на заказ — рюкзаки, тапочки и подушки с логотипом — Пушистый Завод" fetchpriority="high" decoding="async"><span class="cv-shadow" aria-hidden="true"></span></div>
     </div>
   </div>
 </section>
