@@ -1,0 +1,63 @@
+name: SEO agent
+
+# Раз в неделю SEO-агент готовит статью для блога: выбирает тему, ищет факты
+# в интернете (Gemini + поиск Google), пишет и проверяет текст и присылает
+# черновик владельцу в Telegram. Публикация — когда владелец ответит на
+# сообщение фотографией для обложки (это обрабатывает news-bot.yml).
+# Настройки (ключ Gemini, токен бота, ID владельца) — в /opt/pz-bot/.env на сервере.
+
+on:
+  schedule:
+    # понедельник, 07:17 по Москве
+    - cron: '17 4 * * 1'
+  workflow_dispatch:
+
+concurrency:
+  group: news-bot
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  draft:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Load bot settings from server
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -o ConnectTimeout=20 \
+            ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} 'cat /opt/pz-bot/.env' > "$RUNNER_TEMP/bot.env"
+          rm -f ~/.ssh/deploy_key
+          while IFS='=' read -r key value; do
+            case "$key" in ''|\#*) continue ;; esac
+            echo "::add-mask::$value"
+            echo "$key=$value" >> "$GITHUB_ENV"
+          done < "$RUNNER_TEMP/bot.env"
+          rm -f "$RUNNER_TEMP/bot.env"
+
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Write draft
+        run: node bot/agent.js
+
+      - name: Save draft to repository
+        run: |
+          git config user.name "pushistyzavod-bot"
+          git config user.email "bot@pushistyzavod.ru"
+          git add bot/drafts
+          git commit -m "SEO-агент: черновик статьи недели"
+          git pull --rebase origin main
+          git push origin HEAD:main
+
+      - name: Send draft to owner
+        run: node bot/agent.js notify

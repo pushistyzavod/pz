@@ -17,6 +17,10 @@ async function main() {
       console.error('Не удалось отправить ответ:', err.message);
     }
   }
+  for (const cb of state.callbacks || []) {
+    try { await tg.answerCallback(cb.id); } catch (e) { /* устарело — не страшно */ }
+    try { if (cb.chatId && cb.messageId) await tg.removeButtons(cb.chatId, cb.messageId); } catch (e) { /* кнопки уже убраны */ }
+  }
   if (state.offset) await tg.confirmUpdates(state.offset);
   console.log(`Ответов отправлено: ${state.replies.length}`);
 }

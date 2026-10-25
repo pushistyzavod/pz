@@ -2,9 +2,10 @@
   "name": "pz-news-bot",
   "version": "1.0.0",
   "private": true,
-  "description": "Telegram-бот: фото + тема → новость на pushistyzavod.ru",
+  "description": "Telegram-бот новостей и SEO-агент блога pushistyzavod.ru",
   "scripts": {
     "poll": "node poll.js",
-    "ack": "node ack.js"
+    "ack": "node ack.js",
+    "agent": "node agent.js"
   }
 }

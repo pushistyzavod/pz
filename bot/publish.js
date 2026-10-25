@@ -13,7 +13,7 @@ const SITEMAP = path.join(PROTO, 'sitemap.xml');
 const SITE = 'https://pushistyzavod.ru';
 
 const MONTHS = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
-const ALLOWED_TAGS = new Set(['p', 'h2', 'h3', 'ul', 'ol', 'li', 'strong', 'em', 'blockquote', 'a']);
+const ALLOWED_TAGS = new Set(['p', 'h2', 'h3', 'ul', 'ol', 'li', 'strong', 'em', 'blockquote', 'a', 'table', 'tr', 'th', 'td']);
 
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 // Заголовки, описания и FAQ от модели — в простой текст: шаблон генератора
@@ -108,7 +108,7 @@ function renderPage(slug) {
   return syncAssetVersions(T.renderArticle(article, { bySlug }));
 }
 
-function publish({ article, photo, photoSize, updateId }) {
+function publish({ article, photo, photoSize, updateId, category, coverCaption, sources }) {
   const posts = readPosts();
   const slug = uniqueSlug(article.slug, posts);
   const date = today();
@@ -131,14 +131,18 @@ function publish({ article, photo, photoSize, updateId }) {
     desc: plain(article.description),
     h1: plain(article.h1),
     h1plain: plain(article.shortTitle),
-    eyebrow: 'Новости',
-    category: 'Новости',
+    eyebrow: category || 'Новости',
+    category: category || 'Новости',
     date: date.iso,
     dateHuman: date.human,
     readTime: `${Math.max(1, Math.round(words / 180))} мин чтения`,
     image: photoSrc,
     photo: { src: photoSrc, alt, width: photoSize.width, height: photoSize.height },
-    body: `<p><img src="${photoSrc}" alt="${esc(alt)}" width="${photoSize.width}" height="${photoSize.height}" style="${photoStyle}" fetchpriority="high" decoding="async"></p>\n${body}`,
+    body: `<p><img src="${photoSrc}" alt="${esc(alt)}" width="${photoSize.width}" height="${photoSize.height}" style="${photoStyle}" fetchpriority="high" decoding="async"></p>\n`
+      + (coverCaption ? `<p style="margin-top:-10px;font-size:13px;color:#6b6b76">${esc(coverCaption)}</p>\n` : '')
+      + body
+      // источники статей SEO-агента: внешние ссылки только здесь, с nofollow
+      + (sources && sources.length ? `\n<h2>Источники</h2>\n<ul>${sources.filter((x) => /^https?:\/\//.test(x.url)).map((x) => `<li><a href="${esc(x.url)}" target="_blank" rel="noopener nofollow">${esc(plain(x.title || x.url))}</a></li>`).join('')}</ul>` : ''),
     faq: (article.faq || []).slice(0, 5).map((f) => ({ q: plain(f.q), a: plain(f.a) })),
     // «Читайте также»: три последние новости и статьи
     related: [...posts.slice(0, 3).map((p) => `news-${p.slug}`), 'news-kak-zakazat-igrushki-s-logotipom', 'news-maskot-dlya-brenda', 'news-tirazh-igrushek-kakoy-vygoden'].slice(0, 3),

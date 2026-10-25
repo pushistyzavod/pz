@@ -23,7 +23,7 @@ permissions:
 jobs:
   bot:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 35
     outputs:
       changed: ${{ steps.poll.outputs.changed }}
       urls: ${{ steps.poll.outputs.urls }}
@@ -53,7 +53,8 @@ jobs:
             echo "pending=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
-          count=$(curl -s -m 20 "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getUpdates?limit=1&timeout=0" | jq '.result | length')
+          # сообщения и нажатия кнопок под черновиками SEO-агента
+          count=$(curl -s -m 20 -G "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getUpdates" --data-urlencode 'limit=1' --data-urlencode 'timeout=0' --data-urlencode 'allowed_updates=["message","callback_query"]' | jq '.result | length')
           echo "Новых сообщений: ${count:-0}"
           if [ "${count:-0}" -gt 0 ]; then echo "pending=true" >> "$GITHUB_OUTPUT"; else echo "pending=false" >> "$GITHUB_OUTPUT"; fi
 
@@ -75,18 +76,30 @@ jobs:
         run: node bot/poll.js
 
       - name: Save changes to repository
-        if: steps.poll.outputs.changed == 'true'
+        if: steps.poll.outputs.changed == 'true' || steps.poll.outputs.drafts == 'true'
         run: |
           git config user.name "pushistyzavod-bot"
           git config user.email "bot@pushistyzavod.ru"
-          git add generator/data/news-posts.json prototype/news prototype/news.html prototype/sitemap.xml prototype/images/news
-          git commit -m "Новости: обновление через Telegram-бота"
+          git add generator/data/news-posts.json prototype/news prototype/news.html prototype/sitemap.xml prototype/images/news bot/drafts
+          git commit -m "Новости: обновление через Telegram-бота" || true
+          git pull --rebase origin main
           git push origin HEAD:main
 
       # Ответы и подтверждение сообщений — только после того, как изменения сохранены
       - name: Reply in Telegram
         if: steps.check.outputs.pending == 'true'
         run: node bot/ack.js
+
+      # «Другую тему» или /agent — SEO-агент сразу готовит новый черновик и присылает владельцу
+      - name: SEO agent — new draft
+        if: steps.poll.outputs.agent == 'true'
+        run: |
+          node bot/agent.js
+          git add bot/drafts
+          git commit -m "SEO-агент: новый черновик статьи"
+          git pull --rebase origin main
+          git push origin HEAD:main
+          node bot/agent.js notify
 
   deploy:
     needs: bot
