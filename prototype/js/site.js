@@ -607,7 +607,7 @@
   }
 
   // ---------- Плавающий виджет контактов (правый нижний угол) ----------
-  // Круглая кнопка; по нажатию снизу вверх раскрываются телефон, почта, VK и Telegram.
+  // Круглая кнопка; по нажатию снизу вверх раскрываются телефон, почта, VK, Telegram и MAX.
   // Повторное нажатие, клик мимо или Esc — закрывают. Пока виден cookie-баннер,
   // виджет поднимается над ним (syncContactWidget вызывается из initCookie).
   function syncContactWidget() {
@@ -628,6 +628,8 @@
         d: 'M12.77 17.29c-5.47 0-8.59-3.75-8.72-9.99h2.74c.09 4.58 2.11 6.52 3.71 6.92V7.3h2.58v3.95c1.58-.17 3.24-1.97 3.8-3.95h2.58c-.43 2.44-2.23 4.24-3.51 4.98 1.28.6 3.33 2.17 4.11 5.01h-2.84c-.61-1.9-2.13-3.37-4.14-3.57v3.57h-.31z' },
       { cls: 'tg', href: 'https://t.me/pushistyzavod', label: 'Telegram', title: 'Написать в Telegram', ext: true,
         d: 'M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z' },
+      { cls: 'max', href: 'https://max.ru/u/f9LHodD0cOLjuWOR1SsDIN794rJlGLqPMl0gt5SKbQteDHtw8cpKC07Blno', label: 'MAX', title: 'Написать в MAX', ext: true,
+        img: '/prototype/images/icons/max.webp' },
     ];
     var st = document.createElement('style');
     st.textContent = ''
@@ -636,11 +638,12 @@
       + '.cw-list li{opacity:0;transform:translateY(16px) scale(.6);transition:opacity .2s,transform .25s cubic-bezier(.3,1.4,.5,1)}'
       + '.cw.open .cw-list{pointer-events:auto}'
       + '.cw.open .cw-list li{opacity:1;transform:none}'
-      + '.cw.open .cw-list li:nth-last-child(1){transition-delay:0s}.cw.open .cw-list li:nth-last-child(2){transition-delay:.04s}.cw.open .cw-list li:nth-last-child(3){transition-delay:.08s}.cw.open .cw-list li:nth-last-child(4){transition-delay:.12s}'
+      + '.cw.open .cw-list li:nth-last-child(1){transition-delay:0s}.cw.open .cw-list li:nth-last-child(2){transition-delay:.04s}.cw.open .cw-list li:nth-last-child(3){transition-delay:.08s}.cw.open .cw-list li:nth-last-child(4){transition-delay:.12s}.cw.open .cw-list li:nth-last-child(5){transition-delay:.16s}'
       + '.cw-item{display:flex;align-items:center;gap:10px;text-decoration:none;margin-right:5px}'
       + '.cw-ic{width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;box-shadow:0 10px 24px -10px rgba(20,30,80,.55);transition:transform .15s}'
       + '.cw-ic svg{width:24px;height:24px;fill:currentColor}'
       + '.cw-item:hover .cw-ic,.cw-item:focus-visible .cw-ic{transform:scale(1.08)}'
+      + '.cw-ic img{width:100%;height:100%;display:block;border-radius:50%}.cw-max .cw-ic{background:#4a90ef}'
       + '.cw-tel .cw-ic{background:#22b573}.cw-mail .cw-ic{background:#639aee}.cw-vk .cw-ic{background:#0077ff}.cw-tg .cw-ic{background:#229ed9}'
       + '.cw-lbl{background:#fff;color:#22242b;font-size:13.5px;font-weight:600;line-height:1;padding:9px 13px;border-radius:12px;box-shadow:0 8px 24px -12px rgba(20,30,80,.45);white-space:nowrap;opacity:0;transform:translateX(6px);transition:.15s;pointer-events:none}'
       + '.cw-item:hover .cw-lbl,.cw-item:focus-visible .cw-lbl{opacity:1;transform:none}'
@@ -669,7 +672,7 @@
       + items.map(function (it) {
         return '<li><a class="cw-item cw-' + it.cls + '" href="' + it.href + '" title="' + it.title + '" aria-label="' + it.title + ': ' + it.label + '"'
           + (it.ext ? ' target="_blank" rel="noopener"' : '') + ' tabindex="-1">'
-          + '<span class="cw-lbl">' + it.label + '</span><span class="cw-ic">' + svg(it.d) + '</span></a></li>';
+          + '<span class="cw-lbl">' + it.label + '</span><span class="cw-ic">' + (it.img ? '<img src="' + it.img + '" alt="" width="50" height="50">' : svg(it.d)) + '</span></a></li>';
       }).join('')
       + '</ul>'
       + '<button class="cw-btn" type="button" aria-expanded="false" aria-controls="cw-list" aria-label="Открыть контакты">'
