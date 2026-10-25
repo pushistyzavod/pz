@@ -507,6 +507,11 @@ const MONTHS_GEN = ['января', 'февраля', 'марта', 'апрел�
 const humanDate = (iso) => { const [y, m, d] = String(iso).split('-').map(Number); return `${d} ${MONTHS_GEN[m - 1]} ${y}`; };
 // Обложка статьи со ссылкой на автора и лицензию (свободное изображение)
 function coverFigure(cv) {
+  // своё фото фабрики: подпись вместо ссылки на автора свободной картинки
+  if (!cv.credit) {
+    return `<figure style="margin:0 0 26px"><img src="${cv.src}" alt="${esc(cv.alt)}" width="${cv.width}" height="${cv.height}" style="width:100%;height:auto;border-radius:20px" fetchpriority="high" decoding="async">`
+      + (cv.caption ? `<figcaption style="margin-top:8px;font-size:13px;color:#6b6b76">${esc(cv.caption)}</figcaption>` : '') + '</figure>';
+  }
   const c = cv.credit || {};
   const who = [c.author, c.source].filter(Boolean).map(esc).join(', ');
   return `<figure style="margin:0 0 26px"><img src="${cv.src}" alt="${esc(cv.alt)}" width="${cv.width}" height="${cv.height}" style="width:100%;height:auto;border-radius:20px" fetchpriority="high" decoding="async">`

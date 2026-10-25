@@ -91,17 +91,11 @@
     }
   },
   "maskot-dlya-brenda": {
-    "src": "/prototype/images/news/covers/maskot-dlya-brenda.jpg",
-    "alt": "Ростовые маскоты-лягушки на городском празднике",
-    "width": 960,
-    "height": 600,
-    "credit": {
-      "author": "morischan",
-      "source": "Flickr",
-      "url": "http://www.flickr.com/photos/148728465@N03/48662378251",
-      "license": "общественное достояние",
-      "licenseUrl": "https://creativecommons.org/publicdomain/mark/1.0/"
-    }
+    "src": "/prototype/images/news/covers/maskot-dlya-brenda-pyaterochka.jpg",
+    "alt": "Сотрудник «Пятёрочки» с маскотом сети — мягкой игрушкой производства «Пушистого Завода»",
+    "width": 1200,
+    "height": 750,
+    "caption": "Маскот сети «Пятёрочка» — наша работа: 300 000 игрушек для федеральной акции."
   },
   "korporativny-merch-trendy": {
     "src": "/prototype/images/news/covers/korporativny-merch-trendy.jpg",
