@@ -224,10 +224,10 @@
     + '<div class="site-contact">'
     + '  <a class="site-phone" href="tel:' + PHONE_TEL + '">' + PHONE_HUMAN + '</a>'
     + '  <div class="msgs">'
-    + '    <a class="msg tg" href="https://t.me/pushistyzavod" target="_blank" rel="noopener" title="Написать в Telegram" aria-label="Telegram"><img src="/prototype/images/icons/telegram.webp" alt="Telegram"></a>'
-    + '    <a class="msg max" href="https://max.ru/u/f9LHodD0cOLjuWOR1SsDIN794rJlGLqPMl0gt5SKbQteDHtw8cpKC07Blno" target="_blank" rel="noopener" title="Написать в MAX" aria-label="MAX"><img src="/prototype/images/icons/max.webp" alt="MAX"></a>'
-    + '    <a class="msg vk" href="https://vk.com/pushistyzavod" target="_blank" rel="noopener" title="Мы во ВКонтакте" aria-label="ВКонтакте"><img src="/prototype/images/icons/vk.webp" alt="ВКонтакте"></a>'
-    + '    <a class="msg mail" href="mailto:' + EMAIL + '" title="Написать на почту" aria-label="E-mail"><img src="/prototype/images/icons/mail.webp" alt="E-mail"></a>'
+    + '    <a class="msg tg" href="https://t.me/pushistyzavod" target="_blank" rel="noopener" title="Написать в Telegram" aria-label="Telegram"><img src="/prototype/images/icons/telegram-round.webp" alt="Telegram"></a>'
+    + '    <a class="msg max" href="https://max.ru/u/f9LHodD0cOLjuWOR1SsDIN794rJlGLqPMl0gt5SKbQteDHtw8cpKC07Blno" target="_blank" rel="noopener" title="Написать в MAX" aria-label="MAX"><img src="/prototype/images/icons/max-round.webp" alt="MAX"></a>'
+    + '    <a class="msg vk" href="https://vk.com/pushistyzavod" target="_blank" rel="noopener" title="Мы во ВКонтакте" aria-label="ВКонтакте"><img src="/prototype/images/icons/vk-round.webp" alt="ВКонтакте"></a>'
+    + '    <a class="msg mail" href="mailto:' + EMAIL + '" title="Написать на почту" aria-label="E-mail"><img src="/prototype/images/icons/mail-round.webp" alt="E-mail"></a>'
     + '  </div>'
 
     + '</div>'
@@ -258,10 +258,10 @@
     + '    <a href="mailto:' + EMAIL + '">' + EMAIL + '</a>'
     + '    <div class="sochead">Мы в мессенджерах и соцсетях:</div>'
     + '    <div class="socials">'
-    + '      <a href="https://t.me/pushistyzavod" target="_blank" rel="noopener" title="Telegram" aria-label="Telegram"><img src="/prototype/images/icons/telegram.webp" alt="Telegram"></a>'
-    + '      <a href="https://max.ru/u/f9LHodD0cOLjuWOR1SsDIN794rJlGLqPMl0gt5SKbQteDHtw8cpKC07Blno" target="_blank" rel="noopener" title="MAX" aria-label="MAX"><img src="/prototype/images/icons/max.webp" alt="MAX"></a>'
-    + '      <a href="https://vk.com/pushistyzavod" target="_blank" rel="noopener" title="ВКонтакте" aria-label="ВКонтакте"><img src="/prototype/images/icons/vk.webp" alt="ВКонтакте"></a>'
-    + '      <a href="mailto:' + EMAIL + '" title="Написать на почту" aria-label="E-mail"><img src="/prototype/images/icons/mail.webp" alt="E-mail"></a>'
+    + '      <a href="https://t.me/pushistyzavod" target="_blank" rel="noopener" title="Telegram" aria-label="Telegram"><img src="/prototype/images/icons/telegram-round.webp" alt="Telegram"></a>'
+    + '      <a href="https://max.ru/u/f9LHodD0cOLjuWOR1SsDIN794rJlGLqPMl0gt5SKbQteDHtw8cpKC07Blno" target="_blank" rel="noopener" title="MAX" aria-label="MAX"><img src="/prototype/images/icons/max-round.webp" alt="MAX"></a>'
+    + '      <a href="https://vk.com/pushistyzavod" target="_blank" rel="noopener" title="ВКонтакте" aria-label="ВКонтакте"><img src="/prototype/images/icons/vk-round.webp" alt="ВКонтакте"></a>'
+    + '      <a href="mailto:' + EMAIL + '" title="Написать на почту" aria-label="E-mail"><img src="/prototype/images/icons/mail-round.webp" alt="E-mail"></a>'
     + '    </div>'
 
     + '    <a class="btn-inline" href="/#cta">Оставить заявку</a>'
@@ -292,10 +292,10 @@
     + '<div class="d-foot">'
     + '<a class="d-phone" href="tel:' + PHONE_TEL + '">' + PHONE_HUMAN + '</a>'
     + '<div class="d-msgs">'
-    + '<a href="https://t.me/pushistyzavod" target="_blank" rel="noopener" aria-label="Telegram"><img src="/prototype/images/icons/telegram.webp" alt="Telegram"></a>'
-    + '<a href="https://max.ru/u/f9LHodD0cOLjuWOR1SsDIN794rJlGLqPMl0gt5SKbQteDHtw8cpKC07Blno" target="_blank" rel="noopener" aria-label="MAX"><img src="/prototype/images/icons/max.webp" alt="MAX"></a>'
-    + '<a href="https://vk.com/pushistyzavod" target="_blank" rel="noopener" aria-label="ВКонтакте"><img src="/prototype/images/icons/vk.webp" alt="ВКонтакте"></a>'
-    + '<a href="mailto:' + EMAIL + '" aria-label="E-mail"><img src="/prototype/images/icons/mail.webp" alt="E-mail"></a>'
+    + '<a href="https://t.me/pushistyzavod" target="_blank" rel="noopener" aria-label="Telegram"><img src="/prototype/images/icons/telegram-round.webp" alt="Telegram"></a>'
+    + '<a href="https://max.ru/u/f9LHodD0cOLjuWOR1SsDIN794rJlGLqPMl0gt5SKbQteDHtw8cpKC07Blno" target="_blank" rel="noopener" aria-label="MAX"><img src="/prototype/images/icons/max-round.webp" alt="MAX"></a>'
+    + '<a href="https://vk.com/pushistyzavod" target="_blank" rel="noopener" aria-label="ВКонтакте"><img src="/prototype/images/icons/vk-round.webp" alt="ВКонтакте"></a>'
+    + '<a href="mailto:' + EMAIL + '" aria-label="E-mail"><img src="/prototype/images/icons/mail-round.webp" alt="E-mail"></a>'
     + '</div>'
     + '<a class="d-btn" href="/#cta">Рассчитать заказ</a>'
     + '</div>'
@@ -643,7 +643,7 @@
       { cls: 'tg', href: 'https://t.me/pushistyzavod', label: 'Telegram', title: 'Написать в Telegram', ext: true,
         d: 'M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z' },
       { cls: 'max', href: 'https://max.ru/u/f9LHodD0cOLjuWOR1SsDIN794rJlGLqPMl0gt5SKbQteDHtw8cpKC07Blno', label: 'MAX', title: 'Написать в MAX', ext: true,
-        img: '/prototype/images/icons/max.webp' },
+        img: '/prototype/images/icons/max-round.webp' },
     ];
     var st = document.createElement('style');
     st.textContent = ''
