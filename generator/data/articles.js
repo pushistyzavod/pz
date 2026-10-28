@@ -4,6 +4,8 @@ const C = require('./config');
 // Обложки статей: свободные изображения (CC0 / общественное достояние), см. data/news-covers.json
 const COVERS = require('./news-covers.json');
 
+const { authorFor } = require('./authors');
+
 function mk(o) {
   const cv = COVERS[o.slug];
   const cover = cv && !o.photo ? {
@@ -22,6 +24,7 @@ function mk(o) {
     formHint: 'прочитал статью, нужен расчёт тиража',
     ...o,
     ...cover,
+    author: authorFor(o.slug, o.author),
   };
 }
 

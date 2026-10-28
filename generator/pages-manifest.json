@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-25",
+  "generated": "2026-10-28",
   "landings": [
     "/mascots/",
     "/rostovye-maskoty/",
@@ -201,6 +201,8 @@
     "/dlya-biznesa/"
   ],
   "articles": [
+    "/news/podarki-detyam-sotrudnikov-na-novyy-god/",
+    "/news/simvol-goda-2027-korporativnye-podarki/",
     "/news/cheburashki-festival-molodezhi-2026/",
     "/news/kak-zakazat-igrushki-s-logotipom/",
     "/news/tirazh-igrushek-kakoy-vygoden/",
@@ -227,8 +229,8 @@
   "counts": {
     "landings": 195,
     "hubs": 1,
-    "articles": 12,
+    "articles": 14,
     "core": 8,
-    "total": 216
+    "total": 218
   }
 }

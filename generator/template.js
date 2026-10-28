@@ -97,7 +97,7 @@ function jsonldArticle(a) {
     image: C.SITE + a.image,
     datePublished: a.date,
     dateModified: a.updated || a.date,
-    author: { '@type': 'Organization', name: 'Пушистый Завод', url: C.SITE + '/' },
+    author: a.author ? { '@type': 'Person', name: a.author.name, jobTitle: a.author.role, worksFor: { '@id': C.SITE + '/#org' }, ...(a.author.photo ? { image: C.SITE + a.author.photo } : {}) } : { '@type': 'Organization', name: 'Пушистый Завод', url: C.SITE + '/' },
     publisher: { '@id': C.SITE + '/#org' },
     mainEntityOfPage: C.SITE + a.url,
   };
@@ -503,6 +503,14 @@ function renderHub(p, all) {
 }
 
 /* ---------- Статья блога ---------- */
+// Подпись автора: фото или инициалы, имя и должность
+function authorByline(au) {
+  const initials = au.name.split(/\s+/).map((w) => w[0]).join('').slice(0, 2);
+  const pic = au.photo
+    ? `<img src="${au.photo}" alt="${esc(au.name)}" width="44" height="44" style="width:44px;height:44px;border-radius:50%;object-fit:cover;flex:none">`
+    : `<span aria-hidden="true" style="width:44px;height:44px;border-radius:50%;flex:none;display:inline-flex;align-items:center;justify-content:center;background:${au.color};color:#fff;font-weight:700;font-size:15px">${initials}</span>`;
+  return `<div class="byline" style="display:flex;align-items:center;gap:12px;margin-top:16px">${pic}<div style="line-height:1.3"><b style="display:block;font-size:15px;color:#22242b">${esc(au.name)}</b><span style="font-size:13.5px;color:#6b6b76">${esc(au.role.charAt(0).toUpperCase() + au.role.slice(1))} «Пушистого Завода»</span></div></div>`;
+}
 const MONTHS_GEN = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
 const humanDate = (iso) => { const [y, m, d] = String(iso).split('-').map(Number); return `${d} ${MONTHS_GEN[m - 1]} ${y}`; };
 // Обложка статьи со ссылкой на автора и лицензию (свободное изображение)
@@ -530,6 +538,7 @@ function renderArticle(a, all) {
     <span class="eyebrow">${esc(a.eyebrow)}</span>
     <h1 style="font-size:36px">${a.h1}</h1>
     <div class="meta" style="display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;padding:0;margin-top:14px;font-size:14px;color:#6b6b76"><span class="cat" style="background:#eef1f8;color:#639aee;font-weight:600;border-radius:20px;padding:4px 12px">${esc(a.category)}</span><span>${a.dateHuman}</span>${a.updated && a.updated !== a.date ? `<span>· обновлено ${humanDate(a.updated)}</span>` : ''}</div>
+    ${a.author ? authorByline(a.author) : ''}
   </div>
 </div></section>`
     + `<section style="padding-top:26px"><div class="container"><div class="article">${a.cover ? coverFigure(a.cover) : ''}${a.body}${a.bodyExtra || ''}</div></div></section>`

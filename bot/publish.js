@@ -136,6 +136,7 @@ function publish({ article, photo, photoSize, updateId, category, coverCaption, 
     date: date.iso,
     dateHuman: date.human,
     readTime: `${Math.max(1, Math.round(words / 180))} мин чтения`,
+    author: require('../generator/data/authors').randomAuthorId(), // случайный автор из редакции
     image: photoSrc,
     photo: { src: photoSrc, alt, width: photoSize.width, height: photoSize.height },
     body: `<p><img src="${photoSrc}" alt="${esc(alt)}" width="${photoSize.width}" height="${photoSize.height}" style="${photoStyle}" fetchpriority="high" decoding="async"></p>\n`

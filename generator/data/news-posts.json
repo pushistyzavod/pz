@@ -45,7 +45,8 @@
       "news-simvol-goda-2027-korporativnye-podarki",
       "news-cheburashki-festival-molodezhi-2026",
       "news-kak-zakazat-igrushki-s-logotipom"
-    ]
+    ],
+    "author": "anton-semenov"
   },
   {
     "slug": "simvol-goda-2027-korporativnye-podarki",
@@ -93,7 +94,8 @@
       "news-cheburashki-festival-molodezhi-2026",
       "news-kak-zakazat-igrushki-s-logotipom",
       "news-maskot-dlya-brenda"
-    ]
+    ],
+    "author": "david-turov"
   },
   {
     "slug": "cheburashki-festival-molodezhi-2026",
@@ -129,6 +131,7 @@
       "news-kak-zakazat-igrushki-s-logotipom",
       "news-maskot-dlya-brenda",
       "news-tirazh-igrushek-kakoy-vygoden"
-    ]
+    ],
+    "author": "anton-semenov"
   }
 ]
