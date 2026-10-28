@@ -26,7 +26,7 @@ const HELP = `Я публикую новости на сайте pushistyzavod.r
 /delete адрес-новости — удалить новость
 /agent — SEO-агент прямо сейчас подготовит статью и пришлёт на одобрение (обычно приходит по понедельникам)
 
-Статьи агента: он присылает черновик файлом. Чтобы опубликовать — ответьте на это сообщение фотографией для обложки.`;
+Статьи агента: он присылает 3 фото и черновик файлом. Нажмите «✅ Фото 1/2/3» — статья опубликуется с этой обложкой. «✖️ Не принимаю» — отклонить, «🔄 Другую тему» — новая статья.`;
 
 async function handle(message, updateId, state) {
   const text = (message.caption || message.text || '').trim();
@@ -125,7 +125,7 @@ async function publishDraft(file, message, updateId, state) {
   return `Статья опубликована с вашим фото: «${result.title}»\n\n${result.url}\n\nСтраница появится на сайте через несколько минут, Яндекс получит уведомление. Удалить: /delete ${result.slug}`;
 }
 
-// Кнопки под черновиком SEO-агента: agent:new|rej:<id>
+// Кнопки под черновиком SEO-агента: agent:p1|p2|p3|new|rej:<id>
 async function handleAgentButton(cb, state) {
   const [, action, id] = String(cb.data || '').split(':');
   const file = path.join(__dirname, 'drafts', `${id}.json`);
@@ -136,6 +136,25 @@ async function handleAgentButton(cb, state) {
   }
   const save = (status, extra) => fs.writeFileSync(file, JSON.stringify({ ...draft, ...extra, status, decidedAt: new Date().toISOString() }, null, 2) + '\n');
 
+  // «✅ Фото N» — публикация с выбранной обложкой из фотостока
+  const pm = /^p([1-3])$/.exec(action || '');
+  if (pm) {
+    const ph = (draft.photos || [])[Number(pm[1]) - 1];
+    const photoFile = ph && path.join(__dirname, 'drafts', ph.file);
+    if (!ph || !fs.existsSync(photoFile)) return 'Этого фото нет в черновике — ответьте на сообщение своим фото.';
+    const already = site.readPosts().find((p) => p.updateId === `agent-${draft.id}`);
+    if (already) return `Статья опубликована: ${site.SITE}/news/${already.slug}/`;
+    const result = site.publish({
+      article: draft.article, photo: fs.readFileSync(photoFile), photoSize: { width: ph.width, height: ph.height },
+      updateId: `agent-${draft.id}`, category: 'Статьи', coverCaption: ph.caption, sources: draft.sources,
+    });
+    save('published', { slug: result.slug, photo: ph.file });
+    state.changed = true;
+    state.drafts = true;
+    state.published += 1;
+    state.urls.push(result.url);
+    return `Опубликовано с фото ${pm[1]}: «${result.title}»\n\n${result.url}\n\nСтраница появится на сайте после ближайшего обновления, Яндекс получит уведомление. Удалить: /delete ${result.slug}`;
+  }
   if (action === 'new') {
     save('rejected', { reason: 'другая тема' });
     state.drafts = true;

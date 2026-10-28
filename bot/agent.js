@@ -141,9 +141,8 @@ const ARTICLE = {
     imageAlt: str('alt для обложки: описание фото по теме статьи, до 120 символов'),
     faq: { type: 'ARRAY', items: { type: 'OBJECT', properties: { q: str('Вопрос'), a: str('Ответ') }, required: ['q', 'a'] } },
     sourcesUsed: { type: 'ARRAY', items: { type: 'INTEGER' }, description: 'номера использованных источников из списка' },
-    photoIdea: str('какое фото работы фабрики лучше поставить на обложку (одной фразой, для владельца)'),
   },
-  required: ['slug', 'title', 'description', 'h1', 'shortTitle', 'bodyHtml', 'imageAlt', 'faq', 'sourcesUsed', 'photoIdea'],
+  required: ['slug', 'title', 'description', 'h1', 'shortTitle', 'bodyHtml', 'imageAlt', 'faq', 'sourcesUsed'],
 };
 
 // 3. Статья
@@ -222,7 +221,7 @@ function previewHtml(d) {
 <style>body{font:17px/1.6 -apple-system,Segoe UI,Roboto,sans-serif;color:#22242b;max-width:760px;margin:0 auto;padding:18px}img{width:100%;border-radius:16px}h1{font-size:26px;line-height:1.25}h2{font-size:21px;margin-top:28px}table{border-collapse:collapse;width:100%;font-size:15px}td,th{border:1px solid #ddd;padding:6px 8px;text-align:left}.m{color:#6b6b76;font-size:14px}.box{background:#f4f7fd;border-radius:12px;padding:12px 16px;margin:16px 0}a{color:#4c8de1}</style></head><body>
 <p class="m">ЧЕРНОВИК · ${esc(d.topic.type || '')} · ${d.words} слов · запрос: «${esc(d.topic.query)}»</p>
 <div class="box"><b>Почему эта тема:</b> ${esc(d.topic.whyNow)}<br><b>Title:</b> ${esc(d.article.title)}<br><b>Description:</b> ${esc(d.article.description)}</div>
-<div class="box"><b>Фото для обложки:</b> ${esc(d.photoIdea || 'фото вашей работы по теме')}. Пришлите его ответом на сообщение с этим файлом — статья опубликуется.</div>
+<div class="box"><b>Обложка:</b> выберите фото 1, 2 или 3 кнопкой под сообщением — статья опубликуется с ним. Или ответьте на сообщение своим фото.</div>
 <h1>${esc(d.article.h1)}</h1>${d.article.bodyHtml}
 <h2>Частые вопросы</h2>${d.article.faq.map((f) => `<p><b>${esc(f.q)}</b><br>${esc(f.a)}</p>`).join('')}
 ${d.sources.length ? `<h2>Источники</h2><ul>${d.sources.map((s) => `<li><a href="${esc(s.url)}">${esc(s.title)}</a></li>`).join('')}</ul>` : ''}
@@ -252,6 +251,12 @@ async function makeDraft() {
   if (fc.bodyHtml && words(fc.bodyHtml) >= 600) article.bodyHtml = fc.bodyHtml;
   if (Array.isArray(fc.faq) && fc.faq.length >= 3) article.faq = fc.faq;
 
+  console.log('Рисую 3 варианта обложки…');
+  const { pickPhotos } = require('./photos');
+  let photos = [];
+  try { photos = await pickPhotos(article); } catch (e) { console.log('    обложки не получились:', e.message); }
+  console.log('    фото:', photos.length);
+
   const id = `${now.toISOString().slice(0, 10)}-${String(article.slug).toLowerCase().replace(/[^a-z0-9-]+/g, '-').slice(0, 40).replace(/-+$/, '')}`;
   fs.mkdirSync(DRAFTS, { recursive: true });
   const used = new Set((article.sourcesUsed || []).filter((n) => res.sources[n]));
@@ -259,9 +264,13 @@ async function makeDraft() {
     id, created: now.toISOString(), status: 'pending', topic,
     article: { slug: article.slug, title: article.title, description: article.description, h1: article.h1, shortTitle: article.shortTitle, bodyHtml: article.bodyHtml, imageAlt: article.imageAlt, faq: (article.faq || []).slice(0, 6) },
     sources: (used.size ? [...used].map((n) => res.sources[n]) : res.sources).slice(0, 8),
-    photoIdea: article.photoIdea || '',
+    photos: [],
     problems: fc.problems || [], words: words(article.bodyHtml),
   };
+  photos.forEach((ph, i) => {
+    fs.writeFileSync(path.join(DRAFTS, `${id}-${i + 1}.jpg`), ph.buf);
+    draft.photos.push({ file: `${id}-${i + 1}.jpg`, width: ph.width, height: ph.height, caption: ph.caption, url: ph.url });
+  });
   fs.writeFileSync(path.join(DRAFTS, id + '.json'), JSON.stringify(draft, null, 2) + '\n');
   fs.mkdirSync(OUT, { recursive: true });
   fs.writeFileSync(path.join(OUT, `${id}.html`), previewHtml(draft));
@@ -279,19 +288,42 @@ async function notify() {
   for (const id of JSON.parse(fs.readFileSync(file, 'utf8')).toNotify) {
     const d = JSON.parse(fs.readFileSync(path.join(DRAFTS, id + '.json'), 'utf8'));
     const html = fs.existsSync(path.join(OUT, id + '.html')) ? fs.readFileSync(path.join(OUT, id + '.html')) : Buffer.from(previewHtml(d));
-    const caption = `📝 Статья недели для блога\n\n«${d.article.h1}»\n\nЗапрос: ${d.topic.query}\n${d.words} слов · источников: ${d.sources.length}\n\nОткройте файл и прочитайте статью.\n\n✅ Чтобы опубликовать — ответьте на это сообщение фотографией для обложки${d.photoIdea ? ` (подойдёт: ${d.photoIdea})` : ''}.`.slice(0, 1020);
-    // имя файла = id черновика: по нему бот узнаёт, к какой статье прислано фото
+    const photos = (d.photos || []).filter((p) => fs.existsSync(path.join(DRAFTS, p.file)));
+    if (photos.length) {
+      await tg.sendMediaGroup(owner, photos.map((p, i) => ({ buf: fs.readFileSync(path.join(DRAFTS, p.file)), caption: `Фото ${i + 1}` })));
+    }
+    const caption = `📝 Статья недели для блога\n\n«${d.article.h1}»\n\nЗапрос: ${d.topic.query}\n${d.words} слов · источников: ${d.sources.length}\n\nОткройте файл и прочитайте статью. ${photos.length ? 'Выберите обложку кнопкой — статья сразу опубликуется.' : 'Фото не подобрались: ответьте на это сообщение своим фото, чтобы опубликовать.'}`.slice(0, 1020);
+    // имя файла = id черновика: по нему бот узнаёт статью, если владелец ответит своим фото
+    const choose = photos.map((p, i) => ({ text: `✅ Фото ${i + 1}`, callback_data: `agent:p${i + 1}:${id}`.slice(0, 64) }));
     await tg.sendDocument(owner, `${id}.html`, html, caption, {
-      inline_keyboard: [[{ text: '🔄 Другую тему', callback_data: `agent:new:${id}`.slice(0, 64) }, { text: '✖️ Отклонить', callback_data: `agent:rej:${id}`.slice(0, 64) }]],
+      inline_keyboard: [...(choose.length ? [choose] : []), [{ text: '🔄 Другую тему', callback_data: `agent:new:${id}`.slice(0, 64) }, { text: '✖️ Не принимаю', callback_data: `agent:rej:${id}`.slice(0, 64) }]],
     });
     console.log('Отправлено владельцу:', id);
   }
   fs.unlinkSync(file);
 }
 
+// Подобрать 3 фото к уже готовому черновику и отправить его владельцу заново: node bot/agent.js photos <id>
+async function addPhotos(id) {
+  const file = path.join(DRAFTS, `${id}.json`);
+  const d = JSON.parse(fs.readFileSync(file, 'utf8'));
+  const { pickPhotos } = require('./photos');
+  const photos = await pickPhotos(d.article);
+  d.photos = photos.map((ph, i) => {
+    fs.writeFileSync(path.join(DRAFTS, `${id}-${i + 1}.jpg`), ph.buf);
+    return { file: `${id}-${i + 1}.jpg`, width: ph.width, height: ph.height, caption: ph.caption, url: ph.url };
+  });
+  fs.writeFileSync(file, JSON.stringify(d, null, 2) + '\n');
+  fs.mkdirSync(OUT, { recursive: true });
+  const queue = path.join(OUT, 'agent.json');
+  const list = fs.existsSync(queue) ? JSON.parse(fs.readFileSync(queue, 'utf8')).toNotify : [];
+  fs.writeFileSync(queue, JSON.stringify({ toNotify: [...new Set([...list, id])] }));
+  console.log(`${id}: обложек ${d.photos.length}`);
+}
+
 if (require.main === module) {
   const mode = process.argv[2];
-  (mode === 'notify' ? notify() : makeDraft()).catch((err) => { console.error(err); process.exit(1); });
+  (mode === 'notify' ? notify() : mode === 'photos' ? addPhotos(process.argv[3]) : makeDraft()).catch((err) => { console.error(err); process.exit(1); });
 }
 
 module.exports = { readDrafts, DRAFTS };

@@ -1,6 +1,7 @@
 // Клиент Gemini для SEO-агента: запросы с поиском Google (grounding) и с JSON-схемой.
 // Модели по порядку: основная и запасные — на случай перегрузки или лимита.
 const MODELS = [process.env.GEMINI_MODEL || 'gemini-pro-latest', 'gemini-flash-latest'];
+const FAST = ['gemini-flash-latest', 'gemini-pro-latest'];
 const endpoint = (model) => `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;
 
 class GeminiError extends Error {
@@ -34,10 +35,11 @@ async function request(model, body) {
 // Один вызов с повторами и запасными моделями.
 // search: true — модель ищет в Google и возвращает источники (groundingChunks).
 // schema — ответ строго в JSON по схеме (нельзя совмещать с поиском — ограничение Gemini).
-async function ask({ system, prompt, search = false, schema = null, maxTokens = 16000 }) {
+async function ask({ system, prompt, search = false, schema = null, maxTokens = 16000, images = [], fast = false }) {
   const body = {
     system_instruction: { parts: [{ text: system }] },
-    contents: [{ role: 'user', parts: [{ text: prompt }] }],
+    // images: [{ mime, data(Buffer) }] — для выбора фото по смыслу
+    contents: [{ role: 'user', parts: [...images.map((im) => ({ inline_data: { mime_type: im.mime, data: im.data.toString('base64') } })), { text: prompt }] }],
     generationConfig: { maxOutputTokens: maxTokens },
   };
   if (search) body.tools = [{ google_search: {} }];
@@ -45,7 +47,7 @@ async function ask({ system, prompt, search = false, schema = null, maxTokens = 
 
   let data;
   let lastError;
-  outer: for (const model of MODELS) {
+  outer: for (const model of (fast ? FAST : MODELS)) {
     for (let attempt = 1; attempt <= 2; attempt++) {
       try {
         data = await request(model, body);

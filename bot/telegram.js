@@ -46,4 +46,16 @@ async function sendDocument(chatId, filename, buffer, caption, replyMarkup) {
 const answerCallback = (id, text) => call('answerCallbackQuery', { callback_query_id: id, text: text || '' });
 const removeButtons = (chatId, messageId) => call('editMessageReplyMarkup', { chat_id: chatId, message_id: messageId, reply_markup: { inline_keyboard: [] } });
 
-module.exports = { getUpdates, confirmUpdates, sendMessage, downloadFile, sendDocument, answerCallback, removeButtons };
+// Альбом фото (варианты обложки): [{ buf, caption }]
+async function sendMediaGroup(chatId, items) {
+  const form = new FormData();
+  form.append('chat_id', String(chatId));
+  form.append('media', JSON.stringify(items.map((it, i) => ({ type: 'photo', media: `attach://p${i}`, caption: it.caption }))));
+  items.forEach((it, i) => form.append(`p${i}`, new Blob([it.buf], { type: 'image/jpeg' }), `p${i}.jpg`));
+  const res = await fetch(`${API}/sendMediaGroup`, { method: 'POST', body: form });
+  const data = await res.json();
+  if (!data.ok) throw new Error(`Telegram sendMediaGroup: ${data.description || res.status}`);
+  return data.result;
+}
+
+module.exports = { getUpdates, confirmUpdates, sendMessage, downloadFile, sendDocument, sendMediaGroup, answerCallback, removeButtons };

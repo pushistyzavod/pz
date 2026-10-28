@@ -94,6 +94,7 @@ jobs:
       - name: SEO agent — new draft
         if: steps.poll.outputs.agent == 'true'
         run: |
+          npm install --prefix bot --no-save --no-package-lock --no-audit --no-fund jimp@0.22.12
           node bot/agent.js
           git add bot/drafts
           git commit -m "SEO-агент: новый черновик статьи"

@@ -47,6 +47,9 @@ jobs:
         with:
           node-version: 22
 
+      - name: Install image library
+        run: npm install --prefix bot --no-save --no-package-lock --no-audit --no-fund jimp@0.22.12
+
       - name: Write draft
         run: node bot/agent.js
 
