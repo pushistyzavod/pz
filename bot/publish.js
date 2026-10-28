@@ -108,7 +108,7 @@ function renderPage(slug) {
   return syncAssetVersions(T.renderArticle(article, { bySlug }));
 }
 
-function publish({ article, photo, photoSize, updateId, category, coverCaption, sources }) {
+function publish({ article, photo, photoSize, updateId, category, coverCaption }) {
   const posts = readPosts();
   const slug = uniqueSlug(article.slug, posts);
   const date = today();
@@ -141,9 +141,8 @@ function publish({ article, photo, photoSize, updateId, category, coverCaption, 
     photo: { src: photoSrc, alt, width: photoSize.width, height: photoSize.height },
     body: `<p><img src="${photoSrc}" alt="${esc(alt)}" width="${photoSize.width}" height="${photoSize.height}" style="${photoStyle}" fetchpriority="high" decoding="async"></p>\n`
       + (coverCaption ? `<p style="margin-top:-10px;font-size:13px;color:#6b6b76">${esc(coverCaption)}</p>\n` : '')
-      + body
-      // источники статей SEO-агента: внешние ссылки только здесь, с nofollow
-      + (sources && sources.length ? `\n<h2>Источники</h2>\n<ul>${sources.filter((x) => /^https?:\/\//.test(x.url)).map((x) => `<li><a href="${esc(x.url)}" target="_blank" rel="noopener nofollow">${esc(plain(x.title || x.url))}</a></li>`).join('')}</ul>` : ''),
+      // источники SEO-агента на сайт не выводим — владелец видит их только в черновике в Telegram
+      + body,
     faq: (article.faq || []).slice(0, 5).map((f) => ({ q: plain(f.q), a: plain(f.a) })),
     // «Читайте также»: три последние новости и статьи
     related: [...posts.slice(0, 3).map((p) => `news-${p.slug}`), 'news-kak-zakazat-igrushki-s-logotipom', 'news-maskot-dlya-brenda', 'news-tirazh-igrushek-kakoy-vygoden'].slice(0, 3),

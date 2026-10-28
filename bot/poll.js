@@ -115,7 +115,7 @@ async function publishDraft(file, message, updateId, state) {
   const photo = await tg.downloadFile(size.file_id);
   const result = site.publish({
     article: draft.article, photo, photoSize: size, updateId: `agent-${draft.id}`,
-    category: 'Статьи', sources: draft.sources,
+    category: 'Статьи',
   });
   fs.writeFileSync(file, JSON.stringify({ ...draft, status: 'published', slug: result.slug, decidedAt: new Date().toISOString() }, null, 2) + '\n');
   state.changed = true;
@@ -146,7 +146,7 @@ async function handleAgentButton(cb, state) {
     if (already) return `Статья опубликована: ${site.SITE}/news/${already.slug}/`;
     const result = site.publish({
       article: draft.article, photo: fs.readFileSync(photoFile), photoSize: { width: ph.width, height: ph.height },
-      updateId: `agent-${draft.id}`, category: 'Статьи', coverCaption: ph.caption, sources: draft.sources,
+      updateId: `agent-${draft.id}`, category: 'Статьи', coverCaption: ph.caption,
     });
     save('published', { slug: result.slug, photo: ph.file });
     state.changed = true;
