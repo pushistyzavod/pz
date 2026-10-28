@@ -1,7 +1,7 @@
 {
   "id": "2026-10-25-podarki-detyam-sotrudnikov-na-novyy-god",
   "created": "2026-10-25T16:46:56.267Z",
-  "status": "pending",
+  "status": "published",
   "topic": {
     "topic": "Корпоративные подарки детям сотрудников на Новый год: что дарить и как успеть с производством",
     "query": "подарки детям сотрудников на новый год",
@@ -80,5 +80,8 @@
       "caption": "Иллюстрация создана нейросетью.",
       "url": ""
     }
-  ]
+  ],
+  "slug": "podarki-detyam-sotrudnikov-na-novyy-god",
+  "photo": "2026-10-25-podarki-detyam-sotrudnikov-na-novyy-god-2.jpg",
+  "decidedAt": "2026-10-28T17:29:23.714Z"
 }
