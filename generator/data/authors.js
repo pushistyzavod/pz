@@ -1,12 +1,11 @@
-// Авторы статей блога — настоящие сотрудники (подтверждено владельцем 28.10.2026).
+// Авторы статей блога — настоящие сотрудники (состав обновлён владельцем 28.10.2026).
 // Фото кладём в prototype/images/authors/<id>.jpg; пока фото нет — аватар с инициалами.
 const fs = require('fs');
 const path = require('path');
 
 const AUTHORS = [
-  { id: 'anastasiya-pletneva', name: 'Анастасия Плетнева', role: 'пресс-служба', color: '#ff6099' },
-  { id: 'david-turov', name: 'Давид Туров', role: 'журналист', color: '#639aee' },
-  { id: 'anton-semenov', name: 'Антон Семенов', role: 'редактор', color: '#8d7ff0' },
+  { id: 'yuliya-aberova', name: 'Юлия Аберова', role: 'модератор', color: '#ff6099' },
+  { id: 'vasiliy-korenev', name: 'Василий Коренев', role: 'журналист', color: '#639aee' },
 ];
 
 const PHOTOS = path.join(__dirname, '..', '..', 'prototype', 'images', 'authors');
@@ -15,14 +14,14 @@ const withPhoto = (a) => {
   return { ...a, photo: fs.existsSync(file) ? `/prototype/images/authors/${a.id}.jpg` : null };
 };
 
-// Статьи блога, написанные до появления авторов: распределены поровну
+// Статьи блога, написанные до появления авторов: авторы чередуются по дате
 const FIXED = {
-  'kak-zakazat-igrushki-s-logotipom': 'anastasiya-pletneva', 'tirazh-igrushek-kakoy-vygoden': 'david-turov',
-  'sroki-proizvodstva-igrushek': 'anton-semenov', 'pvh-ili-plush-chto-vybrat': 'anastasiya-pletneva',
-  'vyshivka-ili-pechat': 'david-turov', 'igrushki-dlya-marketpleysov': 'anton-semenov',
-  'promo-igrushki-roi': 'anastasiya-pletneva', 'maskot-dlya-brenda': 'david-turov',
-  'korporativny-merch-trendy': 'anton-semenov', 'chestny-znak-igrushki': 'anastasiya-pletneva',
-  'uhod-za-plyushevymi-igrushkami': 'david-turov',
+  'kak-zakazat-igrushki-s-logotipom': 'yuliya-aberova', 'tirazh-igrushek-kakoy-vygoden': 'vasiliy-korenev',
+  'sroki-proizvodstva-igrushek': 'yuliya-aberova', 'pvh-ili-plush-chto-vybrat': 'vasiliy-korenev',
+  'vyshivka-ili-pechat': 'yuliya-aberova', 'igrushki-dlya-marketpleysov': 'vasiliy-korenev',
+  'promo-igrushki-roi': 'yuliya-aberova', 'maskot-dlya-brenda': 'vasiliy-korenev',
+  'korporativny-merch-trendy': 'yuliya-aberova', 'chestny-znak-igrushki': 'vasiliy-korenev',
+  'uhod-za-plyushevymi-igrushkami': 'yuliya-aberova',
 };
 
 // Автор статьи: явно заданный, иначе закреплённый за адресом статьи (не меняется между сборками)
@@ -34,6 +33,11 @@ function authorFor(slug, id) {
   return withPhoto(AUTHORS[h % AUTHORS.length]);
 }
 
-const randomAuthorId = () => AUTHORS[Math.floor(Math.random() * AUTHORS.length)].id;
+// Автор следующей публикации: по очереди — не тот, кто написал последнюю (posts — новые сверху)
+function nextAuthorId(posts) {
+  const last = posts.length ? authorFor(posts[0].slug, posts[0].author).id : null;
+  const i = AUTHORS.findIndex((a) => a.id === last);
+  return AUTHORS[(i + 1) % AUTHORS.length].id;
+}
 
-module.exports = { AUTHORS, authorFor, randomAuthorId };
+module.exports = { AUTHORS, authorFor, nextAuthorId };
