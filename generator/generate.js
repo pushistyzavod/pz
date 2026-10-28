@@ -279,6 +279,32 @@ Sitemap: ${C.SITE}/sitemap.xml
 `;
 fs.writeFileSync(path.join(OUT, 'robots.txt'), robots, 'utf8');
 
+/* ---------- llms-full.txt: подробная справка для нейросетей (ChatGPT, Алиса, Perplexity) ---------- */
+// Краткий llms.txt пишется вручную; сюда добавляем ответы на частые вопросы и карту страниц
+// цены на сайте не публикуем — как и в FAQ на страницах, ответы про стоимость заменяем
+const NP = require('./no-prices');
+const plain = (s) => String(s || '').replace(/<[^>]+>/g, ' ').replace(/&nbsp;/g, ' ').replace(/\s+/g, ' ').trim();
+const llmsFaq = new Map();
+[{ faq: C.FAQ_COMMON }, ...catalog, ...services, ...plastic].forEach((p) => (p.faq || []).forEach((f) => {
+  if (!llmsFaq.has(f.q)) llmsFaq.set(f.q, NP.stripPriceSentences(NP.faqAnswer(f.q, plain(f.a))));
+}));
+const llmsPages = landings.filter((p) => !p.noindex && p.cluster !== 'cities');
+const llmsFull = `${fs.readFileSync(path.join(OUT, 'llms.txt'), 'utf8').trim()}
+
+## Частые вопросы заказчиков
+
+${[...llmsFaq].map(([q, a]) => `### ${plain(q)}\n${a}`).join('\n\n')}
+
+## Все услуги и решения
+
+${llmsPages.map((p) => `- [${plain(p.h1plain || p.title)}](${C.SITE}${p.url}): ${NP.stripPriceSentences(plain(p.desc))}`).join('\n')}
+
+## Статьи блога
+
+${articles.map((a) => `- [${plain(a.h1plain || a.title)}](${C.SITE}${a.url}) — ${a.dateHuman}, ${a.author.name}: ${NP.stripPriceSentences(plain(a.desc))}`).join('\n')}
+`;
+fs.writeFileSync(path.join(OUT, 'llms-full.txt'), llmsFull, 'utf8');
+
 /* ---------- sitemap.xml ---------- */
 const today = new Date().toISOString().slice(0, 10);
 function urlEntry(loc, priority, changefreq, lastmod) {
