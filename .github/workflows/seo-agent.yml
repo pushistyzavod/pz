@@ -1,6 +1,7 @@
 name: SEO agent
 
-# Раз в неделю SEO-агент готовит статью для блога: выбирает тему, ищет факты
+# Раз в неделю разведчик проверяет, на каком месте нас советуют нейросети,
+# а SEO-агент готовит статью для блога: выбирает тему, ищет факты
 # в интернете (Gemini + поиск Google), пишет и проверяет текст и присылает
 # черновик владельцу в Telegram. Публикация — когда владелец ответит на
 # сообщение фотографией для обложки (это обрабатывает news-bot.yml).
@@ -50,6 +51,11 @@ jobs:
       - name: Install image library
         run: npm install --prefix bot --no-save --no-package-lock --no-audit --no-fund jimp@0.22.12
 
+      # Разведчик: на каком месте нас называют нейросети — слабые вопросы агент берёт в темы
+      - name: Check AI visibility
+        continue-on-error: true
+        run: node bot/visibility.js
+
       - name: Write draft
         run: node bot/agent.js
 
@@ -57,10 +63,14 @@ jobs:
         run: |
           git config user.name "pushistyzavod-bot"
           git config user.email "bot@pushistyzavod.ru"
-          git add bot/drafts
+          git add bot/drafts bot/visibility.json
           git commit -m "SEO-агент: черновик статьи недели"
           git pull --rebase origin main
           git push origin HEAD:main
 
       - name: Send draft to owner
         run: node bot/agent.js notify
+
+      - name: Send AI visibility report
+        continue-on-error: true
+        run: node bot/visibility.js notify
