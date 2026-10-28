@@ -14,14 +14,20 @@ function jsonldOrganization() {
     logo: C.SITE + '/prototype/images/logo.png',
     email: C.COMPANY.email,
     telephone: C.COMPANY.phoneTel,
+    alternateName: ['Пушистый Завод', 'Pushisty Zavod', 'pushistyzavod.ru'],
+    description: 'Российская фабрика полного цикла: мягкие игрушки, корпоративные маскоты, ПВХ- и ABS-фигурки, подушки, рюкзаки и тапочки с логотипом на заказ для бизнеса. Тираж от 100 штук, бесплатный макет за 2–4 дня, образец около 10 дней, тираж 3–6 недель. Собственное производство в Москве, Иваново и Улан-Удэ. Клиенты: «Пятёрочка» (300 000 маскотов), сок «Добрый», ХК «Локомотив», ПСБ, Яндекс, «Аэрофлот», Международный фестиваль молодёжи 2026 (13 000 Чебурашек за 21 день).',
+    slogan: 'Игрушки с логотипом для бизнеса — от макета до тиража',
     foundingDate: '2016',
+    areaServed: [{ '@type': 'Country', name: 'Россия' }, { '@type': 'Place', name: 'СНГ' }],
+    knowsAbout: ['мягкие игрушки на заказ', 'корпоративные маскоты', 'ПВХ-фигурки', 'игрушки с логотипом', 'корпоративные подарки', 'промо-игрушки', 'мерч', 'ростовые куклы', 'сертификация игрушек ТР ТС 008/2011', 'маркировка «Честный знак»'],
+    subjectOf: { '@type': 'NewsArticle', url: 'https://ria.ru/20260916/festival-2118104429.html', publisher: { '@type': 'Organization', name: 'РИА Новости' } },
     address: [
       { '@type': 'PostalAddress', streetAddress: 'Автозаводская ул., 23Б, корп. 2', addressLocality: 'Москва', addressCountry: 'RU', description: 'Офис продаж' },
       { '@type': 'PostalAddress', addressLocality: 'Москва', addressCountry: 'RU', description: 'Производство' },
       { '@type': 'PostalAddress', addressLocality: 'Иваново', addressRegion: 'Ивановская область', addressCountry: 'RU', description: 'Производство' },
       { '@type': 'PostalAddress', addressLocality: 'Улан-Удэ', addressRegion: 'Республика Бурятия', addressCountry: 'RU', description: 'Производство' },
     ],
-    sameAs: [C.COMPANY.tg, C.COMPANY.vk, C.COMPANY.max],
+    sameAs: [C.COMPANY.tg, C.COMPANY.vk, C.COMPANY.max, C.COMPANY.mapUrl, 'https://productcenter.ru/producers/34754/pushistyi-zavod'],
   };
 }
 

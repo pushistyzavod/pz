@@ -32,8 +32,11 @@ function today() {
 function sitePages() {
   const manifest = JSON.parse(fs.readFileSync(path.join(ROOT, 'generator', 'pages-manifest.json'), 'utf8'));
   const hidden = new Set(JSON.parse(fs.readFileSync(path.join(ROOT, 'generator', 'data', 'noindex.json'), 'utf8')));
-  return (manifest.landings || []).filter((url) => !hidden.has(url)).map((url) => {
-    const file = path.join(PROTO, url, 'index.html');
+  const urls = [...(manifest.core || []).filter((url) => !['/', '/news/', '/privacy/'].includes(url)), ...(manifest.landings || [])];
+  return urls.filter((url) => !hidden.has(url)).map((url) => {
+    // основные страницы лежат как prototype/soft-toys.html, посадочные — как prototype/<slug>/index.html
+    const core = path.join(PROTO, `${url.replace(/^\/|\/$/g, '')}.html`);
+    const file = fs.existsSync(core) ? core : path.join(PROTO, url, 'index.html');
     if (!fs.existsSync(file)) return null;
     const title = (fs.readFileSync(file, 'utf8').match(/<title>([^<]*)<\/title>/) || [])[1];
     return title ? { url, title: title.trim() } : null;

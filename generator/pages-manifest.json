@@ -201,6 +201,7 @@
     "/dlya-biznesa/"
   ],
   "articles": [
+    "/news/kak-vybrat-proizvoditelya-myagkih-igrushek/",
     "/news/podarki-detyam-sotrudnikov-na-novyy-god/",
     "/news/simvol-goda-2027-korporativnye-podarki/",
     "/news/cheburashki-festival-molodezhi-2026/",
@@ -229,8 +230,8 @@
   "counts": {
     "landings": 195,
     "hubs": 1,
-    "articles": 14,
+    "articles": 15,
     "core": 8,
-    "total": 218
+    "total": 219
   }
 }
