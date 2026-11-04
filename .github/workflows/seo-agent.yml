@@ -56,21 +56,27 @@ jobs:
         continue-on-error: true
         run: node bot/visibility.js
 
+      # Gemini бывает перегружен — вторая попытка через минуту; при неудаче агент пишет владельцу
       - name: Write draft
-        run: node bot/agent.js
+        id: draft
+        run: node bot/agent.js || (sleep 60 && AGENT_LAST_TRY=1 node bot/agent.js)
 
       - name: Save draft to repository
+        if: always()
         run: |
           git config user.name "pushistyzavod-bot"
           git config user.email "bot@pushistyzavod.ru"
           git add bot/drafts bot/visibility.json
+          git diff --cached --quiet && exit 0
           git commit -m "SEO-агент: черновик статьи недели"
           git pull --rebase origin main
           git push origin HEAD:main
 
       - name: Send draft to owner
+        if: steps.draft.outcome == 'success'
         run: node bot/agent.js notify
 
       - name: Send AI visibility report
+        if: always()
         continue-on-error: true
         run: node bot/visibility.js notify

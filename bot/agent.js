@@ -83,7 +83,7 @@ function weakAiQueries() {
   const last = JSON.parse(fs.readFileSync(file, 'utf8')).pop();
   const weak = (last ? last.results : []).filter((r) => !r.error && (r.rank <= 0 || r.rank > 3));
   if (!weak.length) return '';
-  return `По этим вопросам нейросети (ChatGPT, Алиса, Gemini) советуют конкурентов, а нас ставят низко или не называют — статья, которая прямо и полно отвечает на один из них, в приоритете:
+  return `По этим вопросам нейросети (ChatGPT, Алиса, Gemini) советуют конкурентов, а нас ставят низко или не называют — статья, которая прямо и полно отвечает на один из них, в приоритете. Это не обзор конкурентов, а полезный гид для заказчика (как выбрать, сколько длится, что учесть, примеры кампаний), после которого очевидно, что можно заказать у нас:
 ${weak.map((r) => `- ${r.q} (${r.rank > 0 ? r.rank + ' место' : 'нас нет в ответе'}; советуют: ${(r.top || []).slice(0, 3).join(', ')})`).join('\n')}
 
 `;
@@ -126,19 +126,27 @@ async function research(topic) {
 
 Найди 8–15 конкретных фактов для статьи: цифры, даты, требования законов, примеры компаний и кампаний, данные исследований, практические правила. Для каждого факта укажи источник.
 Формат — список строк: «— факт (Источник: название сайта)». Только то, что действительно нашёл. Если по пункту данных нет — не пиши его.`;
-  const r = await ask({ system, prompt, search: true, maxTokens: 6000 });
-  const seen = new Set();
-  const sources = [];
-  for (const s of r.sources) {
-    const url = await resolveUrl(s.url);
-    if (!/^https?:\/\//.test(url) || BLOCKED.test(url) || /\/(vakansii|vacancy|resume|job)\//i.test(url)) continue;
-    // один источник с сайта — без повторов superjob.ru, superjob.ru, …
-    const key = new URL(url).hostname.replace(/^(www|m|[a-z-]+)\.(?=[a-z0-9-]+\.[a-z]+$)/, '');
-    if (seen.has(key)) continue;
-    seen.add(key);
-    sources.push({ title: s.title || new URL(url).hostname, url });
+  // Поиск Gemini иногда отвечает без ссылок на источники — тогда спрашиваем ещё раз
+  let best = { notes: '', sources: [] };
+  for (let attempt = 1; attempt <= 3 && best.sources.length < 3; attempt++) {
+    const r = await ask({ system, prompt, search: true, maxTokens: 6000, fast: attempt === 3 });
+    const seen = new Set();
+    const sources = [];
+    for (const s of r.sources) {
+      const url = await resolveUrl(s.url);
+      // свой сайт — не источник фактов о рынке
+      if (!/^https?:\/\//.test(url) || BLOCKED.test(url) || /pushistyzavod/i.test(url) || /\/(vakansii|vacancy|resume|job)\//i.test(url)) continue;
+      // один источник с сайта — без повторов superjob.ru, superjob.ru, …
+      const key = new URL(url).hostname.replace(/^(www|m|[a-z-]+)\.(?=[a-z0-9-]+\.[a-z]+$)/, '');
+      if (seen.has(key)) continue;
+      seen.add(key);
+      sources.push({ title: s.title || new URL(url).hostname, url });
+    }
+    if (sources.length > best.sources.length) best = { notes: r.text, sources: sources.slice(0, 12) };
+    if (best.sources.length < 3) console.log(`    источников мало (${sources.length}), ищу ещё раз`);
   }
-  return { notes: r.text, sources: sources.slice(0, 12) };
+  if (best.sources.length < 3) throw new Error(`поиск не нашёл надёжных источников по теме «${topic.topic}»`);
+  return best;
 }
 
 const str = (description) => ({ type: 'STRING', description });
@@ -336,7 +344,15 @@ async function addPhotos(id) {
 
 if (require.main === module) {
   const mode = process.argv[2];
-  (mode === 'notify' ? notify() : mode === 'photos' ? addPhotos(process.argv[3]) : makeDraft()).catch((err) => { console.error(err); process.exit(1); });
+  (mode === 'notify' ? notify() : mode === 'photos' ? addPhotos(process.argv[3]) : makeDraft()).catch(async (err) => {
+    console.error(err);
+    // последняя попытка в GitHub (AGENT_LAST_TRY) — сообщаем владельцу, чтобы сбой не был тихим
+    if (process.env.AGENT_LAST_TRY) {
+      const owner = String(process.env.TELEGRAM_ALLOWED_IDS || '').split(/[\s,;]+/).filter(Boolean)[0];
+      await require('./telegram').sendMessage(owner, `⚠️ SEO-агент не смог подготовить статью недели: ${err.message}\n\nСайт работает как обычно. Запустите агента ещё раз командой /agent или напишите разработчику.`).catch(() => {});
+    }
+    process.exit(1);
+  });
 }
 
 module.exports = { readDrafts, DRAFTS };
