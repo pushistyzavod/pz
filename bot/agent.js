@@ -313,7 +313,7 @@ async function notify() {
     if (photos.length) {
       await tg.sendMediaGroup(owner, photos.map((p, i) => ({ buf: fs.readFileSync(path.join(DRAFTS, p.file)), caption: `Фото ${i + 1}` })));
     }
-    const caption = `📝 Статья недели для блога\n\n«${d.article.h1}»\n\nЗапрос: ${d.topic.query}\n${d.words} слов · источников: ${d.sources.length}\n\nОткройте файл и прочитайте статью. ${photos.length ? 'Выберите обложку кнопкой — статья сразу опубликуется.' : 'Фото не подобрались: ответьте на это сообщение своим фото, чтобы опубликовать.'}`.slice(0, 1020);
+    const caption = `📝 Статья недели для блога\n\n«${d.article.h1}»\n\nЗапрос: ${d.topic.query}\n${d.words} слов · источников: ${d.sources.length}\n\nОткройте файл и прочитайте статью. ${photos.length ? 'Выберите обложку кнопкой — статья появится на сайте в течение нескольких часов (бот проверяет кнопки по расписанию).' : 'Фото не подобрались: ответьте на это сообщение своим фото, чтобы опубликовать.'}`.slice(0, 1020);
     // имя файла = id черновика: по нему бот узнаёт статью, если владелец ответит своим фото
     const choose = photos.map((p, i) => ({ text: `✅ Фото ${i + 1}`, callback_data: `agent:p${i + 1}:${id}`.slice(0, 64) }));
     await tg.sendDocument(owner, `${id}.html`, html, caption, {
