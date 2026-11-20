@@ -56,6 +56,11 @@ jobs:
         continue-on-error: true
         run: node bot/visibility.js
 
+      # Стратег: план продвижения на неделю — темы статей агенту и задачи владельцу
+      - name: Make promotion plan
+        continue-on-error: true
+        run: node bot/strategist.js
+
       # Gemini бывает перегружен — вторая попытка через минуту; при неудаче агент пишет владельцу
       - name: Write draft
         id: draft
@@ -66,7 +71,7 @@ jobs:
         run: |
           git config user.name "pushistyzavod-bot"
           git config user.email "bot@pushistyzavod.ru"
-          git add bot/drafts bot/visibility.json
+          git add bot/drafts bot/visibility.json bot/strategy.json
           git diff --cached --quiet && exit 0
           git commit -m "SEO-агент: черновик статьи недели"
           git pull --rebase origin main
@@ -80,3 +85,8 @@ jobs:
         if: always()
         continue-on-error: true
         run: node bot/visibility.js notify
+
+      - name: Send promotion plan
+        if: always()
+        continue-on-error: true
+        run: node bot/strategist.js notify
