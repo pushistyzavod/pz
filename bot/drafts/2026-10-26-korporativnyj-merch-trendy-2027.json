@@ -1,7 +1,7 @@
 {
   "id": "2026-10-26-korporativnyj-merch-trendy-2027",
   "created": "2026-10-26T10:07:20.082Z",
-  "status": "pending",
+  "status": "published",
   "topic": {
     "topic": "Блайнд-боксы и коллекционные ПВХ-фигурки: главный тренд корпоративного мерча на 2027 год",
     "query": "корпоративный мерч тренды 2027",
@@ -105,5 +105,8 @@
       "caption": "Иллюстрация создана нейросетью.",
       "url": ""
     }
-  ]
+  ],
+  "slug": "korporativnyj-merch-trendy-2027",
+  "photo": "2026-10-26-korporativnyj-merch-trendy-2027-1.jpg",
+  "decidedAt": "2026-11-20T14:28:43.941Z"
 }

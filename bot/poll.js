@@ -202,6 +202,16 @@ async function main() {
     state.replies.push({ chatId: message.chat.id, text: reply });
   }
 
+  // Черновики без ответа владельца дольше 2 дней — публикуем сами с первой готовой обложкой
+  const owner = [...allowed][0];
+  for (const d of require('./autopublish').dueDrafts()) {
+    const n = d.photos.findIndex((p) => fs.existsSync(path.join(__dirname, 'drafts', p.file))) + 1;
+    try {
+      const reply = await handleAgentButton({ data: `agent:p${n}:${d.id}` }, state);
+      if (owner) state.replies.push({ chatId: owner, text: `🤖 Обложку за ${require('./autopublish').WAIT_DAYS} дня не выбрали — статья вышла сама.\n\n${reply}` });
+    } catch (err) { console.error(`Автопубликация ${d.id}:`, err.message); }
+  }
+
   fs.mkdirSync(OUT, { recursive: true });
   fs.writeFileSync(path.join(OUT, 'state.json'), JSON.stringify(state, null, 2));
 

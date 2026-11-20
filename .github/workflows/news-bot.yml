@@ -44,6 +44,11 @@ jobs:
           done < "$RUNNER_TEMP/bot.env"
           rm -f "$RUNNER_TEMP/bot.env"
 
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
       # Быстрая проверка: если новых сообщений нет, остальные шаги не выполняются
       - name: Check for new messages
         id: check
@@ -55,14 +60,10 @@ jobs:
           fi
           # сообщения и нажатия кнопок под черновиками SEO-агента
           count=$(curl -s -m 20 -G "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getUpdates" --data-urlencode 'limit=1' --data-urlencode 'timeout=0' --data-urlencode 'allowed_updates=["message","callback_query"]' | jq '.result | length')
-          echo "Новых сообщений: ${count:-0}"
-          if [ "${count:-0}" -gt 0 ]; then echo "pending=true" >> "$GITHUB_OUTPUT"; else echo "pending=false" >> "$GITHUB_OUTPUT"; fi
-
-      - name: Checkout repository
-        if: steps.check.outputs.pending == 'true'
-        uses: actions/checkout@v4
-        with:
-          ref: main
+          # черновики SEO-агента, которые ждут выбора обложки больше 2 дней, — публикуем сами
+          due=$(node bot/autopublish.js due || echo 0)
+          echo "Новых сообщений: ${count:-0}, статей к автопубликации: ${due:-0}"
+          if [ "${count:-0}" -gt 0 ] || [ "${due:-0}" -gt 0 ]; then echo "pending=true" >> "$GITHUB_OUTPUT"; else echo "pending=false" >> "$GITHUB_OUTPUT"; fi
 
       - name: Setup Node.js
         if: steps.check.outputs.pending == 'true'
